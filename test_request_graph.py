@@ -1,9 +1,4 @@
 import yfinance as yf
-import numpy as np
-
-from scipy.signal import find_peaks
-from statistics import mean
-from peakdetect import peakdetect
 
 from PySide2 import QtWidgets
 import pyqtgraph as pg
