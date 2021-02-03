@@ -5,6 +5,17 @@ import numpy as np
 from scipy import signal
 
 
+def remove_nan(values):
+    """Remove NaN from array
+
+    :param values: array of data
+    :type values: np.array
+    :return: The array without NaN
+    :rtype: np.array
+    """
+    return values[~np.isnan(values)]
+
+
 def rolling_mean(values, lenght):
     """Find the rolling mean for the given data dans the given lenght
 
@@ -17,7 +28,13 @@ def rolling_mean(values, lenght):
     """
     ret = np.cumsum(values, dtype=float)
     ret[lenght:] = ret[lenght:] - ret[:-lenght]
-    return ret[lenght - 1:] / lenght
+    mma = ret[lenght - 1:] / lenght
+
+    # Padding
+    padding = np.array([mma[0] for i in range(lenght)])
+    mma = np.append(padding, mma)
+
+    return mma
 
 def _peaks_detection(values, rounded=3, direction="up"):
     """Peak detection for the given data.
@@ -41,45 +58,84 @@ def _peaks_detection(values, rounded=3, direction="up"):
     return peaks
 
 
-def get_resistances(values):
-    resistances = []
+def get_resistances(values, closest=2):
+    """Get resistances in values
+
+    :param values: Values to analyse
+    :type values: np.array
+    :param closest: The value for grouping. It represent the max difference
+    between values in order to be considering inside the same
+    bucket, more the value is small, more the result will be precises.
+    defaults to 2
+    :type closest: int, optional
+    :return: list of values which represents resistances
+    :rtype: list
+    """
+    return _get_support_resistances(values=values, direction="up", closest=closest)
+
+
+def get_supports(values, closest=2):
+    """Get supports in values
+
+    :param values: Values to analyse
+    :type values: np.array
+    :param closest: The value for grouping. It represent the max difference
+    between values in order to be considering inside the same
+    bucket, more the value is small, more the result will be precises.
+    defaults to 2
+    :type closest: int, optional
+    :return: list of values which represents supports
+    :rtype: list
+    """
+    return _get_support_resistances(values=values, direction="down", closest=closest)
+
+
+def _get_support_resistances(values, direction, closest=2):
+    """Private function which found all supports and resistances
+
+    :param values: values to analyse
+    :type values: np.array
+    :param direction: The direction (up for resistances, down for supports)
+    :type direction: str
+    :param closest: closest is the maximun value difference between two values
+    in order to be considering in the same bucket, default to 2
+    :type closest: int, optional
+    :return: The list of support or resistances
+    :rtype: list
+    """
+    result = []
     # Find peaks
-    peaks = _peaks_detection(values=values, direction="up")
+    peaks = _peaks_detection(values=values, direction=direction)
     # Group by nearest values
-    peaks_grouped = group_values_nearest(values=peaks)
-    # Mean all groups in order to have an only one value for each group
+    peaks_grouped = group_values_nearest(values=peaks, closest=closest)
+     # Mean all groups in order to have an only one value for each group
     for val in peaks_grouped:
         if not val:
             continue
         if len(val) < 3: # need 3 values to confirm resistance
             continue
-        resistances.append(mean(val))
-    return resistances
+        result.append(mean(val))
+    return result
 
 
-def get_supports(values):
-    supports = []
-    # Find peaks
-    peaks = _peaks_detection(values=values, direction="down")
-    # Group by nearest values
-    peaks_grouped = group_values_nearest(values=peaks)
-    # Mean all groups in order to have an only one value for each group
-    for val in peaks_grouped:
-        if not val:
-            continue
-        if len(val) < 3: # need 3 values to confirm resistance
-            continue
-        supports.append(mean(val))
-    return supports
+def group_values_nearest(values, closest=2):
+    """Group given values together under multiple buckets.
 
-def group_values_nearest(values):
+    :param values: values to group
+    :type values: list
+    :param closest: closest is the maximun value difference between two values
+    in order to be considering in the same bucket, defaults to 2
+    :type closest: int, optional
+    :return: The list of the grouping (list of list)
+    :rtype: list    s
+    """
     # values.sort()
     il = []
     ol = []
     for k, v in enumerate(values):
         if k <= 0:
             continue
-        if abs(values[k] - values[k-1]) < 3:
+        if abs(values[k] - values[k-1]) < closest:
             if values[k-1] not in il:
                 il.append(values[k-1])
             if values[k] not in il:
