@@ -1,16 +1,52 @@
 from statistics import mean
 
+import numpy as np
+
 from scipy import signal
-from peakdetect import peakdetect
+
+
+def rolling_mean(values, lenght):
+    """Find the rolling mean for the given data dans the given lenght
+
+    :param values: All values to analyse
+    :type values: np.array
+    :param lenght: The lenght to calculate the mean
+    :type lenght: int
+    :return: The rolling mean
+    :rtype: np.array
+    """
+    ret = np.cumsum(values, dtype=float)
+    ret[lenght:] = ret[lenght:] - ret[:-lenght]
+    return ret[lenght - 1:] / lenght
+
+def _peaks_detection(values, rounded=3, direction="up"):
+    """Peak detection for the given data.
+
+    :param values: All values to analyse
+    :type values: np.array
+    :param rounded: round values of peaks with n digits, defaults to 3
+    :type rounded: int, optional
+    :param direction: The direction is use to find peaks.
+    Two available choices: (up or down), defaults to "up"
+    :type direction: str, optional
+    :return: The list of peaks founded
+    :rtype: list
+    """
+    data = np.copy(values)
+    if direction == "down":
+        data = -data
+    peaks, _ = signal.find_peaks(data, height=min(data))
+    if rounded:
+        peaks = [abs(round(data[val], rounded)) for val in peaks]
+    return peaks
+
 
 def get_resistances(values):
     resistances = []
     # Find peaks
-    peaks, _ = signal.find_peaks(values, height=min(values), distance=2)
-    # Round all values with 3 digits after comma.
-    peaks_rounded = [round(values[val], 3) for val in peaks]
+    peaks = _peaks_detection(values=values, direction="up")
     # Group by nearest values
-    peaks_grouped = group_values_nearest(values=peaks_rounded)
+    peaks_grouped = group_values_nearest(values=peaks)
     # Mean all groups in order to have an only one value for each group
     for val in peaks_grouped:
         if not val:
@@ -24,12 +60,9 @@ def get_resistances(values):
 def get_supports(values):
     supports = []
     # Find peaks
-    _, peaks = peakdetect(values, lookahead=5)
-    peaks = [x[1] for x in peaks]
-    # Round all values with 3 digits after comma.
-    peaks_rounded = [round(x, 3) for x in peaks]
+    peaks = _peaks_detection(values=values, direction="down")
     # Group by nearest values
-    peaks_grouped = group_values_nearest(values=peaks_rounded)
+    peaks_grouped = group_values_nearest(values=peaks)
     # Mean all groups in order to have an only one value for each group
     for val in peaks_grouped:
         if not val:
