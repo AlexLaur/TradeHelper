@@ -129,7 +129,7 @@ def group_values_nearest(values, closest=2):
     :return: The list of the grouping (list of list)
     :rtype: list    s
     """
-    # values.sort()
+    values.sort()
     il = []
     ol = []
     for k, v in enumerate(values):
