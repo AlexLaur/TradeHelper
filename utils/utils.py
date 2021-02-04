@@ -1,8 +1,23 @@
 from statistics import mean
 
 import numpy as np
-
+import pandas as pd
 from scipy import signal
+
+
+def savgol_filter(values, window_length, polyorder=3):
+    return signal.savgol_filter(x=values, window_length=window_length, polyorder=polyorder, mode="interp")
+
+
+def get_rsi(values, length=14):
+    """Relative strength index"""
+    # Approximate; good enough
+    gain = pd.Series(values).diff()
+    loss = gain.copy()
+    gain[gain < 0] = 0
+    loss[loss > 0] = 0
+    rs = gain.ewm(length).mean() / loss.abs().ewm(length).mean()
+    return (100 - 100 / (1 + rs)).to_numpy()
 
 
 def remove_nan(values):
@@ -16,25 +31,26 @@ def remove_nan(values):
     return values[~np.isnan(values)]
 
 
-def rolling_mean(values, lenght):
-    """Find the rolling mean for the given data dans the given lenght
+def rolling_mean(values, length):
+    """Find the rolling mean for the given data dans the given length
 
     :param values: All values to analyse
     :type values: np.array
-    :param lenght: The lenght to calculate the mean
-    :type lenght: int
+    :param length: The length to calculate the mean
+    :type length: int
     :return: The rolling mean
     :rtype: np.array
     """
     ret = np.cumsum(values, dtype=float)
-    ret[lenght:] = ret[lenght:] - ret[:-lenght]
-    mma = ret[lenght - 1:] / lenght
+    ret[length:] = ret[length:] - ret[:-length]
+    mva = ret[length - 1 :] / length
 
     # Padding
-    padding = np.array([mma[0] for i in range(lenght)])
-    mma = np.append(padding, mma)
+    padding = np.array([np.nan for i in range(length)])
+    mva = np.append(padding, mva)
 
-    return mma
+    return mva
+
 
 def _peaks_detection(values, rounded=3, direction="up"):
     """Peak detection for the given data.
@@ -71,7 +87,9 @@ def get_resistances(values, closest=2):
     :return: list of values which represents resistances
     :rtype: list
     """
-    return _get_support_resistances(values=values, direction="up", closest=closest)
+    return _get_support_resistances(
+        values=values, direction="up", closest=closest
+    )
 
 
 def get_supports(values, closest=2):
@@ -87,7 +105,9 @@ def get_supports(values, closest=2):
     :return: list of values which represents supports
     :rtype: list
     """
-    return _get_support_resistances(values=values, direction="down", closest=closest)
+    return _get_support_resistances(
+        values=values, direction="down", closest=closest
+    )
 
 
 def _get_support_resistances(values, direction, closest=2):
@@ -108,11 +128,11 @@ def _get_support_resistances(values, direction, closest=2):
     peaks = _peaks_detection(values=values, direction=direction)
     # Group by nearest values
     peaks_grouped = group_values_nearest(values=peaks, closest=closest)
-     # Mean all groups in order to have an only one value for each group
+    # Mean all groups in order to have an only one value for each group
     for val in peaks_grouped:
         if not val:
             continue
-        if len(val) < 3: # need 3 values to confirm resistance
+        if len(val) < 3:  # need 3 values to confirm resistance
             continue
         result.append(mean(val))
     return result
@@ -135,9 +155,9 @@ def group_values_nearest(values, closest=2):
     for k, v in enumerate(values):
         if k <= 0:
             continue
-        if abs(values[k] - values[k-1]) < closest:
-            if values[k-1] not in il:
-                il.append(values[k-1])
+        if abs(values[k] - values[k - 1]) < closest:
+            if values[k - 1] not in il:
+                il.append(values[k - 1])
             if values[k] not in il:
                 il.append(values[k])
         else:
