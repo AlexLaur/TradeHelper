@@ -30,7 +30,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.rsi_graph.showGrid(x=True, y=True, alpha=1)
 
         self.rsi_graph.plot(rsi, connect="finite")
-        self.rsi_graph.plot(utils.savgol_filter(rsi, 51), pen=pg.mkPen("b", width=1))
+        self.rsi_graph.plot(
+            utils.savgol_filter(rsi, 51), pen=pg.mkPen("b", width=1)
+        )
 
         # Draw overbought and oversold
         self.rsi_graph.addLine(y=70, pen=pg.mkPen("r", width=2))

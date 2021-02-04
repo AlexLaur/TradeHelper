@@ -6,7 +6,23 @@ from scipy import signal
 
 
 def savgol_filter(values, window_length, polyorder=3):
-    return signal.savgol_filter(x=values, window_length=window_length, polyorder=polyorder, mode="interp")
+    """Just a savgol filter wrapper
+
+    :param values: The data to be filtered.
+    :type values: np.array
+    :param window_length: The length of the filter window
+    :type window_length: int
+    :param polyorder: The order of the polynomial used to fit the samples, defaults to 3
+    :type polyorder: int, optional
+    :return: The filtered data.
+    :rtype: np.array
+    """
+    return signal.savgol_filter(
+        x=values,
+        window_length=window_length,
+        polyorder=polyorder,
+        mode="interp",
+    )
 
 
 def get_rsi(values, length=14):
