@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def draw_quotation(self):
         self.quotation_graph = self.graph_widget.addPlot(row=0, col=0)
-        self.quotation_graph.plot(self.values)
+        self.quotation_graph.plot(self.values, pen=pg.mkPen('w', width=3))
 
     def draw_rsi(self, length=14):
         rsi = utils.get_rsi(values=self.values, length=length)
@@ -57,6 +57,7 @@ class MainWindow(QtWidgets.QMainWindow):
         resistances = utils.get_resistances(
             values=self.values, closest=closest
         )
+
         for res in resistances:
             self.quotation_graph.addLine(y=res, pen=pg.mkPen("r", width=1))
 
@@ -68,6 +69,12 @@ class MainWindow(QtWidgets.QMainWindow):
         for sup in supports:
             self.quotation_graph.addLine(y=sup, pen=pg.mkPen("g", width=1))
 
+    def draw_zig_zag(self, value=None):
+        if not self.quotation_graph:
+            return
+
+        zigzag = utils.zig_zag(values=value)
+        self.quotation_graph.plot(zigzag, value[zigzag], pen=pg.mkPen("g", width=1.2))
 
 if __name__ == "__main__":
 
@@ -90,6 +97,8 @@ if __name__ == "__main__":
     main.draw_mva(lengths=[3, 5, 8, 10, 12, 15])
     # Draw RSI (Relative Strength Index)
     main.draw_rsi()
+    # Draw ZigZag
+    main.draw_zig_zag(value=values)
     # Show window
     main.show()
 

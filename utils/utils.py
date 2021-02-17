@@ -181,3 +181,13 @@ def group_values_nearest(values, closest=2):
             il = []
     ol.append(list(il))
     return ol
+
+def zig_zag(values, distance=2.1):
+    peaks_up, _ = signal.find_peaks(values, prominence=1, distance=distance)
+    peaks_down, _ = signal.find_peaks(-values, prominence=1, distance=distance)
+
+    indexs = [i for i in peaks_up]
+    indexs.extend([i for i in peaks_down])
+    indexs.sort()
+
+    return np.asarray(indexs)
