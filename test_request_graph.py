@@ -4,7 +4,7 @@ from PySide2 import QtWidgets
 import pyqtgraph as pg
 
 from utils import utils
-
+from utils import candlestick
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, title, values, *args, **kwargs):
@@ -19,6 +19,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.quotation_graph = None
         self.rsi_graph = None
+
+    def candlestick(self, data):
+        """
+        This function convert the Dataframe into a tuple:
+        (index, Open, Close, High, Low)
+        :param data:
+        :return:
+        """
+        ls_data = []
+        for index, i in enumerate(data.values):
+            tuple_data = (index,
+                          data['Open'][index],
+                          data['Close'][index],
+                          data['High'][index],
+                          data['Low'][index]
+                          )
+            ls_data.append(tuple_data)
+        item = candlestick.CandlestickItem(ls_data)
+        self.quotation_graph.addItem(item)
 
     def draw_quotation(self):
         self.quotation_graph = self.graph_widget.addPlot(row=0, col=0)
@@ -76,6 +95,34 @@ class MainWindow(QtWidgets.QMainWindow):
         zigzag = utils.zig_zag(values=value)
         self.quotation_graph.plot(zigzag, value[zigzag], pen=pg.mkPen("g", width=1.2))
 
+    def draw_bollinger_bands(self, values):
+        color = (102, 169, 218, 0.3)
+        middler, upper, lower = utils.bollinger_bands(values)
+        self.quotation_graph.plot(middler,  pen=pg.mkPen(color=(color[0], color[1], color[2]), width=1.2))
+        up = self.quotation_graph.plot(upper, pen=pg.mkPen(color=(color[0], color[1], color[2]), width=1.2))
+        low = self.quotation_graph.plot(lower, pen=pg.mkPen(color=(color[0], color[1], color[2]), width=1.2))
+        fill_bb = pg.FillBetweenItem(curve1=up, curve2=low, brush=pg.mkBrush(color[0], color[1], color[2], 50))
+        self.quotation_graph.addItem(fill_bb)
+
+    def draw_macd(self, data):
+        self.macd_graph = self.graph_widget.addPlot(row=3, col=0)
+
+        macd_line, signal_line, macd = utils.macd(data['Close'])
+        ema9 = utils.ExpMovingAverage(macd, w=9)
+        macd_bar = macd-ema9
+
+        # Histogram
+        bars = pg.BarGraphItem(x=range(macd.shape[0]),
+                               height=macd_bar,
+                               width=1,
+                               brush='r')
+
+        self.macd_graph.plot(ema9, pen=pg.mkPen('r', width=3))
+        self.macd_graph.plot(macd, pen=pg.mkPen('b', width=3))
+        self.macd_graph.addItem(bars)
+        self.macd_graph.setMaximumHeight(150)
+        self.macd_graph.showGrid(x=True, y=True, alpha=1)
+
 if __name__ == "__main__":
 
     app = QtWidgets.QApplication([])
@@ -90,15 +137,18 @@ if __name__ == "__main__":
     main = MainWindow(title=title, values=values)
     # Draw the quotations
     main.draw_quotation()
+    main.candlestick(data)
     # Draw supports and resistances
     main.draw_supports(closest=0.8)
     main.draw_resistances(closest=0.8)
     # Draw MVA (rolling mean)
     main.draw_mva(lengths=[3, 5, 8, 10, 12, 15])
-    # Draw RSI (Relative Strength Index)
-    main.draw_rsi()
     # Draw ZigZag
     main.draw_zig_zag(value=values)
+    # Draw Bollinger Bands
+    main.draw_bollinger_bands(data)
+    # Draw RSI (Relative Strength Index)
+    # main.draw_rsi()
     # Show window
     main.show()
 

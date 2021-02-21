@@ -5,6 +5,14 @@ import pandas as pd
 from scipy import signal
 
 
+def ExpMovingAverage(values, w):
+    weights = np.exp(np.linspace(-1., 0., w))
+    weights /= weights.sum()
+    a = np.convolve(values, weights, mode='full')[:len(values)]
+    a[:w] = a[w]
+    return a
+
+
 def savgol_filter(values, window_length, polyorder=3):
     """Just a savgol filter wrapper
 
@@ -191,3 +199,21 @@ def zig_zag(values, distance=2.1):
     indexs.sort()
 
     return np.asarray(indexs)
+
+def bollinger_bands(values):
+    middle_band = values['Close'].rolling(window=20).mean()
+    standard_deviation = values['Close'].rolling(window=20).std()
+
+    upper_band = middle_band + standard_deviation * 2
+    lower_band = middle_band - standard_deviation * 2
+
+    return middle_band.values, upper_band.values, lower_band.values
+
+def macd(values):
+    """
+        compute the MACD (Moving Average Convergence/Divergence) using a fast and slow exponential moving avg'
+        return value is emaslow, emafast, macd which are len(x) arrays
+    """
+    emaslow = ExpMovingAverage(values, w=12)
+    emafast = ExpMovingAverage(values, w=26)
+    return emaslow, emafast, emafast - emaslow
