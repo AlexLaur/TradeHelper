@@ -1,0 +1,119 @@
+[
+    {
+        "type": "button",
+        "icon": {
+            "type": "resources",
+            "value": ":/svg/trend-line.svg"
+        },
+        "action": "method_to_call",
+        "tooltip": "Line",
+        "text": "Line",
+        "checkable": false,
+        "submenu": [
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/trend-line.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Trend Line",
+                "text": "Trend Line",
+                "shortcut": "Alt+T",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/info-line.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Info Line",
+                "text": "Info Line",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/trend-angle.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Trend angle",
+                "text": "Trend angle",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/anchored-vwap.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Anchored VWAP",
+                "text": "Anchored VWAP",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/horizontal-line.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Horizontal Line",
+                "text": "Horizontal Line",
+                "shortcut": "Alt+H",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/horizontal-ray.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "Horizontal Ray",
+                "text": "Horizontal Ray",
+                "checkable": false
+            }
+        ]
+    },
+    {
+        "type": "button",
+        "icon": {
+            "type": "resources",
+            "value": ":/svg/pitchfork.svg"
+        },
+        "action": "wgt_graph.draw_resistance",
+        "tooltip": "Pitchfork",
+        "text": "Pitchfork",
+        "checkable": false
+    },
+    {
+        "type": "button",
+        "icon": {
+            "type": "resources",
+            "value": ":/svg/brush.svg"
+        },
+        "action": "unknow_command",
+        "tooltip": "Brush",
+        "text": "Brush",
+        "checkable": false
+    },
+    {
+        "type": "separator"
+    },
+    {
+        "type": "button",
+        "icon": {
+            "type": "resources",
+            "value": ":/svg/measure.svg"
+        },
+        "action": "method_to_call",
+        "tooltip": "Measure",
+        "text": "Measure",
+        "checkable": false
+    }
+]
