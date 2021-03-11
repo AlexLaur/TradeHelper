@@ -1,5 +1,8 @@
 # TradeHelper
 
+This aplication is a exercice working with Qt, PyQt arround the finance.
+It is largely inspired by `TradingView` which is a wonderfull tool for finance analysis.
+
 ## Installation
 
 1. Create a virtual environment named `venv`:
@@ -24,5 +27,20 @@
 3. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install requirements.txt.
 
     ```bash
-    $ pip install -r requirements.txt
+    $(venv) pip install -r requirements.txt
     ```
+
+3. Launch the app
+    ```bash
+    $(venv) python app/launcher.py
+    ```
+
+## Todo
+
+- [ ] Continue the development.
+- [ ] More asynchronous functions.
+- [ ] Add other indicators
+- [ ] Save users settings
+- [ ] Embeded Python Console ?
+- [ ] Draw other the graph
+- [ ] Use Machine learning to determine patterns
