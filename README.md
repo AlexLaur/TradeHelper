@@ -3,6 +3,8 @@
 This aplication is a exercice working with Qt, PyQt arround the finance.
 It is largely inspired by `TradingView` which is a wonderfull tool for finance analysis.
 
+![Preview](./preview.jpg)
+
 ## Installation
 
 1. Create a virtual environment named `venv`:
