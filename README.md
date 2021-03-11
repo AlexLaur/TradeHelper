@@ -42,5 +42,5 @@ It is largely inspired by `TradingView` which is a wonderfull tool for finance a
 - [ ] Add other indicators
 - [ ] Save users settings
 - [ ] Embeded Python Console ?
-- [ ] Draw other the graph
+- [ ] Draw over the graph
 - [ ] Use Machine learning to determine patterns
