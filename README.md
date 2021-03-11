@@ -20,8 +20,7 @@ It is largely inspired by `TradingView` which is a wonderfull tool for finance a
 
    ```bash
    $ source venv/bin/activate
-   (venv)
-   $
+   $(venv)
    ```
 
    After activation, you should see `(venv)` above your command prompt.
