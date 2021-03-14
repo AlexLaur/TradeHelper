@@ -86,10 +86,34 @@
             "type": "resources",
             "value": ":/svg/pitchfork.svg"
         },
-        "action": "wgt_graph.draw_resistance",
-        "tooltip": "Pitchfork",
-        "text": "Pitchfork",
-        "checkable": false
+        "action": "method_to_call",
+        "tooltip": "Indicator",
+        "text": "Indicator",
+        "checkable": false,
+        "submenu": [
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/window.svg"
+                },
+                "action": "method_to_call",
+                "tooltip": "RSI",
+                "text": "RSI",
+                "checkable": false
+            },
+            {
+                "type": "button",
+                "icon": {
+                    "type": "resources",
+                    "value": ":/svg/window.svg"
+                },
+                "action": "MACD",
+                "tooltip": "MACD",
+                "text": "MACD",
+                "checkable": false
+            }
+        ]
     },
     {
         "type": "button",

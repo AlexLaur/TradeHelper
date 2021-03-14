@@ -20,14 +20,14 @@ class BollingerBands(Indicator):
 
         middler, upper, lower = bollinger_bands(values)
 
-        middler_plot = quotation_plot.plot(
-            middler, pen=pg.mkPen(color=self.color[0:3], width=1.2)
+        middler_plot = quotation_plot.plot(x=[x.timestamp() for x in values.index],
+            y=middler, pen=pg.mkPen(color=self.color[0:3], width=1.2)
         )
-        upper_plot = quotation_plot.plot(
-            upper, pen=pg.mkPen(color=self.color[0:3], width=1.2)
+        upper_plot = quotation_plot.plot(x=[x.timestamp() for x in values.index],
+            y=upper, pen=pg.mkPen(color=self.color[0:3], width=1.2)
         )
-        lower_plot = quotation_plot.plot(
-            lower, pen=pg.mkPen(color=self.color[0:3], width=1.2)
+        lower_plot = quotation_plot.plot(x=[x.timestamp() for x in values.index],
+            y=lower, pen=pg.mkPen(color=self.color[0:3], width=1.2)
         )
 
         self.g_filler = pg.FillBetweenItem(
@@ -42,13 +42,14 @@ class BollingerBands(Indicator):
         super(BollingerBands, self).remove_indicator(
             graph_view=graph_view, *args, **kwargs
         )
-        graph_view.removeItem(self.g_filler)
+        # graph_view.removeItem(self.g_filler)
+        self.g_filler.setBrush(None)
         self.g_filler = None
 
 
 def bollinger_bands(values):
-    middle_band = values["Close"].rolling(window=20).mean()
-    standard_deviation = values["Close"].rolling(window=20).std()
+    middle_band = values["close"].rolling(window=20).mean()
+    standard_deviation = values["close"].rolling(window=20).std()
 
     upper_band = middle_band + standard_deviation * 2
     lower_band = middle_band - standard_deviation * 2

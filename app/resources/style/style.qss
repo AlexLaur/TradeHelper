@@ -157,3 +157,7 @@ QDockWidget {
      titlebar-close-icon: url(:/svg/times.svg);
      titlebar-normal-icon: url(:/svg/window.svg);
  }
+
+ QPushButton {
+    color:black;
+ }

@@ -1,48 +1,34 @@
-import datetime
+import pyqtgraph as pg
+import numpy as np
+from pprint import pprint
+from scipy import signal
 from statistics import mean
 
-from sklearn import preprocessing
-import numpy as np
-import pandas as pd
-from scipy import signal
-from PySide2.QtGui import QPixmap
+from libs.indicators_widget import Indicator
 
 
-def normalize_data(data):
-    data = data.reshape(1, -1)
-    normalized = preprocessing.normalize(np.nan_to_num(data))
-    return normalized
+class Support_Resistances(Indicator):
+    def __init__(self):
+        super(Support_Resistances, self).__init__()
 
+        self.name = "Support & Resistances"
+        self.description = ""
 
-def savgol_filter(values, window_length, polyorder=3):
-    """Just a savgol filter wrapper
+    def create_indicator(self, graph_view, *args, **kwargs):
+        # Get values
+        values = graph_view.values
+        quotation_plot = graph_view.g_quotation
 
-    :param values: The data to be filtered.
-    :type values: np.array
-    :param window_length: The length of the filter window
-    :type window_length: int
-    :param polyorder: The order of the polynomial used to fit the samples, defaults to 3
-    :type polyorder: int, optional
-    :return: The filtered data.
-    :rtype: np.array
-    """
-    return signal.savgol_filter(
-        x=values,
-        window_length=window_length,
-        polyorder=polyorder,
-        mode="interp",
-    )
+        # zigzag = zig_zag(values=values["close"].values)
 
+        supports = get_supports(values=values['close'].values)
+        resistances = get_resistances(values=values['close'].values)
 
-def remove_nan(values):
-    """Remove NaN from array
+        for sup in supports:
+            quotation_plot.addLine(y=sup, pen=pg.mkPen("g", width=1))
 
-    :param values: array of data
-    :type values: np.array
-    :return: The array without NaN
-    :rtype: np.array
-    """
-    return values[~np.isnan(values)]
+        for res in resistances:
+            quotation_plot.addLine(y=res, pen=pg.mkPen("r", width=1))
 
 
 def _peaks_detection(values, rounded=3, direction="up"):
@@ -158,104 +144,3 @@ def group_values_nearest(values, closest=2):
             il = []
     ol.append(list(il))
     return ol
-
-
-def find_method(module, obj):
-    """Return the method obj for the given string module
-
-    >>> module = "wgt_graph.hello_world"
-    >>> obj = self
-    >>> find_method(module, obj)
-    >>> <bound method ... >
-
-    :param module: The module to find
-    :type module: string
-    :param obj: The object source
-    :type obj: object
-    :return: The module found
-    :rtype: object
-    """
-    _module, sep, rest = module.partition(".")
-    if getattr(obj, _module, None):
-        obj = getattr(obj, _module)
-        if sep:
-            obj = find_method(module=rest, obj=obj)
-    else:
-        return None
-    return obj
-
-
-def convert_date_to_timestamp(data):
-    final = []
-    for date in data.index:
-        print(date, type(date))
-        _date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        timestamp = datetime.datetime.timestamp(_date)
-        final.append(timestamp)
-    return final
-
-
-def remove_nan(data):
-    """
-    Cette fonction renplace les valeurs NaN par 0.
-    Sinon return float.
-    :param data:
-    :return: List
-    """
-    data_format = []
-    for i in data:
-        if str(i) == "nan":
-            i = 0
-        data_format.append(float(i))
-    return data_format
-
-
-
-def format_data(data):
-    """
-    Cette fonction format les nombres avec des ','.
-    exemple:  2,120,350
-    :param data:
-    :return: List of string
-    """
-    data_format = []
-    for i in remove_nan(data):
-        i = f"{int(i):,}"
-        data_format.append(i)
-    return data_format
-
-def get_last_value(data):
-    if data[0] != 0:
-        index = 0
-        value = data[index]
-    else:
-        index = 1
-        value = data[index]
-    return value, index
-
-
-def croissance(data):
-    ls_croi = []
-    el_prec = data[0]
-    for element in data:
-        if el_prec < element:
-            ls_croi.append(True)
-        else:
-            ls_croi.append(False)
-        el_prec = element
-    decroi = ls_croi.count(False)
-    croi = ls_croi.count(True)
-    return croi, decroi
-
-def get_image_from_url(url: str) -> QPixmap:
-    """Get an image on the web and return a Qpixmap
-
-    :param url: The url to request
-    :type url: str
-    :return: The image
-    :rtype: QtGui.QPixmap
-    """
-    data = urllib.request.urlopen(url).read()
-    image = QPixmap()
-    image.loadFromData(data)
-    return image

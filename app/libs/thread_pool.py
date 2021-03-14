@@ -2,7 +2,7 @@ import sys
 import traceback
 from PySide2 import QtGui, QtCore, QtWidgets
 
-from libs.events_handler import EventHandler
+from app.libs.events_handler import EventHandler
 
 
 class ThreadPool(QtCore.QThreadPool):

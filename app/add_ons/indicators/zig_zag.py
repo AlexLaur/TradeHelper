@@ -1,6 +1,6 @@
 import pyqtgraph as pg
 import numpy as np
-
+from pprint import pprint
 from scipy import signal
 
 from libs.indicators_widget import Indicator
@@ -18,10 +18,10 @@ class ZigZag(Indicator):
         values = graph_view.values
         quotation_plot = graph_view.g_quotation
 
-        zigzag = zig_zag(values=values["Close"].values)
+        zigzag = zig_zag(values=values["close"].values)
         plot = quotation_plot.plot(
-            zigzag,
-            values["Close"].values[zigzag],
+            x=[x.timestamp() for x in values.index[zigzag]],
+            y=values["close"].values[zigzag],
             pen=pg.mkPen((33, 150, 243), width=2.5),
         )
         self._plots.append(plot)

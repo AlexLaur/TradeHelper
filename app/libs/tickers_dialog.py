@@ -1,7 +1,7 @@
 from PySide2 import QtGui, QtCore, QtWidgets
 
-from libs.events_handler import EventHandler
-from ui import tickers_dialog
+from app.libs import events_handler
+from app.ui import tickers_dialog
 
 
 class TickersDialogWindow(
@@ -19,7 +19,7 @@ class TickersDialogWindow(
 
         # Constants
         self.tickers = tickers
-        self.signal = EventHandler()
+        self.signal = events_handler.EventHandler()
 
         # Build widgets data
         self.build_ticker_tree(data=self.tickers)
@@ -32,7 +32,7 @@ class TickersDialogWindow(
         self.pub_close.clicked.connect(self.close)
         self.trw_all_tickers.customContextMenuRequested.connect(self._set_menu)
 
-    def build_ticker_tree(self, data: list):
+    def build_ticker_tree(self, data: dict):
         """Build the data inside the treewidget
 
         :param data: All tickers

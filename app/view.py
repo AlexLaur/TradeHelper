@@ -1,8 +1,10 @@
 import os
 import json
 
+from pprint import pprint
 from PySide2 import QtCore, QtGui, QtWidgets
-import yfinance as yf
+from libs.yahoo_fin import stock_info as sf
+
 
 import resources_rc
 
@@ -11,7 +13,8 @@ from libs.events_handler import EventHandler
 from libs.tickers_dialog import TickersDialogWindow
 from libs.widgets.busywidget import BusyIndicator
 from libs.thread_pool import ThreadPool
-from libs.graph.candlestick import CandlestickItem
+from app.libs.widgets.tablewidget import TableFinancial
+from libs.analysies.analyse_financials import AnalyseFondamental
 
 from ui import main_window
 
@@ -19,7 +22,7 @@ from utils import utils
 from utils import decorators
 
 SCRIPT_PATH = os.path.dirname(__file__)
-
+START_DATE = "2019-01-01"
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, parent=None, data=None):
@@ -28,6 +31,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setupUi(self)
 
         # Constants
+        self.ticker = None
         self.tickers_dialog = None
         self.tool_bar.init_toolbar()
 
@@ -60,12 +64,26 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tool_bar.signals.sig_action_triggered.connect(
             self._on_action_triggered
         )
+        self.prev_btn.clicked.connect(self.stw_main.slide_in_prev)
+        self.next_btn.clicked.connect(self.stw_main.slide_in_next)
+
+        self._get_fondamentals()
 
     def _retrieve_data(self):
         """Retrieve data from the API"""
-        ticker = yf.Ticker(self.lie_ticker.text())
-        data = ticker.history(period="1y", interval="1d", start="2018-01-01")
+        self.ticker = self.lie_ticker.text()
+        # self.signals.sig_ticker_infos_fetched.emit(self.ticker.info)
+        data = sf.get_data(self.ticker, start_date=START_DATE, interval="1d")
+        self.date = [x.timestamp() for x in data.index]
         self.signals.sig_ticker_infos_fetched.emit(data)
+        self.thread_pool.execution(self._get_fondamentals)
+
+    def _get_fondamentals(self):
+        data = None
+        if self.ticker:
+            data = AnalyseFondamental(self.ticker)
+        _table_financ = TableFinancial(parent=self.tableWidget, data=data)
+        # self.verticalLayout_4.addWidget(_table_financ)
 
     @QtCore.Slot(object)
     def _on_process_ticker_data(self, data):

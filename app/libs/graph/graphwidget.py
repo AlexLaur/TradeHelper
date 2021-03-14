@@ -1,8 +1,8 @@
 import pyqtgraph as pg
 from PySide2 import QtCore, QtGui, QtWidgets
 
-from libs.graph.candlestick import CandlestickItem
-from utils import utils
+from app.libs.graph.candlestick import CandlestickItem
+from app.utils import utils
 
 # TODO import from palette or Qss
 color = (53, 53, 53)
@@ -37,22 +37,31 @@ class GraphView(pg.GraphicsLayoutWidget):
         if clear:
             self.g_quotation.clear()
         ls_data = []
-        # dates = [x.timestamp() for x in data.index]
+        self.dates = [x.timestamp() for x in data.index]
         for index, (_time, _open, _close, _high, _low) in enumerate(
             zip(
                 data.index,
-                data["Open"].values,
-                data["Close"].values,
-                data["High"].values,
-                data["Low"].values,
+                data["open"].values,
+                data["close"].values,
+                data["high"].values,
+                data["low"].values,
             )
         ):
-            ls_data.append((index, _open, _close, _high, _low))
+            ls_data.append((self.dates[index], _open, _close, _high, _low))
         item = CandlestickItem(ls_data)
         self.g_quotation.addItem(item)
         self.g_quotation.enableAutoRange()
-        # self.set_time_x_axis(widget=self.g_quotation)
+        self.g_quotation.showAxis('right')
+        self.set_time_x_axis(widget=self.g_quotation)
         self.set_cross_hair()
+        self.set_range_view()
+
+        # self.g_quotation.addLine(
+        #                          y=data["close"][-1],
+        #                          pen=pg.mkPen(color=(26, 100, 27),
+        #                                       width=1,
+        #                                       style=pg.QtCore.Qt.DashLine)
+        #                          )
 
     def set_cross_hair(self):
         """Set the cross hair"""
@@ -75,6 +84,10 @@ class GraphView(pg.GraphicsLayoutWidget):
         self.g_quotation.addItem(self.v_line, ignoreBounds=True)
         self.g_quotation.addItem(self.h_line, ignoreBounds=True)
         self.g_quotation.scene().sigMouseMoved.connect(self._on_mouse_moved)
+
+    def set_range_view(self, range=240):
+        self.range_view = (self.dates[-range], self.dates[-1])
+        self.g_quotation.setXRange(self.range_view[0], self.range_view[1])
 
     def set_time_x_axis(self, widget):
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})

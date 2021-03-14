@@ -2,11 +2,11 @@ import json
 from PySide2 import QtGui, QtCore, QtWidgets
 
 import resources_rc
-from libs.events_handler import EventHandler
-from libs.plugin_collection import PluginCollection
-from libs.widgets.tablewidgetitem import TableWidgetItem
-from libs.widgets.pushbutton import IndicatorPushButton
-from ui import indicators_widget
+from app.libs.events_handler import EventHandler
+from app.libs.plugin_collection import PluginCollection
+from app.libs.widgets.tablewidgetitem import TableWidgetItem
+from app.libs.widgets.pushbutton import IndicatorPushButton
+from app.ui import indicators_widget
 
 
 class Indicator(object):

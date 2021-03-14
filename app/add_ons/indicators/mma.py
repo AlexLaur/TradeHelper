@@ -27,11 +27,10 @@ class MMA(Indicator):
         quotation_plot = graph_view.g_quotation
 
         for length in self.lengths:
-            mva = rolling_mean(
-                values=values["Close"].values, length=length["value"]
-            )
+            mva = mva = values['close'].ewm(com=length["value"]).mean()
             plot = quotation_plot.plot(
-                mva,
+                x=[x.timestamp() for x in values.index],
+                y=mva,
                 connect="finite",
                 pen=pg.mkPen(length["color"], width=length["width"]),
             )
@@ -69,11 +68,10 @@ class GuppyMMA(Indicator):
         quotation_plot = graph_view.g_quotation
 
         for length in self.lengths:
-            mva = rolling_mean(
-                values=values["Close"].values, length=length["value"]
-            )
+            mva = mva = values['close'].ewm(com=length["value"]).mean()
             plot = quotation_plot.plot(
-                mva,
+                x=[x.timestamp() for x in values.index],
+                y=mva,
                 connect="finite",
                 pen=pg.mkPen(length["color"], width=length["width"]),
             )
