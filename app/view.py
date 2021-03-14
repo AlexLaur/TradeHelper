@@ -26,6 +26,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super(MainWindow, self).__init__(parent=parent)
 
         self.setupUi(self)
+        self.setWindowState(QtCore.Qt.WindowMaximized)
 
         # Constants
         self.tickers_dialog = None
@@ -42,8 +43,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tickers_dialog.signal.sig_ticker_choosen.connect(
             self._on_ticker_selected
         )
-        self.signals.sig_ticker_infos_fetched.connect(
+        self.wgt_welcome.signal.sig_ticker_choosen.connect(
+            self._on_ticker_selected
+        )
+        self.signals.sig_ticker_data_fetched.connect(
             self._on_process_ticker_data
+        )
+        self.signals.sig_ticker_infos_fetched.connect(
+            self.wgt_company._on_ticker_infos
         )
         self.thread_pool.signals.sig_thread_pre.connect(
             self.busy_indicator.show
@@ -60,12 +67,15 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tool_bar.signals.sig_action_triggered.connect(
             self._on_action_triggered
         )
+        self.pub_go_welcome.clicked.connect(self.stw_main.slide_in_prev)
+        self.pub_go_graph.clicked.connect(self.stw_main.slide_in_next)
 
     def _retrieve_data(self):
         """Retrieve data from the API"""
         ticker = yf.Ticker(self.lie_ticker.text())
+        self.signals.sig_ticker_infos_fetched.emit(ticker.info)
         data = ticker.history(period="1y", interval="1d", start="2018-01-01")
-        self.signals.sig_ticker_infos_fetched.emit(data)
+        self.signals.sig_ticker_data_fetched.emit(data)
 
     @QtCore.Slot(object)
     def _on_process_ticker_data(self, data):

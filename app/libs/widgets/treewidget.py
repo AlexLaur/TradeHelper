@@ -44,3 +44,13 @@ class TreeWidget(QtWidgets.QTreeWidget):
 class TickersTreeWidget(TreeWidget):
     def __init__(self, parent=None):
         super(TickersTreeWidget, self).__init__(parent=parent)
+
+    # def set_header(self):
+    #     headerView = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
+    #     self.setHeader(headerView)
+    #     headerView.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+    #     headerView.setSectionsClickable(True)
+
+    #     # Favorite column
+    #     # self.header().resizeSection(2, 20)
+    #     # self.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)

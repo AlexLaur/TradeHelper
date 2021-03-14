@@ -11,37 +11,98 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Trade Helper</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLineEdit" name="lie_ticker">
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pub_go_welcome">
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/svg/keyboard-arrow-left.svg</normaloff>:/svg/keyboard-arrow-left.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lie_ticker">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pub_go_graph">
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/svg/keyboard-arrow-right.svg</normaloff>:/svg/keyboard-arrow-right.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="StackedWidget" name="stw_main">
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="wgt_welcome">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Select a Ticker.</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="GraphWidget" name="wgt_graph" native="true"/>
+      <widget class="WelcomeWidget" name="wgt_welcome"/>
+      <widget class="GraphWidget" name="wgt_graph"/>
      </widget>
     </item>
    </layout>
@@ -65,15 +126,33 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dock_wgt_company">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>Company</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>8</number>
+    <number>2</number>
    </attribute>
-   <widget class="QWidget" name="wgt_company"/>
+   <widget class="CompanyWidget" name="wgt_company"/>
   </widget>
   <widget class="QDockWidget" name="dock_wgt_indicators">
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="windowTitle">
     <string>Indicators</string>
    </property>
@@ -121,6 +200,18 @@
    <class>StackedWidget</class>
    <extends>QStackedWidget</extends>
    <header>libs.widgets.stackedwidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WelcomeWidget</class>
+   <extends>QWidget</extends>
+   <header>libs.welcome_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CompanyWidget</class>
+   <extends>QWidget</extends>
+   <header>libs.company_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
