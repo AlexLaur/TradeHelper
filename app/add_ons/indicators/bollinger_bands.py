@@ -42,7 +42,7 @@ class BollingerBands(Indicator):
         super(BollingerBands, self).remove_indicator(
             graph_view=graph_view, *args, **kwargs
         )
-        graph_view.removeItem(self.g_filler)
+        self.g_filler.setBrush(None)
         self.g_filler = None
 
 
