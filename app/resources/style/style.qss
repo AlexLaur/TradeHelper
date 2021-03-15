@@ -153,6 +153,22 @@ QTreeWidget::item {
   qproperty-iconSize: 32px;
 }
 
+/* Ticker Dialog */
+
+QTreeWidget#trw_all_tickers::indicator:unchecked{
+  image: url(:/svg/star-outline.svg);
+  width: 30px;
+  height: 30px;
+}
+
+QTreeWidget#trw_all_tickers::indicator:checked{
+  image: url(:/svg/star.svg);
+  width: 30px;
+  height: 30px;
+}
+
+/* Dockwidgets */
+
 QDockWidget {
      titlebar-close-icon: url(:/svg/times.svg);
      titlebar-normal-icon: url(:/svg/window.svg);

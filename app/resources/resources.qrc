@@ -16,6 +16,12 @@
     <file>svg/oval.svg</file>
     <file>svg/brush.svg</file>
     <file>svg/times.svg</file>
+    <file>svg/star.svg</file>
+    <file>svg/star-outline.svg</file>
+    <file>svg/keyboard-arrow-left.svg</file>
+    <file>svg/keyboard-arrow-right.svg</file>
+    <file>svg/business.svg</file>
+
 
     <file>style/style.qss</file>
     <file>toolbar/toolbar.json</file>

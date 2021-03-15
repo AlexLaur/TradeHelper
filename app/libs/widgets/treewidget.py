@@ -5,15 +5,21 @@ class TreeWidget(QtWidgets.QTreeWidget):
     def __init__(self, parent=None):
         super(TreeWidget, self).__init__(parent=parent)
 
-    def get_all_items(self, item: object) -> list:
+    def get_all_items(
+        self, item: object, include_invisible: bool = True
+    ) -> list:
         """Get all items of the treewidget
 
         :param item: The first item (should be the invisibleRootItem)
         :type item: QTreeWidgetItem
+        :param include_invisible: Include the invisibleRootItem in the result
+        :type include_invisible: bool
         :return: The list of all items
         :rtype: list
         """
-        result = [item]
+        result = []
+        if include_invisible:
+            result = [item]
         for index in range(item.childCount()):
             child = item.child(index)
             result.extend(self.get_all_items(child))
@@ -44,3 +50,13 @@ class TreeWidget(QtWidgets.QTreeWidget):
 class TickersTreeWidget(TreeWidget):
     def __init__(self, parent=None):
         super(TickersTreeWidget, self).__init__(parent=parent)
+
+    # def set_header(self):
+    #     headerView = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
+    #     self.setHeader(headerView)
+    #     headerView.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+    #     headerView.setSectionsClickable(True)
+
+    #     # Favorite column
+    #     # self.header().resizeSection(2, 20)
+    #     # self.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)

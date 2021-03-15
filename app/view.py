@@ -12,6 +12,7 @@ from libs.tickers_dialog import TickersDialogWindow
 from libs.widgets.busywidget import BusyIndicator
 from libs.thread_pool import ThreadPool
 from libs.graph.candlestick import CandlestickItem
+from libs.io.favorite_settings import FavoriteManager
 
 from ui import main_window
 
@@ -26,24 +27,39 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super(MainWindow, self).__init__(parent=parent)
 
         self.setupUi(self)
+        self.setWindowState(QtCore.Qt.WindowMaximized)
 
         # Constants
         self.tickers_dialog = None
         self.tool_bar.init_toolbar()
 
         # Load all components
+        self._init_app_home()
         self.tickers_dialog = TickersDialogWindow(parent=self, tickers=data)
         self.busy_indicator = BusyIndicator(parent=self)
         self.thread_pool = ThreadPool()
         self.signals = EventHandler()
+        self.favorite_manager = FavoriteManager(parent=self)
 
         # Signals
         self.lie_ticker.mousePressEvent = self.tickers_dialog.show
         self.tickers_dialog.signal.sig_ticker_choosen.connect(
             self._on_ticker_selected
         )
-        self.signals.sig_ticker_infos_fetched.connect(
+        self.tickers_dialog.signal.sig_ticker_added_favorite.connect(
+            self.favorite_manager._on_add_ticker_favorite
+        )
+        self.tickers_dialog.signal.sig_ticker_removed_favorite.connect(
+            self.favorite_manager._on_remove_ticker_favorite
+        )
+        self.wgt_welcome.signal.sig_ticker_choosen.connect(
+            self._on_ticker_selected
+        )
+        self.signals.sig_ticker_data_fetched.connect(
             self._on_process_ticker_data
+        )
+        self.signals.sig_ticker_infos_fetched.connect(
+            self.wgt_company._on_ticker_infos
         )
         self.thread_pool.signals.sig_thread_pre.connect(
             self.busy_indicator.show
@@ -60,12 +76,36 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tool_bar.signals.sig_action_triggered.connect(
             self._on_action_triggered
         )
+        self.favorite_manager.signals.sig_favorite_loaded.connect(
+            self.wgt_welcome._on_favorite_loaded
+        )
+        self.favorite_manager.signals.sig_favorite_loaded.connect(
+            self.tickers_dialog._on_favorite_loaded
+        )
+
+        self.pub_go_welcome.clicked.connect(self.stw_main.slide_in_prev)
+        self.pub_go_graph.clicked.connect(self.stw_main.slide_in_next)
+
+        # Action which needs to be loaded after all signals
+        self.favorite_manager.load_favorite()
+
+    def _init_app_home(self):
+        """Init the APP_HOME of the application"""
+        base_path = os.path.expanduser("~")
+        app_home = os.path.join(base_path, ".trade_helper")
+        if not os.path.exists(app_home):
+            try:
+                os.makedirs(app_home)
+            except Exception as error:
+                print(error)
+        os.environ["APP_HOME"] = app_home
 
     def _retrieve_data(self):
         """Retrieve data from the API"""
         ticker = yf.Ticker(self.lie_ticker.text())
+        self.signals.sig_ticker_infos_fetched.emit(ticker.info)
         data = ticker.history(period="1y", interval="1d", start="2018-01-01")
-        self.signals.sig_ticker_infos_fetched.emit(data)
+        self.signals.sig_ticker_data_fetched.emit(data)
 
     @QtCore.Slot(object)
     def _on_process_ticker_data(self, data):
@@ -118,3 +158,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def moveEvent(self, event):
         if self.tickers_dialog:
             ...
+
+    def closeEvent(self, event):
+        self.favorite_manager.save_favorite()

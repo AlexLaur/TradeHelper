@@ -1,5 +1,7 @@
+import qtawesome as qta
 from PySide2 import QtCore, QtGui, QtWidgets
 
+import resources_rc
 from libs.events_handler import EventHandler
 
 

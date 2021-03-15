@@ -3,45 +3,21 @@
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (
-    QCoreApplication,
-    QDate,
-    QDateTime,
-    QMetaObject,
-    QObject,
-    QPoint,
-    QRect,
-    QSize,
-    QTime,
-    QUrl,
-    Qt,
-)
-from PySide2.QtGui import (
-    QBrush,
-    QColor,
-    QConicalGradient,
-    QCursor,
-    QFont,
-    QFontDatabase,
-    QIcon,
-    QKeySequence,
-    QLinearGradient,
-    QPalette,
-    QPainter,
-    QPixmap,
-    QRadialGradient,
-)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from libs.graph.graphwidget import GraphWidget
 from libs.indicators_widget import IndicatorsWidget
 from libs.widgets.toolbar import ToolBar
 from libs.widgets.stackedwidget import StackedWidget
+from libs.welcome_widget import WelcomeWidget
+from libs.company_widget import CompanyWidget
 
 import resources_rc
 
@@ -57,32 +33,58 @@ class Ui_MainWindow(object):
         )
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout = QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.pub_go_welcome = QPushButton(self.centralwidget)
+        self.pub_go_welcome.setObjectName(u"pub_go_welcome")
+        self.pub_go_welcome.setMinimumSize(QSize(25, 25))
+        self.pub_go_welcome.setMaximumSize(QSize(25, 25))
+        self.pub_go_welcome.setCursor(QCursor(Qt.PointingHandCursor))
+        icon = QIcon()
+        icon.addFile(
+            u":/svg/keyboard-arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off
+        )
+        self.pub_go_welcome.setIcon(icon)
+        self.pub_go_welcome.setIconSize(QSize(28, 28))
+        self.pub_go_welcome.setFlat(True)
+
+        self.horizontalLayout.addWidget(self.pub_go_welcome)
+
         self.lie_ticker = QLineEdit(self.centralwidget)
         self.lie_ticker.setObjectName(u"lie_ticker")
         self.lie_ticker.setCursor(QCursor(Qt.PointingHandCursor))
         self.lie_ticker.setReadOnly(False)
 
-        self.verticalLayout_2.addWidget(self.lie_ticker)
+        self.horizontalLayout.addWidget(self.lie_ticker)
+
+        self.pub_go_graph = QPushButton(self.centralwidget)
+        self.pub_go_graph.setObjectName(u"pub_go_graph")
+        self.pub_go_graph.setMinimumSize(QSize(25, 25))
+        self.pub_go_graph.setMaximumSize(QSize(25, 25))
+        icon1 = QIcon()
+        icon1.addFile(
+            u":/svg/keyboard-arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off
+        )
+        self.pub_go_graph.setIcon(icon1)
+        self.pub_go_graph.setIconSize(QSize(28, 28))
+        self.pub_go_graph.setFlat(True)
+
+        self.horizontalLayout.addWidget(self.pub_go_graph)
+
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.stw_main = StackedWidget(self.centralwidget)
         self.stw_main.setObjectName(u"stw_main")
-        self.wgt_welcome = QWidget()
+        self.wgt_welcome = WelcomeWidget()
         self.wgt_welcome.setObjectName(u"wgt_welcome")
-        self.verticalLayout = QVBoxLayout(self.wgt_welcome)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label = QLabel(self.wgt_welcome)
-        self.label.setObjectName(u"label")
-
-        self.verticalLayout.addWidget(self.label)
-
         self.stw_main.addWidget(self.wgt_welcome)
         self.wgt_graph = GraphWidget()
         self.wgt_graph.setObjectName(u"wgt_graph")
         self.stw_main.addWidget(self.wgt_graph)
 
-        self.verticalLayout_2.addWidget(self.stw_main)
+        self.verticalLayout.addWidget(self.stw_main)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -96,14 +98,24 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.dock_wgt_company = QDockWidget(MainWindow)
         self.dock_wgt_company.setObjectName(u"dock_wgt_company")
-        self.wgt_company = QWidget()
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.dock_wgt_company.sizePolicy().hasHeightForWidth()
+        )
+        self.dock_wgt_company.setSizePolicy(sizePolicy)
+        font = QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.dock_wgt_company.setFont(font)
+        self.wgt_company = CompanyWidget()
         self.wgt_company.setObjectName(u"wgt_company")
         self.dock_wgt_company.setWidget(self.wgt_company)
-        MainWindow.addDockWidget(
-            Qt.BottomDockWidgetArea, self.dock_wgt_company
-        )
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dock_wgt_company)
         self.dock_wgt_indicators = QDockWidget(MainWindow)
         self.dock_wgt_indicators.setObjectName(u"dock_wgt_indicators")
+        self.dock_wgt_indicators.setFont(font)
         self.wgt_indicators = IndicatorsWidget()
         self.wgt_indicators.setObjectName(u"wgt_indicators")
         self.dock_wgt_indicators.setWidget(self.wgt_indicators)
@@ -127,16 +139,15 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"MainWindow", None)
+            QCoreApplication.translate("MainWindow", u"Trade Helper", None)
         )
         self.action_reload_indicators.setText(
             QCoreApplication.translate(
                 "MainWindow", u"Reload Indicators", None
             )
         )
-        self.label.setText(
-            QCoreApplication.translate("MainWindow", u"Select a Ticker.", None)
-        )
+        self.pub_go_welcome.setText("")
+        self.pub_go_graph.setText("")
         self.menuOptions.setTitle(
             QCoreApplication.translate("MainWindow", u"Options", None)
         )

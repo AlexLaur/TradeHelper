@@ -1,10 +1,13 @@
 import datetime
+import urllib.request
 from statistics import mean
 
 from sklearn import preprocessing
 import numpy as np
 import pandas as pd
 from scipy import signal
+
+from PySide2.QtGui import QPixmap
 
 
 def normalize_data(data):
@@ -192,3 +195,28 @@ def convert_date_to_timestamp(data):
         timestamp = datetime.datetime.timestamp(_date)
         final.append(timestamp)
     return final
+
+
+def convert_timestamp_to_date(timestamp: int) -> object:
+    """Convert a timestamp to a datetime object
+
+    :param timestamp: The timestamp to convert
+    :type timestamp: int
+    :return: The datetime resulted from the conversion
+    :rtype: object
+    """
+    return datetime.datetime.fromtimestamp(timestamp)
+
+
+def get_image_from_url(url: str) -> QPixmap:
+    """Get an image on the web and return a Qpixmap
+
+    :param url: The url to request
+    :type url: str
+    :return: The image
+    :rtype: QtGui.QPixmap
+    """
+    data = urllib.request.urlopen(url).read()
+    image = QPixmap()
+    image.loadFromData(data)
+    return image

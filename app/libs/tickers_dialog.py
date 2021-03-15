@@ -1,13 +1,14 @@
 from PySide2 import QtGui, QtCore, QtWidgets
 
 from libs.events_handler import EventHandler
+from libs.widgets.treewidgetitem import TreeWidgetItem
 from ui import tickers_dialog
 
 
 class TickersDialogWindow(
     QtWidgets.QDialog, tickers_dialog.Ui_TickersDialogWindow
 ):
-    def __init__(self, parent=None, tickers={}):
+    def __init__(self, parent=None, tickers=[]):
         super(TickersDialogWindow, self).__init__(parent=parent)
 
         self.setWindowFlags(
@@ -25,12 +26,13 @@ class TickersDialogWindow(
         self.build_ticker_tree(data=self.tickers)
 
         # Signals
-        self.trw_all_tickers.itemClicked.connect(self.choose_ticker)
+        self.trw_all_tickers.itemDoubleClicked.connect(self.choose_ticker)
+        self.trw_all_tickers.itemChanged.connect(self.favorite_item)
+
         self.lie_ticker_search.textChanged.connect(
             self.trw_all_tickers.search_items
         )
         self.pub_close.clicked.connect(self.close)
-        self.trw_all_tickers.customContextMenuRequested.connect(self._set_menu)
 
     def build_ticker_tree(self, data: list):
         """Build the data inside the treewidget
@@ -39,9 +41,30 @@ class TickersDialogWindow(
         :type data: list
         """
         for ticker, company in data.items():
-            item = QtWidgets.QTreeWidgetItem(
-                self.trw_all_tickers, [ticker, company]
+            item = TreeWidgetItem(
+                self.trw_all_tickers,
+                [ticker, company],
+                checkable=True,
+                ticker=ticker,
+                name=company,
             )
+
+    def update_ticker_favorite_state(self, favorite):
+        """Update the state of the favorite checkbox
+
+        :param favorite: The list of favorite
+        :type favorite: list
+        """
+        self.signal.blockSignals(True)
+        for item in self.trw_all_tickers.get_all_items(
+            item=self.trw_all_tickers.invisibleRootItem(),
+            include_invisible=False,
+        ):
+            if {"ticker": item.ticker, "name": item.name} in favorite:
+                item.setCheckState(0, QtCore.Qt.Checked)
+            else:
+                item.setCheckState(0, QtCore.Qt.Unchecked)
+        self.signal.blockSignals(False)
 
     def choose_ticker(self, item: QtWidgets.QTreeWidgetItem, column: int):
         """Click on an item inside the treewidget
@@ -55,6 +78,20 @@ class TickersDialogWindow(
         self.signal.sig_ticker_choosen.emit(ticker_name)
         self.close()
 
+    def favorite_item(self, item: QtWidgets.QTreeWidgetItem, column: int):
+        """Promote or demote an item as favorite
+
+        :param item: The item
+        :type item: QtWidgets.QTreeWidgetItem
+        :param column: The column clicked
+        :type column: int
+        """
+        ticker = {"ticker": item.ticker, "name": item.name}
+        if item.is_checked():
+            self.signal.sig_ticker_added_favorite.emit(ticker)
+        else:
+            self.signal.sig_ticker_removed_favorite.emit(ticker)
+
     def move_to(self, pos=None):
         if not pos:
             self.move(self.parent().rect().center() - self.rect().center())
@@ -66,12 +103,11 @@ class TickersDialogWindow(
         self.lie_ticker_search.setFocus()
         super(TickersDialogWindow, self).show()
 
-    def _set_menu(self, event):
-        print("menu")
-        menu = QtWidgets.QMenu(self)
+    @QtCore.Slot(list)
+    def _on_favorite_loaded(self, favorite):
+        """Called when the favorite tickers are loaded
 
-        menu.addAction("Set a quick access")
-
-        point = QtCore.QPoint(QtGui.QCursor.pos())
-
-        menu.exec_(event.pos())
+        :param favorite: List of favorite
+        :type favorite: list
+        """
+        self.update_ticker_favorite_state(favorite=favorite)
