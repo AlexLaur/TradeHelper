@@ -31,6 +31,7 @@ class Runnable(QtCore.QRunnable):
         try:
             self.parent.signals.sig_thread_pre.emit()
             result = self.fn(*self.args, **self.kwargs)
+            self.parent.signals.sig_thread_result.emit(result)
         except Exception as e:
             self.parent.signals.sig_thread_failed.emit()
         finally:

@@ -10,3 +10,13 @@ class TreeWidgetItem(QtWidgets.QTreeWidgetItem):
         checkable = kwargs.get("checkable", False)
         if checkable:
             self.setCheckState(0, QtCore.Qt.Unchecked)
+
+    def is_checked(self) -> bool:
+        """Return True if the item is checked, False instead
+
+        :return: The status of the checkstate
+        :rtype: bool
+        """
+        if self.checkState(0) == QtCore.Qt.Checked:
+            return True
+        return False

@@ -1,11 +1,7 @@
-import os
-import json
 from PySide2 import QtCore, QtGui, QtWidgets
 
 from libs.events_handler import EventHandler
 from ui import welcome_widget, welcome_ticker_widget
-
-SCRIPT_PATH = os.path.dirname(__file__)
 
 
 class WelcomeWidget(QtWidgets.QWidget, welcome_widget.Ui_WelcomeWidget):
@@ -17,22 +13,13 @@ class WelcomeWidget(QtWidgets.QWidget, welcome_widget.Ui_WelcomeWidget):
         self.signal = EventHandler()
         self.grid = QtWidgets.QGridLayout(self.wgt_welcome_content)
 
-        with open(
-            os.path.join(os.path.dirname(SCRIPT_PATH), "data", "welcome.json"),
-            "r",
-        ) as f:
-            data = json.load(f)
-
-        self.build_welcome_page(data)
-        # self.scr_area.setWidgetResizable(False)
-
     def build_welcome_page(self, data):
         col = 0
         max_col = 2
         row = 0
         for item in data:
             btn = ButtonRapidAccess(item=item)
-            btn.clicked.connect(self.choose_ticker)
+            btn.clicked.connect(self._on_ticker_choosen)
             self.grid.addWidget(btn, row, col)
 
             if col == max_col:
@@ -41,11 +28,21 @@ class WelcomeWidget(QtWidgets.QWidget, welcome_widget.Ui_WelcomeWidget):
             else:
                 col += 1
 
-    def choose_ticker(self):
-        """Click on a button which represent a ticker"""
+    @QtCore.Slot()
+    def _on_ticker_choosen(self):
+        """Called when a ticker is choosen (click on it (button))"""
         sender = self.sender()
         ticker_name = sender.ticker
         self.signal.sig_ticker_choosen.emit(ticker_name)
+
+    @QtCore.Slot(list)
+    def _on_favorite_loaded(self, data):
+        """Called when favorite have been loaded and are ready to be displayed
+
+        :param data: The favorite data
+        :type data: list
+        """
+        self.build_welcome_page(data=data)
 
 
 class ButtonRapidAccess(

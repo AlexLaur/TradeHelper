@@ -14,6 +14,8 @@ from PySide2.QtWidgets import *
 
 from libs.widgets.pushbutton import PushButton
 
+import resources_rc
+
 
 class Ui_CompanyWidget(object):
     def setupUi(self, CompanyWidget):
@@ -33,6 +35,9 @@ class Ui_CompanyWidget(object):
         self.pub_company_logo.setMinimumSize(QSize(100, 100))
         self.pub_company_logo.setMaximumSize(QSize(100, 100))
         self.pub_company_logo.setCursor(QCursor(Qt.PointingHandCursor))
+        icon = QIcon()
+        icon.addFile(u":/svg/business.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.pub_company_logo.setIcon(icon)
         self.pub_company_logo.setIconSize(QSize(100, 100))
         self.pub_company_logo.setFlat(True)
 

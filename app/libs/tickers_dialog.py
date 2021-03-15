@@ -1,7 +1,6 @@
 from PySide2 import QtGui, QtCore, QtWidgets
 
 from libs.events_handler import EventHandler
-from libs.widgets.pushbutton import FavoriteButton
 from libs.widgets.treewidgetitem import TreeWidgetItem
 from ui import tickers_dialog
 
@@ -9,7 +8,7 @@ from ui import tickers_dialog
 class TickersDialogWindow(
     QtWidgets.QDialog, tickers_dialog.Ui_TickersDialogWindow
 ):
-    def __init__(self, parent=None, tickers={}):
+    def __init__(self, parent=None, tickers=[]):
         super(TickersDialogWindow, self).__init__(parent=parent)
 
         self.setWindowFlags(
@@ -43,10 +42,29 @@ class TickersDialogWindow(
         """
         for ticker, company in data.items():
             item = TreeWidgetItem(
-                self.trw_all_tickers, [ticker, company], checkable=True
+                self.trw_all_tickers,
+                [ticker, company],
+                checkable=True,
+                ticker=ticker,
+                name=company,
             )
-            # btn = FavoriteButton()
-            # self.trw_all_tickers.setItemWidget(item, 2, btn)
+
+    def update_ticker_favorite_state(self, favorite):
+        """Update the state of the favorite checkbox
+
+        :param favorite: The list of favorite
+        :type favorite: list
+        """
+        self.signal.blockSignals(True)
+        for item in self.trw_all_tickers.get_all_items(
+            item=self.trw_all_tickers.invisibleRootItem(),
+            include_invisible=False,
+        ):
+            if {"ticker": item.ticker, "name": item.name} in favorite:
+                item.setCheckState(0, QtCore.Qt.Checked)
+            else:
+                item.setCheckState(0, QtCore.Qt.Unchecked)
+        self.signal.blockSignals(False)
 
     def choose_ticker(self, item: QtWidgets.QTreeWidgetItem, column: int):
         """Click on an item inside the treewidget
@@ -61,7 +79,18 @@ class TickersDialogWindow(
         self.close()
 
     def favorite_item(self, item: QtWidgets.QTreeWidgetItem, column: int):
-        print(item)
+        """Promote or demote an item as favorite
+
+        :param item: The item
+        :type item: QtWidgets.QTreeWidgetItem
+        :param column: The column clicked
+        :type column: int
+        """
+        ticker = {"ticker": item.ticker, "name": item.name}
+        if item.is_checked():
+            self.signal.sig_ticker_added_favorite.emit(ticker)
+        else:
+            self.signal.sig_ticker_removed_favorite.emit(ticker)
 
     def move_to(self, pos=None):
         if not pos:
@@ -73,3 +102,12 @@ class TickersDialogWindow(
         self.lie_ticker_search.clear()
         self.lie_ticker_search.setFocus()
         super(TickersDialogWindow, self).show()
+
+    @QtCore.Slot(list)
+    def _on_favorite_loaded(self, favorite):
+        """Called when the favorite tickers are loaded
+
+        :param favorite: List of favorite
+        :type favorite: list
+        """
+        self.update_ticker_favorite_state(favorite=favorite)

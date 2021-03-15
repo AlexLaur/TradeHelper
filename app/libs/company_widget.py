@@ -1,5 +1,6 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 
+from libs.thread_pool import ThreadPool
 from utils import utils
 from ui.company_widget import Ui_CompanyWidget
 
@@ -12,9 +13,13 @@ class CompanyWidget(QtWidgets.QWidget, Ui_CompanyWidget):
 
         # Constants
         self.browser = QtGui.QDesktopServices()
+        self.thread_pool = ThreadPool()
 
         # Signals
         self.pub_company_logo.clicked.connect(self.open_company_website)
+        self.thread_pool.signals.sig_thread_result.connect(
+            self._on_thumbnail_available
+        )
 
     @QtCore.Slot(dict)
     def _on_ticker_infos(self, infos):
@@ -23,14 +28,13 @@ class CompanyWidget(QtWidgets.QWidget, Ui_CompanyWidget):
         :param infos: Informations about the ticker
         :type infos: dict
         """
-        # TODO need to pass this in a thread
-
         short_name = infos.get("shortName", None)
         market_price = infos.get("regularMarketPrice", None)
         industry = infos.get("industry", None)
         currency = infos.get("currency", None)
         company_logo_url = infos.get("logo_url", None)
         website = infos.get("website", None)
+        summary = infos.get("longBusinessSummary", None)
 
         open_value = infos.get("regularMarketOpen", None)
         previous_close = infos.get("regularMarketPreviousClose", None)
@@ -47,6 +51,7 @@ class CompanyWidget(QtWidgets.QWidget, Ui_CompanyWidget):
         self.lab_company_industry.setText(industry)
         self.lab_currency.setText(currency)
         self.pub_company_logo.url = website
+        self.pub_company_logo.setToolTip(str(summary))
 
         self.lab_open_value.setText(str(open_value))
         self.lab_previous_close_value.setText(str(previous_close))
@@ -70,11 +75,30 @@ class CompanyWidget(QtWidgets.QWidget, Ui_CompanyWidget):
             self.lab_last_dividend_date_value.setText(str(last_dividend_date))
 
         if company_logo_url:
-            image = utils.get_image_from_url(url=company_logo_url)
-
-            self.pub_company_logo.setIcon(QtGui.QIcon(image))
+            self.thread_pool.execution(
+                function=utils.get_image_from_url, url=company_logo_url
+            )
+        else:
+            self.set_company_thumbnail(thumbnail=":/svg/business.svg")
 
     def open_company_website(self):
         """Open the company website in the browser"""
         if getattr(self.pub_company_logo, "url", None):
             self.browser.openUrl(self.pub_company_logo.url)
+
+    def set_company_thumbnail(self, thumbnail):
+        """Set the company thumbnail
+
+        :param thumbnail: The thubnail to add
+        :type thumbnail: QPixmap or Image from resources_rc
+        """
+        self.pub_company_logo.setIcon(QtGui.QIcon(thumbnail))
+
+    @QtCore.Slot(object)
+    def _on_thumbnail_available(self, image):
+        """Called when a thumbnail is available for the company
+
+        :param image: The thumbnail
+        :type image: QPixmap
+        """
+        self.set_company_thumbnail(thumbnail=image)

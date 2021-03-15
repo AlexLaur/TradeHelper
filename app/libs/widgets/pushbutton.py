@@ -40,38 +40,3 @@ class IndicatorPushButton(PushButton):
             self.setChecked(True)
             self.setText("Activated")
             self.signals.sig_indicator_enable.emit(self.indicator, True)
-
-
-class FavoriteButton(PushButton):
-    def __init__(self, parent=None, *args, **kwargs):
-        super(FavoriteButton, self).__init__(parent)
-
-        self.setCheckable(True)
-        self.setFlat(True)
-
-        icon_otpions = [{"scale_factor": 1.4, "color": "white"}]
-        self.icon_star = qta.icon("mdi.star", options=icon_otpions)
-        self.icon_star_outline = qta.icon(
-            "mdi.star-outline", options=icon_otpions
-        )
-
-        if kwargs.get("checked", False):
-            self.setChecked(True)
-            self.setIcon(self.icon_star)
-        else:
-            self.setChecked(False)
-            self.setIcon(self.icon_star_outline)
-
-        self.setFixedSize(QtCore.QSize(20, 20))
-
-        # Signals
-        self.clicked.connect(self.toggle_button)
-
-    def toggle_button(self):
-        self.toggle()
-        if self.isChecked():
-            self.setChecked(False)
-            self.setIcon(self.icon_star_outline)
-        else:
-            self.setChecked(True)
-            self.setIcon(self.icon_star)

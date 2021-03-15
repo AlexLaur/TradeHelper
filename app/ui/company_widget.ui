@@ -40,6 +40,10 @@
            <property name="text">
             <string/>
            </property>
+           <property name="icon">
+            <iconset resource="../resources/resources.qrc">
+             <normaloff>:/svg/business.svg</normaloff>:/svg/business.svg</iconset>
+           </property>
            <property name="iconSize">
             <size>
              <width>100</width>
@@ -394,6 +398,8 @@
    <header>libs.widgets.pushbutton</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
