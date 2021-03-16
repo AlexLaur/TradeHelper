@@ -20,8 +20,8 @@ class ZigZag(Indicator):
 
         zigzag = zig_zag(values=values["Close"].values)
         plot = quotation_plot.plot(
-            zigzag,
-            values["Close"].values[zigzag],
+            x=[x.timestamp() for x in values.index[zigzag]],
+            y=values["Close"].values[zigzag],
             pen=pg.mkPen((33, 150, 243), width=2.5),
         )
         self._plots.append(plot)

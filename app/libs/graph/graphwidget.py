@@ -37,7 +37,7 @@ class GraphView(pg.GraphicsLayoutWidget):
         if clear:
             self.g_quotation.clear()
         ls_data = []
-        # dates = [x.timestamp() for x in data.index]
+        dates = [x.timestamp() for x in data.index]
         for index, (_time, _open, _close, _high, _low) in enumerate(
             zip(
                 data.index,
@@ -47,11 +47,11 @@ class GraphView(pg.GraphicsLayoutWidget):
                 data["Low"].values,
             )
         ):
-            ls_data.append((index, _open, _close, _high, _low))
+            ls_data.append((dates[index], _open, _close, _high, _low))
         item = CandlestickItem(ls_data)
         self.g_quotation.addItem(item)
         self.g_quotation.enableAutoRange()
-        # self.set_time_x_axis(widget=self.g_quotation)
+        self.set_time_x_axis(widget=self.g_quotation)
         self.set_cross_hair()
 
     def set_cross_hair(self):
