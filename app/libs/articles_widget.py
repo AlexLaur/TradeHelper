@@ -8,9 +8,9 @@ from libs.articles.get_articles import Articles
 class ArticlesWidget(QWidget):
     def __init__(self, parent=None, ticker=None):
         super(ArticlesWidget, self).__init__(parent)
+        self.get_articles(ticker)
 
-        print(ticker)
-
+    def get_articles(self, ticker):
         if ticker:
             _articles = Articles(ticker=ticker)
             articles = _articles.articles
