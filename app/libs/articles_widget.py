@@ -2,23 +2,24 @@ import webbrowser
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+from libs.thread_pool import ThreadPool
 from libs.articles.get_articles import Articles
 
 
 class ArticlesWidget(QWidget):
     def __init__(self, parent=None, ticker=None):
         super(ArticlesWidget, self).__init__(parent)
+
+        self.thread_pool = ThreadPool()
         self.get_articles(ticker)
 
     def get_articles(self, ticker):
         if ticker:
-            _articles = Articles(ticker=ticker)
-            articles = _articles.articles
+            articles = self._get_articles_dict(ticker=ticker).articles
 
         else:
             # Remplacer par 2 3 ticker Random
-            _articles = Articles(ticker='GLE')
-            articles = _articles.articles
+            articles = self._get_articles_dict(ticker="GLE").articles
 
         scroll = QScrollArea(self)
         widget = QWidget()
@@ -44,6 +45,8 @@ class ArticlesWidget(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(scroll)
 
+    def _get_articles_dict(self, ticker):
+        return Articles(ticker=ticker)
 
 class ArticlesWidgetItem(QWidget):
     def __init__(self, parent=None, title=None, date=None, description=None, link=None):
