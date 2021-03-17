@@ -27,6 +27,7 @@ class FavoritesWidget(QtWidgets.QWidget, Ui_FavoritesWidget):
         """
         for favorite in favorites:
             self.trw_favorites.add_favorite(ticker=favorite)
+        self.trw_favorites.sortByColumn(0, QtCore.Qt.AscendingOrder)
 
     @QtCore.Slot(dict)
     def _on_favorite_added(self, ticker):

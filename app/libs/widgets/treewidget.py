@@ -90,6 +90,7 @@ class FavoritesTreeWidget(TreeWidget):
         :type ticker: dict
         """
         self._add_favorite(ticker=ticker)
+        self.sortByColumn(0, QtCore.Qt.AscendingOrder)
 
     def _add_favorite(self, ticker: dict):
         """Private method to add an item inside the treewidget

@@ -15,9 +15,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLineEdit" name="lie_search_favorite">
+     <property name="placeholderText">
+      <string>Favorite name...</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="FavoritesTreeWidget" name="trw_favorites">
      <property name="cursor" stdset="0">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
      <attribute name="headerVisible">
       <bool>false</bool>

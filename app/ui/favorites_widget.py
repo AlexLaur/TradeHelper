@@ -22,6 +22,11 @@ class Ui_FavoritesWidget(object):
         FavoritesWidget.resize(400, 300)
         self.verticalLayout = QVBoxLayout(FavoritesWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.lie_search_favorite = QLineEdit(FavoritesWidget)
+        self.lie_search_favorite.setObjectName(u"lie_search_favorite")
+
+        self.verticalLayout.addWidget(self.lie_search_favorite)
+
         self.trw_favorites = FavoritesTreeWidget(FavoritesWidget)
         __qtreewidgetitem = QTreeWidgetItem()
         __qtreewidgetitem.setText(0, u"1")
@@ -30,6 +35,7 @@ class Ui_FavoritesWidget(object):
         self.trw_favorites.viewport().setProperty(
             "cursor", QCursor(Qt.PointingHandCursor)
         )
+        self.trw_favorites.setSortingEnabled(True)
         self.trw_favorites.header().setVisible(False)
 
         self.verticalLayout.addWidget(self.trw_favorites)
@@ -44,6 +50,11 @@ class Ui_FavoritesWidget(object):
         FavoritesWidget.setWindowTitle(
             QCoreApplication.translate(
                 "FavoritesWidget", u"FavoritesWidget", None
+            )
+        )
+        self.lie_search_favorite.setPlaceholderText(
+            QCoreApplication.translate(
+                "FavoritesWidget", u"Favorite name...", None
             )
         )
 
