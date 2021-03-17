@@ -16,11 +16,11 @@
 
 import datetime
 from pprint import pprint
-from app.utils import utils as utl
-from app.libs.yahoo_fin import stock_info as sf
+from utils import utils as utl
+from libs.yahoo_fin import stock_info as sf
 from .analyse import AnalyseData
 
-class AnalyseFondamental:
+class AnalyseFondamental(object):
     def __init__(self, ticker):
 
         self.per_datas = sf.get_quote_table(ticker)
@@ -93,16 +93,16 @@ class AnalyseFondamental:
                       + self.actifs_total[self.year_before]) / 2
         avg_assets_py = (self.actifs_total[self.year_before]
                          + self.actifs_total[self.resultat_datas.keys()[2]]) / 2
-        RoA = net_income / avg_assets
-        RoA_py = net_income_py / avg_assets_py
-        RoA_score = 1 if RoA > RoA_py else 0
+        roa = net_income / avg_assets
+        roa_py = net_income_py / avg_assets_py
+        roa_score = 1 if roa > roa_py else 0
 
         # Score #5 - Accruals
         total_assets = self.actifs_total[self.year_atual]
-        accruals = op_cf / total_assets - RoA
+        accruals = op_cf / total_assets - roa
         ac_score = 1 if accruals > 0 else 0
 
-        profitability_score = ni_score + ni_score_2 + op_cf_score + RoA_score + ac_score
+        profitability_score = ni_score + ni_score_2 + op_cf_score + roa_score + ac_score
         return profitability_score
 
 

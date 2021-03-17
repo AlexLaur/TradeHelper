@@ -1,12 +1,10 @@
 import webbrowser
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+from PySide2 import QtWidgets, QtGui
 from libs.thread_pool import ThreadPool
 from libs.articles.get_articles import Articles
 
 
-class ArticlesWidget(QWidget):
+class ArticlesWidget(QtWidgets.QWidget):
     def __init__(self, parent=None, ticker=None):
         super(ArticlesWidget, self).__init__(parent)
 
@@ -21,9 +19,9 @@ class ArticlesWidget(QWidget):
             # Remplacer par 2 3 ticker Random
             articles = self._get_articles_dict(ticker="GLE").articles
 
-        scroll = QScrollArea(self)
-        widget = QWidget()
-        container = QVBoxLayout(widget)
+        scroll = QtWidgets.QScrollArea(self)
+        widget = QtWidgets.QWidget()
+        container = QtWidgets.QVBoxLayout(widget)
 
         for i in articles:
             title = i['title']
@@ -42,26 +40,26 @@ class ArticlesWidget(QWidget):
         scroll.setWidget(widget)
         scroll.setWidgetResizable(True)
 
-        layout = QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(scroll)
 
     def _get_articles_dict(self, ticker):
         return Articles(ticker=ticker)
 
-class ArticlesWidgetItem(QWidget):
+class ArticlesWidgetItem(QtWidgets.QWidget):
     def __init__(self, parent=None, title=None, date=None, description=None, link=None):
         super(ArticlesWidgetItem, self).__init__(parent)
 
-        self.layout = QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setObjectName(u"layout")
         self.title = LabelTitle(title, link)
         self.title.setObjectName(u"title")
         self.layout.addWidget(self.title)
 
-        self.date = QLabel(self)
+        self.date = QtWidgets.QLabel(self)
         self.date.setObjectName(u"date")
         self.date.setText(date)
-        self.date.setFont(QFont('Times', 10))
+        self.date.setFont(QtGui.QFont('Times', 10))
         self.layout.addWidget(self.date)
 
         self.description = Description(description)
@@ -73,28 +71,28 @@ class ArticlesWidgetItem(QWidget):
         self.layout.addWidget(self.spliter)
 
 
-class QHLine(QFrame):
+class QHLine(QtWidgets.QFrame):
     def __init__(self):
         super(QHLine, self).__init__()
-        self.setFrameShape(QFrame.HLine)
-        self.setFrameShadow(QFrame.Sunken)
+        self.setFrameShape(QtWidgets.QFrame.HLine)
+        self.setFrameShadow(QtWidgets.QFrame.Sunken)
 
-class LabelTitle(QLabel):
+class LabelTitle(QtWidgets.QLabel):
     def __init__(self, text, link=None):
         super(LabelTitle, self).__init__()
         self.link = link
 
         if text:
             self.setText(text)
-            self.setFont(QFont('Times', 20))
+            self.setFont(QtGui.QFont('Times', 20))
 
     def mousePressEvent(self, event) -> None:
         webbrowser.open(self.link)
 
-class Description(QTextBrowser):
+class Description(QtWidgets.QTextBrowser):
     def __init__(self, text):
         super(Description, self).__init__()
         self.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         if text:
             self.setText(text)
-            self.setFont(QFont('Times', 10))
+            self.setFont(QtGui.QFont('Times', 10))

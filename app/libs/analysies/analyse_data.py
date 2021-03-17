@@ -1,7 +1,7 @@
 from pprint import pprint
 from utils import utils as utls
 
-class AnalyseData:
+class AnalyseData(object):
     def __init__(self, data=None):
         self.data = data['data_site']
 

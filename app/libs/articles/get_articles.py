@@ -6,7 +6,7 @@ from libs.yahoo_fin import stock_info as sf
 
 from libs import yahoo_fin
 
-class Articles():
+class Articles(object):
     def __init__(self, ticker=None):
         super(Articles, self).__init__()
 

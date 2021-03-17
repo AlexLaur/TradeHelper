@@ -1,7 +1,7 @@
 from utils import utils as utl
 from pprint import pprint
 
-class AnalyseData:
+class AnalyseData(object):
     def __init__(self, data):
         self.data = data
         self.analyse = {}
