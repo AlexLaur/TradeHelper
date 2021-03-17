@@ -68,6 +68,11 @@ class FavoritesTreeWidget(TreeWidget):
         super(FavoritesTreeWidget, self).__init__(parent=parent)
 
     def remove_favorite(self, ticker: dict):
+        """Remove a favorite from the treewidget
+
+        :param ticker: The ticker which has been deleted
+        :type ticker: dict
+        """
         _all = self.get_all_items(
             item=self.invisibleRootItem(), include_invisible=False
         )
@@ -81,9 +86,19 @@ class FavoritesTreeWidget(TreeWidget):
             break
 
     def add_favorite(self, ticker: dict):
+        """Add a favorite to the list
+
+        :param ticker: The ticker which has been added
+        :type ticker: dict
+        """
         self._add_favorite(ticker=ticker)
 
-    def _add_favorite(self, ticker):
+    def _add_favorite(self, ticker: dict):
+        """Private method to add an item inside the treewidget
+
+        :param ticker: The ticker to add
+        :type ticker: dict
+        """
         text = "{name} - {ticker}".format(
             name=ticker.get("name"), ticker=ticker.get("ticker")
         )
