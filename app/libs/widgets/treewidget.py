@@ -52,15 +52,13 @@ class TickersTreeWidget(TreeWidget):
     def __init__(self, parent=None):
         super(TickersTreeWidget, self).__init__(parent=parent)
 
-    # def set_header(self):
-    #     headerView = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
-    #     self.setHeader(headerView)
-    #     headerView.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-    #     headerView.setSectionsClickable(True)
-
-    #     # Favorite column
-    #     # self.header().resizeSection(2, 20)
-    #     # self.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+    def set_header(self):
+        """Sets a custom header to the treewidget"""
+        header = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
+        self.setHeader(header)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.resizeSection(0, 150)
+        header.setSectionsClickable(True)
 
 
 class FavoritesTreeWidget(TreeWidget):

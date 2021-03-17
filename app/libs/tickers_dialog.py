@@ -18,6 +18,9 @@ class TickersDialogWindow(
         )
         self.setupUi(self)
 
+        # Set the header of the treewidget
+        self.trw_all_tickers.set_header()
+
         # Constants
         self.tickers = tickers
         self.signal = EventHandler()
