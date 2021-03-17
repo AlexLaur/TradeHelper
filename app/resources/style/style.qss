@@ -156,16 +156,17 @@ QTreeWidget::item {
 
 /* Ticker Dialog */
 
+QTreeWidget#trw_all_tickers::indicator {
+     width: 20px;
+     height: 20px;
+ }
+
 QTreeWidget#trw_all_tickers::indicator:unchecked{
   image: url(:/svg/star-outline.svg);
-  width: 30px;
-  height: 30px;
 }
 
 QTreeWidget#trw_all_tickers::indicator:checked{
   image: url(:/svg/star.svg);
-  width: 30px;
-  height: 30px;
 }
 
 /* Dockwidgets */
