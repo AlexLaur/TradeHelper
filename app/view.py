@@ -52,6 +52,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tickers_dialog.signal.sig_ticker_removed_favorite.connect(
             self.favorites_manager._on_remove_ticker_favorite
         )
+        self.tickers_dialog.signal.sig_ticker_added_favorite.connect(
+            self.wgt_favorites._on_favorite_added
+        )
+        self.tickers_dialog.signal.sig_ticker_removed_favorite.connect(
+            self.wgt_favorites._on_favorite_removed
+        )
         self.wgt_favorites.signals.sig_favorite_clicked.connect(
             self._on_ticker_selected
         )

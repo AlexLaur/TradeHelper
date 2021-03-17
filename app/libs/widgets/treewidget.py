@@ -1,4 +1,5 @@
 from PySide2 import QtCore, QtGui, QtWidgets
+from libs.widgets.treewidgetitem import TreeWidgetItem
 
 
 class TreeWidget(QtWidgets.QTreeWidget):
@@ -65,3 +66,30 @@ class TickersTreeWidget(TreeWidget):
 class FavoritesTreeWidget(TreeWidget):
     def __init__(self, parent=None):
         super(FavoritesTreeWidget, self).__init__(parent=parent)
+
+    def remove_favorite(self, ticker: dict):
+        _all = self.get_all_items(
+            item=self.invisibleRootItem(), include_invisible=False
+        )
+        for item in _all:
+            if item.favorite.get("ticker") != ticker.get(
+                "ticker"
+            ) or item.favorite.get("name") != ticker.get("name"):
+                continue
+            index = self.indexOfTopLevelItem(item)
+            self.takeTopLevelItem(index)
+            break
+
+    def add_favorite(self, ticker: dict):
+        self._add_favorite(ticker=ticker)
+
+    def _add_favorite(self, ticker):
+        text = "{name} - {ticker}".format(
+            name=ticker.get("name"), ticker=ticker.get("ticker")
+        )
+        item = TreeWidgetItem(
+            parent=self,
+            text=[text],
+            favorite=ticker,
+            icon=QtGui.QIcon(":/svg/candle-sticks.svg"),
+        )

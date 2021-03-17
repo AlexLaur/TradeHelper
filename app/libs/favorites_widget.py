@@ -1,7 +1,6 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 
 from libs.events_handler import EventHandler
-from libs.widgets.treewidgetitem import TreeWidgetItem
 from ui.favorites_widget import Ui_FavoritesWidget
 
 
@@ -24,17 +23,27 @@ class FavoritesWidget(QtWidgets.QWidget, Ui_FavoritesWidget):
         :type favorites: list
         """
         for favorite in favorites:
-            text = "{name} - {ticker}".format(
-                name=favorite.get("name"), ticker=favorite.get("ticker")
-            )
-            item = TreeWidgetItem(
-                parent=self.trw_favorites,
-                text=[text],
-                favorite=favorite,
-                icon=QtGui.QIcon(":/svg/candle-sticks.svg"),
-            )
+            self.trw_favorites.add_favorite(ticker=favorite)
 
-    @QtCore.Slot()
+    @QtCore.Slot(dict)
+    def _on_favorite_added(self, ticker):
+        """Called when a ticker is marked as favorite
+
+        :param ticker: The ticker to add as favorite
+        :type ticker: dict
+        """
+        self.trw_favorites.add_favorite(ticker=ticker)
+
+    @QtCore.Slot(dict)
+    def _on_favorite_removed(self, ticker):
+        """Called when a ticker is removed from favorites
+
+        :param ticker: The ticker to remove from favorites
+        :type ticker: dict
+        """
+        self.trw_favorites.remove_favorite(ticker=ticker)
+
+    @QtCore.Slot(object)
     def _on_favorite_clicked(self, item):
         """Called when a favorite is clicked"""
         ticker_name = item.favorite.get("ticker")
