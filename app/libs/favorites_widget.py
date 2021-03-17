@@ -15,6 +15,9 @@ class FavoritesWidget(QtWidgets.QWidget, Ui_FavoritesWidget):
 
         # Signals
         self.trw_favorites.itemClicked.connect(self._on_favorite_clicked)
+        self.lie_search_favorite.textChanged.connect(
+            self.trw_favorites.search_items
+        )
 
     def build_favorites(self, favorites):
         """Build the treewidgets of favorites
