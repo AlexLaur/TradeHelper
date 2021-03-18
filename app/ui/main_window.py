@@ -81,6 +81,7 @@ class Ui_MainWindow(object):
         self.stw_main.addWidget(self.wgt_articles)
         self.wgt_graph = GraphWidget()
         self.wgt_graph.setObjectName(u"wgt_graph")
+        self.wgt_graph.setCursor(QCursor(Qt.CrossCursor))
         self.stw_main.addWidget(self.wgt_graph)
 
         self.verticalLayout.addWidget(self.stw_main)
@@ -127,7 +128,7 @@ class Ui_MainWindow(object):
         self.wgt_favorites.setObjectName(u"wgt_favorites")
         self.dock_wgt_favorites.setWidget(self.wgt_favorites)
         MainWindow.addDockWidget(
-            Qt.BottomDockWidgetArea, self.dock_wgt_favorites
+            Qt.RightDockWidgetArea, self.dock_wgt_favorites
         )
 
         self.menubar.addAction(self.menuOptions.menuAction())
@@ -135,7 +136,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stw_main.setCurrentIndex(0)
+        self.stw_main.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

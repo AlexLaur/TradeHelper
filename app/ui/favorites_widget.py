@@ -27,6 +27,9 @@ class Ui_FavoritesWidget(object):
         __qtreewidgetitem.setText(0, u"1")
         self.trw_favorites.setHeaderItem(__qtreewidgetitem)
         self.trw_favorites.setObjectName(u"trw_favorites")
+        self.trw_favorites.viewport().setProperty(
+            "cursor", QCursor(Qt.PointingHandCursor)
+        )
         self.trw_favorites.header().setVisible(False)
 
         self.verticalLayout.addWidget(self.trw_favorites)

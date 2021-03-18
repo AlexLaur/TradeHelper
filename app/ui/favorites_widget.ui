@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="FavoritesTreeWidget" name="trw_favorites">
+     <property name="cursor" stdset="0">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>

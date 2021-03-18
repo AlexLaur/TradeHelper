@@ -102,11 +102,15 @@
     <item>
      <widget class="StackedWidget" name="stw_main">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="wgt_welcome"/>
       <widget class="ArticlesWidget" name="wgt_articles"/>
-      <widget class="GraphWidget" name="wgt_graph"/>
+      <widget class="GraphWidget" name="wgt_graph">
+       <property name="cursor">
+        <cursorShape>CrossCursor</cursorShape>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -187,7 +191,7 @@
     <string>Favorites</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>8</number>
+    <number>2</number>
    </attribute>
    <widget class="FavoritesWidget" name="wgt_favorites"/>
   </widget>
