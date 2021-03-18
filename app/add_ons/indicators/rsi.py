@@ -28,7 +28,8 @@ class RSI(Indicator):
         self.g_rsi.setXLink("Quotation")
 
         plot = self.g_rsi.plot(
-            rsi, connect="finite", pen=pg.mkPen((142, 21, 153), width=1.5)
+            x=[x.timestamp() for x in values.index],
+            y=rsi, connect="finite", pen=pg.mkPen((142, 21, 153), width=1.5)
         )
 
         # Draw overbought and oversold
@@ -40,10 +41,14 @@ class RSI(Indicator):
             y=30,
             pen=pg.mkPen((200, 200, 200), width=1.5, style=QtCore.Qt.DashLine),
         )
+        self.set_time_x_axis(self.g_rsi)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
         graph_view.removeItem(self.g_rsi)
         self.g_rsi = None
+
+    def set_time_x_axis(self, widget):
+        widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
 
 
 def get_rsi(values, length=14):

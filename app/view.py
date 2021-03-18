@@ -61,6 +61,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.signals.sig_ticker_infos_fetched.connect(
             self.wgt_company._on_ticker_infos
         )
+        ##
+        self.signals.sig_ticker_articles_fetched.connect(
+            self.wgt_articles.get_articles
+        )
         self.thread_pool.signals.sig_thread_pre.connect(
             self.busy_indicator.show
         )

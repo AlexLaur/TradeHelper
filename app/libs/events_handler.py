@@ -7,6 +7,7 @@ class EventHandler(QtCore.QObject):
     sig_ticker_removed_favorite = QtCore.Signal(dict)
     sig_ticker_data_fetched = QtCore.Signal(object)
     sig_ticker_infos_fetched = QtCore.Signal(dict)
+    sig_ticker_articles_fetched = QtCore.Signal(dict)
 
     sig_thread_pre = QtCore.Signal()
     sig_thread_post = QtCore.Signal()
@@ -25,3 +26,4 @@ class EventHandler(QtCore.QObject):
     sig_favorite_saved = QtCore.Signal(list)
     sig_favorite_added = QtCore.Signal(dict)
     sig_favorite_removed = QtCore.Signal(dict)
+    sig_articles = QtCore.Signal(dict)
