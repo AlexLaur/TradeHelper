@@ -60,3 +60,8 @@ class TickersTreeWidget(TreeWidget):
     #     # Favorite column
     #     # self.header().resizeSection(2, 20)
     #     # self.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+
+class FavoritesTreeWidget(TreeWidget):
+    def __init__(self, parent=None):
+        super(FavoritesTreeWidget, self).__init__(parent=parent)

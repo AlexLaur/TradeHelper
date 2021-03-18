@@ -149,8 +149,9 @@ QTableView {
 }
 
 QTreeWidget::item {
-  padding: 10px;
-  qproperty-iconSize: 32px;
+  padding: 5px;
+  height: 30px;
+  qproperty-iconSize: 30px;
 }
 
 /* Ticker Dialog */
