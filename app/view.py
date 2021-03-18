@@ -12,7 +12,7 @@ from libs.tickers_dialog import TickersDialogWindow
 from libs.widgets.busywidget import BusyIndicator
 from libs.thread_pool import ThreadPool
 from libs.graph.candlestick import CandlestickItem
-from libs.io.favorite_settings import FavoriteManager
+from libs.io.favorite_settings import FavoritesManager
 
 from ui import main_window
 
@@ -39,7 +39,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.busy_indicator = BusyIndicator(parent=self)
         self.thread_pool = ThreadPool()
         self.signals = EventHandler()
-        self.favorite_manager = FavoriteManager(parent=self)
+        self.favorites_manager = FavoritesManager(parent=self)
 
         # Signals
         self.lie_ticker.mousePressEvent = self.tickers_dialog.show
@@ -47,12 +47,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self._on_ticker_selected
         )
         self.tickers_dialog.signal.sig_ticker_added_favorite.connect(
-            self.favorite_manager._on_add_ticker_favorite
+            self.favorites_manager._on_add_ticker_favorite
         )
         self.tickers_dialog.signal.sig_ticker_removed_favorite.connect(
-            self.favorite_manager._on_remove_ticker_favorite
+            self.favorites_manager._on_remove_ticker_favorite
         )
-        self.wgt_welcome.signal.sig_ticker_choosen.connect(
+        self.tickers_dialog.signal.sig_ticker_added_favorite.connect(
+            self.wgt_favorites._on_favorite_added
+        )
+        self.tickers_dialog.signal.sig_ticker_removed_favorite.connect(
+            self.wgt_favorites._on_favorite_removed
+        )
+        self.wgt_favorites.signals.sig_favorite_clicked.connect(
             self._on_ticker_selected
         )
         self.signals.sig_ticker_data_fetched.connect(
@@ -80,10 +86,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tool_bar.signals.sig_action_triggered.connect(
             self._on_action_triggered
         )
-        self.favorite_manager.signals.sig_favorite_loaded.connect(
-            self.wgt_welcome._on_favorite_loaded
+        self.favorites_manager.signals.sig_favorite_loaded.connect(
+            self.wgt_favorites._on_favorite_loaded
         )
-        self.favorite_manager.signals.sig_favorite_loaded.connect(
+        self.favorites_manager.signals.sig_favorite_loaded.connect(
             self.tickers_dialog._on_favorite_loaded
         )
 
@@ -91,7 +97,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.pub_go_graph.clicked.connect(self.stw_main.slide_in_next)
 
         # Action which needs to be loaded after all signals
-        self.favorite_manager.load_favorite()
+        self.favorites_manager.load_favorite()
 
     def _init_app_home(self):
         """Init the APP_HOME of the application"""
@@ -164,4 +170,4 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             ...
 
     def closeEvent(self, event):
-        self.favorite_manager.save_favorite()
+        self.favorites_manager.save_favorites()

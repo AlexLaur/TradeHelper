@@ -1,4 +1,5 @@
 from PySide2 import QtCore, QtGui, QtWidgets
+from libs.widgets.treewidgetitem import TreeWidgetItem
 
 
 class TreeWidget(QtWidgets.QTreeWidget):
@@ -51,12 +52,58 @@ class TickersTreeWidget(TreeWidget):
     def __init__(self, parent=None):
         super(TickersTreeWidget, self).__init__(parent=parent)
 
-    # def set_header(self):
-    #     headerView = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
-    #     self.setHeader(headerView)
-    #     headerView.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-    #     headerView.setSectionsClickable(True)
+    def set_header(self):
+        """Sets a custom header to the treewidget"""
+        header = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
+        self.setHeader(header)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.resizeSection(0, 150)
+        header.setSectionsClickable(True)
 
-    #     # Favorite column
-    #     # self.header().resizeSection(2, 20)
-    #     # self.header().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+class FavoritesTreeWidget(TreeWidget):
+    def __init__(self, parent=None):
+        super(FavoritesTreeWidget, self).__init__(parent=parent)
+
+    def remove_favorite(self, ticker: dict):
+        """Remove a favorite from the treewidget
+
+        :param ticker: The ticker which has been deleted
+        :type ticker: dict
+        """
+        _all = self.get_all_items(
+            item=self.invisibleRootItem(), include_invisible=False
+        )
+        for item in _all:
+            if item.favorite.get("ticker") != ticker.get(
+                "ticker"
+            ) or item.favorite.get("name") != ticker.get("name"):
+                continue
+            index = self.indexOfTopLevelItem(item)
+            self.takeTopLevelItem(index)
+            break
+
+    def add_favorite(self, ticker: dict):
+        """Add a favorite to the list
+
+        :param ticker: The ticker which has been added
+        :type ticker: dict
+        """
+        self._add_favorite(ticker=ticker)
+        self.sortByColumn(0, QtCore.Qt.AscendingOrder)
+
+    def _add_favorite(self, ticker: dict):
+        """Private method to add an item inside the treewidget
+
+        :param ticker: The ticker to add
+        :type ticker: dict
+        """
+        text = "{name} - {ticker}".format(
+            name=ticker.get("name"), ticker=ticker.get("ticker")
+        )
+        item = TreeWidgetItem(
+            parent=self,
+            text=[text],
+            favorite=ticker,
+            icon=QtGui.QIcon(":/svg/candle-sticks.svg"),
+        )

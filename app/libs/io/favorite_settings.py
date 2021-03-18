@@ -6,9 +6,9 @@ from PySide2 import QtCore
 from libs.events_handler import EventHandler
 
 
-class FavoriteManager(QtCore.QObject):
+class FavoritesManager(QtCore.QObject):
     def __init__(self, parent):
-        super(FavoriteManager, self).__init__(parent)
+        super(FavoritesManager, self).__init__(parent)
 
         # Constants
         self.signals = EventHandler()
@@ -16,7 +16,7 @@ class FavoriteManager(QtCore.QObject):
         self._favorites_path = os.path.join(
             self._app_home, "favorite", "favorite.json"
         )
-        self._favorite = []
+        self._favorites = []
 
     def load_favorite(self) -> list:
         """Load favorite from the file
@@ -25,19 +25,19 @@ class FavoriteManager(QtCore.QObject):
         :rtype: list
         """
         if not self._check_favorites():
-            return self._favorite
+            return self._favorites
         with open(self._favorites_path, "r") as f:
-            self._favorite = json.load(f)
-        self.signals.sig_favorite_loaded.emit(self._favorite)
-        return self._favorite
+            self._favorites = json.load(f)
+        self.signals.sig_favorite_loaded.emit(self._favorites)
+        return self._favorites
 
-    def save_favorite(self):
+    def save_favorites(self):
         """Save favorites into the file"""
         if not self._check_favorites():
             self.create_favorite()
         with open(self._favorites_path, "w") as f:
-            json.dump(self._favorite, f)
-        self.signals.sig_favorite_saved.emit(self._favorite)
+            json.dump(self._favorites, f)
+        self.signals.sig_favorite_saved.emit(self._favorites)
 
     def create_favorite(self) -> bool:
         """Create the favorite file if it doesn't exists
@@ -58,7 +58,7 @@ class FavoriteManager(QtCore.QObject):
         except Exception as error:
             print(error)
             return False
-        self.signals.sig_favorite_created.emit(self._favorite)
+        self.signals.sig_favorite_created.emit(self._favorites)
         return True
 
     def _check_favorites(self):
@@ -77,7 +77,7 @@ class FavoriteManager(QtCore.QObject):
         :param ticker_data: The ticker to add
         :type ticker_data: dict
         """
-        self._favorite.append(ticker_data)
+        self._favorites.append(ticker_data)
         self.signals.sig_favorite_added.emit(ticker_data)
 
     def remove_ticker_favorite(self, ticker_data: dict):
@@ -86,8 +86,8 @@ class FavoriteManager(QtCore.QObject):
         :param ticker_data: The ticker to remove
         :type ticker_data: dict
         """
-        if ticker_data in self._favorite:
-            self._favorite.remove(ticker_data)
+        if ticker_data in self._favorites:
+            self._favorites.remove(ticker_data)
             self.signals.sig_favorite_removed.emit(ticker_data)
 
     @QtCore.Slot(dict)

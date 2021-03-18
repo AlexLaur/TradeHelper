@@ -29,7 +29,9 @@ class RSI(Indicator):
 
         plot = self.g_rsi.plot(
             x=[x.timestamp() for x in values.index],
-            y=rsi, connect="finite", pen=pg.mkPen((142, 21, 153), width=1.5)
+            y=rsi,
+            connect="finite",
+            pen=pg.mkPen((142, 21, 153), width=1.5),
         )
 
         # Draw overbought and oversold

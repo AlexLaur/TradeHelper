@@ -11,6 +11,10 @@ class TreeWidgetItem(QtWidgets.QTreeWidgetItem):
         if checkable:
             self.setCheckState(0, QtCore.Qt.Unchecked)
 
+        icon = kwargs.get("icon", None)
+        if icon:
+            self.setIcon(0, icon)
+
     def is_checked(self) -> bool:
         """Return True if the item is checked, False instead
 

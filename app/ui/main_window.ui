@@ -76,6 +76,9 @@
           <height>25</height>
          </size>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -99,11 +102,15 @@
     <item>
      <widget class="StackedWidget" name="stw_main">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
-      <widget class="WelcomeWidget" name="wgt_welcome"/>
+      <widget class="QWidget" name="wgt_welcome"/>
       <widget class="ArticlesWidget" name="wgt_articles"/>
-      <widget class="GraphWidget" name="wgt_graph"/>
+      <widget class="GraphWidget" name="wgt_graph">
+       <property name="cursor">
+        <cursorShape>CrossCursor</cursorShape>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -173,6 +180,21 @@
     <bool>false</bool>
    </attribute>
   </widget>
+  <widget class="QDockWidget" name="dock_wgt_favorites">
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>Favorites</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="FavoritesWidget" name="wgt_favorites"/>
+  </widget>
   <action name="action_reload_indicators">
    <property name="text">
     <string>Reload Indicators</string>
@@ -204,15 +226,15 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>WelcomeWidget</class>
-   <extends>QWidget</extends>
-   <header>libs.welcome_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>CompanyWidget</class>
    <extends>QWidget</extends>
    <header>libs.company_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FavoritesWidget</class>
+   <extends>QWidget</extends>
+   <header>libs.favorites_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
