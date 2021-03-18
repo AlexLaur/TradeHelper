@@ -43,13 +43,17 @@ class TickersDialogWindow(
         :param data: All tickers
         :type data: list
         """
-        for ticker, company in data.items():
+
+        for ticker, infos in data.items():
+            company = infos[0]
+            market = infos[1]
             item = TreeWidgetItem(
                 self.trw_all_tickers,
-                [ticker, company],
+                [ticker, company, market],
                 checkable=True,
                 ticker=ticker,
                 name=company,
+                market=market,
             )
 
     def update_ticker_favorite_state(self, favorite):
