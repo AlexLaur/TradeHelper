@@ -24,16 +24,17 @@ class ArticlesWidget(QtWidgets.QWidget):
         container = QtWidgets.QVBoxLayout(widget)
 
         for i in articles:
-            title = i['title']
-            date = i['date']
-            description = i['descritpion']
-            link = i['link']
-            article = ArticlesWidgetItem(parent=self,
-                                         title=title,
-                                         date=date,
-                                         description=description,
-                                         link=link,
-                                         )
+            title = i["title"]
+            date = i["date"]
+            description = i["descritpion"]
+            link = i["link"]
+            article = ArticlesWidgetItem(
+                parent=self,
+                title=title,
+                date=date,
+                description=description,
+                link=link,
+            )
             container.addWidget(article)
 
         widget.setLayout(container)
@@ -46,8 +47,11 @@ class ArticlesWidget(QtWidgets.QWidget):
     def _get_articles_dict(self, ticker):
         return Articles(ticker=ticker)
 
+
 class ArticlesWidgetItem(QtWidgets.QWidget):
-    def __init__(self, parent=None, title=None, date=None, description=None, link=None):
+    def __init__(
+        self, parent=None, title=None, date=None, description=None, link=None
+    ):
         super(ArticlesWidgetItem, self).__init__(parent)
 
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -59,7 +63,7 @@ class ArticlesWidgetItem(QtWidgets.QWidget):
         self.date = QtWidgets.QLabel(self)
         self.date.setObjectName(u"date")
         self.date.setText(date)
-        self.date.setFont(QtGui.QFont('Times', 10))
+        self.date.setFont(QtGui.QFont("Times", 10))
         self.layout.addWidget(self.date)
 
         self.description = Description(description)
@@ -77,6 +81,7 @@ class QHLine(QtWidgets.QFrame):
         self.setFrameShape(QtWidgets.QFrame.HLine)
         self.setFrameShadow(QtWidgets.QFrame.Sunken)
 
+
 class LabelTitle(QtWidgets.QLabel):
     def __init__(self, text, link=None):
         super(LabelTitle, self).__init__()
@@ -84,10 +89,11 @@ class LabelTitle(QtWidgets.QLabel):
 
         if text:
             self.setText(text)
-            self.setFont(QtGui.QFont('Times', 20))
+            self.setFont(QtGui.QFont("Times", 20))
 
     def mousePressEvent(self, event) -> None:
         webbrowser.open(self.link)
+
 
 class Description(QtWidgets.QTextBrowser):
     def __init__(self, text):
@@ -95,4 +101,4 @@ class Description(QtWidgets.QTextBrowser):
         self.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         if text:
             self.setText(text)
-            self.setFont(QtGui.QFont('Times', 10))
+            self.setFont(QtGui.QFont("Times", 10))

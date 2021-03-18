@@ -22,13 +22,16 @@ from libs.favorites_widget import FavoritesWidget
 
 import resources_rc
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(900, 700)
         self.action_reload_indicators = QAction(MainWindow)
-        self.action_reload_indicators.setObjectName(u"action_reload_indicators")
+        self.action_reload_indicators.setObjectName(
+            u"action_reload_indicators"
+        )
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -41,7 +44,9 @@ class Ui_MainWindow(object):
         self.pub_go_welcome.setMaximumSize(QSize(25, 25))
         self.pub_go_welcome.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
-        icon.addFile(u":/svg/keyboard-arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(
+            u":/svg/keyboard-arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off
+        )
         self.pub_go_welcome.setIcon(icon)
         self.pub_go_welcome.setIconSize(QSize(28, 28))
         self.pub_go_welcome.setFlat(True)
@@ -61,13 +66,14 @@ class Ui_MainWindow(object):
         self.pub_go_graph.setMaximumSize(QSize(25, 25))
         self.pub_go_graph.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
-        icon1.addFile(u":/svg/keyboard-arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(
+            u":/svg/keyboard-arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off
+        )
         self.pub_go_graph.setIcon(icon1)
         self.pub_go_graph.setIconSize(QSize(28, 28))
         self.pub_go_graph.setFlat(True)
 
         self.horizontalLayout.addWidget(self.pub_go_graph)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -101,7 +107,9 @@ class Ui_MainWindow(object):
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.dock_wgt_company.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.dock_wgt_company.sizePolicy().hasHeightForWidth()
+        )
         self.dock_wgt_company.setSizePolicy(sizePolicy)
         font = QFont()
         font.setBold(True)
@@ -117,7 +125,9 @@ class Ui_MainWindow(object):
         self.wgt_indicators = IndicatorsWidget()
         self.wgt_indicators.setObjectName(u"wgt_indicators")
         self.dock_wgt_indicators.setWidget(self.wgt_indicators)
-        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dock_wgt_indicators)
+        MainWindow.addDockWidget(
+            Qt.RightDockWidgetArea, self.dock_wgt_indicators
+        )
         self.tool_bar = ToolBar(MainWindow)
         self.tool_bar.setObjectName(u"tool_bar")
         MainWindow.addToolBar(Qt.LeftToolBarArea, self.tool_bar)
@@ -138,13 +148,19 @@ class Ui_MainWindow(object):
 
         self.stw_main.setCurrentIndex(1)
 
-
         QMetaObject.connectSlotsByName(MainWindow)
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Trade Helper", None))
-        self.action_reload_indicators.setText(QCoreApplication.translate("MainWindow", u"Reload Indicators", None))
+        MainWindow.setWindowTitle(
+            QCoreApplication.translate("MainWindow", u"Trade Helper", None)
+        )
+        self.action_reload_indicators.setText(
+            QCoreApplication.translate(
+                "MainWindow", u"Reload Indicators", None
+            )
+        )
         self.pub_go_welcome.setText("")
         self.pub_go_graph.setText("")
         self.menuOptions.setTitle(
@@ -164,4 +180,3 @@ class Ui_MainWindow(object):
         )
 
     # retranslateUi
-

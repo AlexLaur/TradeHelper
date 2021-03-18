@@ -39,24 +39,40 @@ class MACD(Indicator):
             brush=(239, 83, 80),
         )
 
-        self.g_macd.plot(x=[x.timestamp() for x in values.index], y=ema9, pen=pg.mkPen((255, 106, 0), width=2))
-        self.g_macd.plot(x=[x.timestamp() for x in values.index], y=macd, pen=pg.mkPen((0, 148, 255), width=2))
+        self.g_macd.plot(
+            x=[x.timestamp() for x in values.index],
+            y=ema9,
+            pen=pg.mkPen((255, 106, 0), width=2),
+        )
+        self.g_macd.plot(
+            x=[x.timestamp() for x in values.index],
+            y=macd,
+            pen=pg.mkPen((0, 148, 255), width=2),
+        )
         self.g_macd.addItem(bars)
         self.strat_macd(values)
         self.set_time_x_axis(self.g_macd)
 
-
     def strat_macd(self, values):
         buy_sell = MACD_strategy(values)
-        self.quotation_plot.plot(x=[x.timestamp() for x in values.index], y=buy_sell['Buy'],
-                  pen=None,
-                  symbolBrush=(175, 0, 0),
-                  symbol='t', symbolSize=10,name="sell")
-        self.quotation_plot.plot(x=[x.timestamp() for x in values.index], y=buy_sell['Sell'],
-                  pen=None,
-                  symbolBrush=(0, 201, 80),
-                  symbol='t1', symbolSize=10,name="achat")
-
+        self.quotation_plot.plot(
+            x=[x.timestamp() for x in values.index],
+            y=buy_sell["Buy"],
+            pen=None,
+            symbolBrush=(175, 0, 0),
+            symbol="t",
+            symbolSize=10,
+            name="sell",
+        )
+        self.quotation_plot.plot(
+            x=[x.timestamp() for x in values.index],
+            y=buy_sell["Sell"],
+            pen=None,
+            symbolBrush=(0, 201, 80),
+            symbol="t1",
+            symbolSize=10,
+            name="achat",
+        )
 
     def remove_indicator(self, graph_view, *args, **kwargs):
         graph_view.removeItem(self.g_macd)
@@ -64,6 +80,7 @@ class MACD(Indicator):
 
     def set_time_x_axis(self, widget):
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
+
 
 def exp_moving_average(values, w):
     weights = np.exp(np.linspace(-1.0, 0.0, w))
@@ -80,16 +97,17 @@ def get_macd(values):
 
 
 def MACD_strategy(values):
-    short_EMA = exp_moving_average(values['Close'], w=12)
-    long_EMA = exp_moving_average(values['Close'], w=26)
+    short_EMA = exp_moving_average(values["Close"], w=12)
+    long_EMA = exp_moving_average(values["Close"], w=26)
     macd = short_EMA - long_EMA
     signal = exp_moving_average(macd, w=9)
-    values['MACD'] = macd
-    values['Signal'] = signal
+    values["MACD"] = macd
+    values["Signal"] = signal
     retournement = buy_sell_macd(values)
-    values['Buy'] = retournement[0]
-    values['Sell'] = retournement[1]
+    values["Buy"] = retournement[0]
+    values["Sell"] = retournement[1]
     return values
+
 
 def buy_sell_macd(values, offset=0.01):
     offset_up = 1 + offset
@@ -98,21 +116,25 @@ def buy_sell_macd(values, offset=0.01):
     sell = []
     # if 2 lines cross Flag change
     flag = -1
-    ema200 = values['Close'].ewm(com=200).mean()
+    ema200 = values["Close"].ewm(com=200).mean()
 
     for i in range(0, len(values)):
-        if values['MACD'][i] > values['Signal'][i]:# and values['close'][i] > ema200[i]:
+        if (
+            values["MACD"][i] > values["Signal"][i]
+        ):  # and values['close'][i] > ema200[i]:
             sell.append(np.nan)
             if flag != 1:
-                buy.append(values['Close'][i]*offset_up)
+                buy.append(values["Close"][i] * offset_up)
                 flag = 1
             else:
                 buy.append(np.nan)
 
-        elif values['MACD'][i] < values['Signal'][i]:# and values['close'][i] < ema200[i]:
+        elif (
+            values["MACD"][i] < values["Signal"][i]
+        ):  # and values['close'][i] < ema200[i]:
             buy.append(np.nan)
             if flag != 0:
-                sell.append(values['Close'][i]*offset_down)
+                sell.append(values["Close"][i] * offset_down)
                 flag = 0
             else:
                 sell.append(np.nan)

@@ -21,8 +21,8 @@ class Support_Resistances(Indicator):
 
         # zigzag = zig_zag(values=values["close"].values)
 
-        supports = get_supports(values=values['Close'].values)
-        resistances = get_resistances(values=values['Close'].values)
+        supports = get_supports(values=values["Close"].values)
+        resistances = get_resistances(values=values["Close"].values)
 
         for sup in supports:
             quotation_plot.addLine(y=sup, pen=pg.mkPen("g", width=1))
