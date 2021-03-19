@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>282</height>
+    <height>295</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,21 +15,21 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="LabelTitle" name="title_lb">
+    <widget class="LabelTitle" name="lb_title">
      <property name="text">
       <string>Title</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="date_lb">
+    <widget class="QLabel" name="lb_date">
      <property name="text">
-      <string>Dates</string>
+      <string>date</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="Description" name="descri"/>
+    <widget class="Description" name="desc"/>
    </item>
    <item>
     <widget class="Line" name="line">

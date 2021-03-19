@@ -32,14 +32,15 @@ class Articles(object):
         self.get_url(ticker=ticker)
 
     def get_url(self, ticker):
-        if "{}.PA".format(ticker) in sf.tickers_cac().keys():
+        if "{}".format(ticker) in sf.tickers_cac().keys():
             url = "https://www.boursorama.com/cours/actualites/1rP{}/".format(
-                ticker
+                ticker.split('.')[0]
             )
         else:
             url = "https://www.boursorama.com/cours/actualites/{}/".format(
                 ticker
             )
+        print(url)
         self.response = requests.get(url, headers=self.headers)
         self.soup()
 

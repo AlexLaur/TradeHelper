@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'articles.ui'
+## Form generated from reading UI file 'article.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -20,23 +20,23 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(400, 282)
+        Form.resize(400, 295)
         self.verticalLayout = QVBoxLayout(Form)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.title_lb = LabelTitle(Form)
-        self.title_lb.setObjectName(u"title_lb")
+        self.lb_title = LabelTitle(Form)
+        self.lb_title.setObjectName(u"lb_title")
 
-        self.verticalLayout.addWidget(self.title_lb)
+        self.verticalLayout.addWidget(self.lb_title)
 
-        self.date_lb = QLabel(Form)
-        self.date_lb.setObjectName(u"date_lb")
+        self.lb_date = QLabel(Form)
+        self.lb_date.setObjectName(u"lb_date")
 
-        self.verticalLayout.addWidget(self.date_lb)
+        self.verticalLayout.addWidget(self.lb_date)
 
-        self.descri = Description(Form)
-        self.descri.setObjectName(u"descri")
+        self.desc = Description(Form)
+        self.desc.setObjectName(u"desc")
 
-        self.verticalLayout.addWidget(self.descri)
+        self.verticalLayout.addWidget(self.desc)
 
         self.line = QFrame(Form)
         self.line.setObjectName(u"line")
@@ -53,7 +53,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.title_lb.setText(QCoreApplication.translate("Form", u"Title", None))
-        self.date_lb.setText(QCoreApplication.translate("Form", u"Dates", None))
+        self.lb_title.setText(QCoreApplication.translate("Form", u"Title", None))
+        self.lb_date.setText(QCoreApplication.translate("Form", u"date", None))
     # retranslateUi
 

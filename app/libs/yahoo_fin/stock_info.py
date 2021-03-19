@@ -137,7 +137,7 @@ def tickers_sp500(include_company_data=False):
     )[0]
 
     sp500 = {
-        key: [value, "S&P500"] for key, value in zip(sp500["Symbol"], sp500["Security"])
+        key: value for key, value in zip(sp500["Symbol"], sp500["Security"])
     }
 
     if include_company_data:
@@ -180,7 +180,7 @@ def tickers_nasdaq(include_company_data=False):
         name.append(x)
     ftp.close()
 
-    nasdaq = {key: [value, "NASDAQ"] for key, value in zip(tickers, name)}
+    nasdaq = {key: value for key, value in zip(tickers, name)}
 
     return nasdaq
 
@@ -194,7 +194,7 @@ def tickers_cac(include_company_data=False):
         return cac
 
     cac_tickers = {
-        key: [value, "EURONEXT"] for key, value in zip(cac["Ticker"], cac["Company"])
+        key: value for key, value in zip(cac["Ticker"], cac["Company"])
     }
 
     return cac_tickers
@@ -239,7 +239,7 @@ def tickers_dow(include_company_data=False):
         return table
 
     dow_tickers = {
-        key: [value, "DOWJOHNS"]
+        key: value
         for key, value in zip(table["Symbol"], table["Company Name"])
     }
 

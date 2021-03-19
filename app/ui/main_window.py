@@ -17,21 +17,21 @@ from libs.indicators_widget import IndicatorsWidget
 from libs.widgets.toolbar import ToolBar
 from libs.widgets.stackedwidget import StackedWidget
 from libs.company_widget import CompanyWidget
-from libs.articles_widget import ArticlesWidget
 from libs.favorites_widget import FavoritesWidget
+from libs.articles_widget import ArticlesWidget
+from libs.widgets.label import LabelTitle
+from libs.financial_widgets import TableFinance
+from libs.welcome_widget import WelcomeWidget
 
 import resources_rc
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(900, 700)
+        MainWindow.resize(944, 754)
         self.action_reload_indicators = QAction(MainWindow)
-        self.action_reload_indicators.setObjectName(
-            u"action_reload_indicators"
-        )
+        self.action_reload_indicators.setObjectName(u"action_reload_indicators")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -44,9 +44,7 @@ class Ui_MainWindow(object):
         self.pub_go_welcome.setMaximumSize(QSize(25, 25))
         self.pub_go_welcome.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
-        icon.addFile(
-            u":/svg/keyboard-arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off
-        )
+        icon.addFile(u":/svg/keyboard-arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.pub_go_welcome.setIcon(icon)
         self.pub_go_welcome.setIconSize(QSize(28, 28))
         self.pub_go_welcome.setFlat(True)
@@ -66,14 +64,13 @@ class Ui_MainWindow(object):
         self.pub_go_graph.setMaximumSize(QSize(25, 25))
         self.pub_go_graph.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
-        icon1.addFile(
-            u":/svg/keyboard-arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off
-        )
+        icon1.addFile(u":/svg/keyboard-arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.pub_go_graph.setIcon(icon1)
         self.pub_go_graph.setIconSize(QSize(28, 28))
         self.pub_go_graph.setFlat(True)
 
         self.horizontalLayout.addWidget(self.pub_go_graph)
+
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -81,6 +78,19 @@ class Ui_MainWindow(object):
         self.stw_main.setObjectName(u"stw_main")
         self.wgt_welcome = QWidget()
         self.wgt_welcome.setObjectName(u"wgt_welcome")
+        self.verticalLayout_3 = QVBoxLayout(self.wgt_welcome)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.label = LabelTitle(self.wgt_welcome)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_3.addWidget(self.label)
+
+        self.listWidget = WelcomeWidget(self.wgt_welcome)
+        self.listWidget.setObjectName(u"listWidget")
+
+        self.verticalLayout_3.addWidget(self.listWidget)
+
         self.stw_main.addWidget(self.wgt_welcome)
         self.wgt_articles = ArticlesWidget()
         self.wgt_articles.setObjectName(u"wgt_articles")
@@ -89,13 +99,33 @@ class Ui_MainWindow(object):
         self.wgt_graph.setObjectName(u"wgt_graph")
         self.wgt_graph.setCursor(QCursor(Qt.CrossCursor))
         self.stw_main.addWidget(self.wgt_graph)
+        self.wgt_financ = QWidget()
+        self.wgt_financ.setObjectName(u"wgt_financ")
+        self.horizontalLayout_2 = QHBoxLayout(self.wgt_financ)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalSpacer = QSpacerItem(240, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+
+        self.wid_table_financ = TableFinance(self.wgt_financ)
+        self.wid_table_financ.setObjectName(u"wid_table_financ")
+        self.wid_table_financ.setMinimumSize(QSize(850, 0))
+        self.wid_table_financ.setMaximumSize(QSize(850, 16777215))
+
+        self.horizontalLayout_2.addWidget(self.wid_table_financ)
+
+        self.horizontalSpacer_2 = QSpacerItem(240, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
+        self.stw_main.addWidget(self.wgt_financ)
 
         self.verticalLayout.addWidget(self.stw_main)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 900, 21))
+        self.menubar.setGeometry(QRect(0, 0, 944, 21))
         self.menuOptions = QMenu(self.menubar)
         self.menuOptions.setObjectName(u"menuOptions")
         MainWindow.setMenuBar(self.menubar)
@@ -107,9 +137,7 @@ class Ui_MainWindow(object):
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.dock_wgt_company.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.dock_wgt_company.sizePolicy().hasHeightForWidth())
         self.dock_wgt_company.setSizePolicy(sizePolicy)
         font = QFont()
         font.setBold(True)
@@ -125,9 +153,7 @@ class Ui_MainWindow(object):
         self.wgt_indicators = IndicatorsWidget()
         self.wgt_indicators.setObjectName(u"wgt_indicators")
         self.dock_wgt_indicators.setWidget(self.wgt_indicators)
-        MainWindow.addDockWidget(
-            Qt.RightDockWidgetArea, self.dock_wgt_indicators
-        )
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dock_wgt_indicators)
         self.tool_bar = ToolBar(MainWindow)
         self.tool_bar.setObjectName(u"tool_bar")
         MainWindow.addToolBar(Qt.LeftToolBarArea, self.tool_bar)
@@ -137,46 +163,29 @@ class Ui_MainWindow(object):
         self.wgt_favorites = FavoritesWidget()
         self.wgt_favorites.setObjectName(u"wgt_favorites")
         self.dock_wgt_favorites.setWidget(self.wgt_favorites)
-        MainWindow.addDockWidget(
-            Qt.RightDockWidgetArea, self.dock_wgt_favorites
-        )
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dock_wgt_favorites)
 
         self.menubar.addAction(self.menuOptions.menuAction())
         self.menuOptions.addAction(self.action_reload_indicators)
 
         self.retranslateUi(MainWindow)
 
-        self.stw_main.setCurrentIndex(1)
+        self.stw_main.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
-
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"Trade Helper", None)
-        )
-        self.action_reload_indicators.setText(
-            QCoreApplication.translate(
-                "MainWindow", u"Reload Indicators", None
-            )
-        )
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Trade Helper", None))
+        self.action_reload_indicators.setText(QCoreApplication.translate("MainWindow", u"Reload Indicators", None))
         self.pub_go_welcome.setText("")
         self.pub_go_graph.setText("")
-        self.menuOptions.setTitle(
-            QCoreApplication.translate("MainWindow", u"Options", None)
-        )
-        self.dock_wgt_company.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"Company", None)
-        )
-        self.dock_wgt_indicators.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"Indicators", None)
-        )
-        self.tool_bar.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"toolBar", None)
-        )
-        self.dock_wgt_favorites.setWindowTitle(
-            QCoreApplication.translate("MainWindow", u"Favorites", None)
-        )
-
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Trading Visualisation", None))
+        self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
+        self.dock_wgt_company.setWindowTitle(QCoreApplication.translate("MainWindow", u"Company", None))
+        self.dock_wgt_indicators.setWindowTitle(QCoreApplication.translate("MainWindow", u"Indicators", None))
+        self.tool_bar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
+        self.dock_wgt_favorites.setWindowTitle(QCoreApplication.translate("MainWindow", u"Favorites", None))
     # retranslateUi
+
