@@ -59,7 +59,9 @@ class BollingerBands(Indicator):
         )
 
         quotation_plot.addItem(self.g_filler)
-        self._plots.extend([lower_plot, middler_plot, upper_plot])
+
+        # Register all plots in order to delete them later
+        self.register_plots(lower_plot, middler_plot, upper_plot)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
         super(BollingerBands, self).remove_indicator(
