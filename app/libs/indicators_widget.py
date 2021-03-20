@@ -126,6 +126,11 @@ class Indicator(object):
         """
         self._plots.append(plot)
 
+    def register_plots(self, *args: list):
+        """Register all given plots"""
+        for arg in args:
+            self.register_plot(plot=arg)
+
     def create_indicator(self, graph_view, *args, **kwargs):
         """The method that we expect all plugins to implement. This is the
         method that our framework will call to draw the indicator
