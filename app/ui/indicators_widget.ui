@@ -42,7 +42,12 @@
      </column>
      <column>
       <property name="text">
-       <string>Active</string>
+       <string/>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string/>
       </property>
      </column>
     </widget>

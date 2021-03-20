@@ -30,3 +30,12 @@ class TableWidget(QtWidgets.QTableWidget):
 class IndicatorsTableWidget(TableWidget):
     def __init__(self, parent=None):
         super(IndicatorsTableWidget, self).__init__(parent=parent)
+
+    def set_header(self):
+        """Sets a custom header to the Tablewidget"""
+        header = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
+        self.setHorizontalHeader(header)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.resizeSection(1, 25)
+        header.resizeSection(2, 25)
+        header.setSectionsClickable(True)

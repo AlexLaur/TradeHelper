@@ -17,8 +17,8 @@ from libs.indicators_widget import IndicatorsWidget
 from libs.widgets.toolbar import ToolBar
 from libs.widgets.stackedwidget import StackedWidget
 from libs.company_widget import CompanyWidget
-from libs.articles_widget import ArticlesWidget
 from libs.favorites_widget import FavoritesWidget
+from libs.articles_widget import ArticlesWidget
 
 import resources_rc
 

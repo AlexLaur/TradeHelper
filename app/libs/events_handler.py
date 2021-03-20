@@ -15,9 +15,12 @@ class EventHandler(QtCore.QObject):
     sig_thread_result = QtCore.Signal(object)
 
     sig_indicator_switched = QtCore.Signal(object, bool)
-
-    sig_indicator_enable = QtCore.Signal(object, bool)
-    sig_indicator_disable = QtCore.Signal(object, bool)
+    sig_indicator_enabled = QtCore.Signal(object, bool)
+    sig_indicator_disabled = QtCore.Signal(object, bool)
+    sig_indicator_settings_clicked = QtCore.Signal(object)
+    sig_indicator_settings_validated = QtCore.Signal(object)
+    sig_indicator_settings_canceled = QtCore.Signal(object)
+    sig_indicator_settings_reseted = QtCore.Signal(object)
 
     sig_action_triggered = QtCore.Signal(str)
 

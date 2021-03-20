@@ -3,39 +3,13 @@
 ################################################################################
 ## Form generated from reading UI file 'indicators_widget.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.0
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (
-    QCoreApplication,
-    QDate,
-    QDateTime,
-    QMetaObject,
-    QObject,
-    QPoint,
-    QRect,
-    QSize,
-    QTime,
-    QUrl,
-    Qt,
-)
-from PySide2.QtGui import (
-    QBrush,
-    QColor,
-    QConicalGradient,
-    QCursor,
-    QFont,
-    QFontDatabase,
-    QIcon,
-    QKeySequence,
-    QLinearGradient,
-    QPalette,
-    QPainter,
-    QPixmap,
-    QRadialGradient,
-)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from libs.widgets.tablewidget import IndicatorsTableWidget
@@ -54,12 +28,14 @@ class Ui_IndicatorsWidget(object):
         self.verticalLayout.addWidget(self.lie_indicators_search)
 
         self.tab_indicators = IndicatorsTableWidget(IndicatorsWidget)
-        if self.tab_indicators.columnCount() < 2:
-            self.tab_indicators.setColumnCount(2)
+        if self.tab_indicators.columnCount() < 3:
+            self.tab_indicators.setColumnCount(3)
         __qtablewidgetitem = QTableWidgetItem()
         self.tab_indicators.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.tab_indicators.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tab_indicators.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         self.tab_indicators.setObjectName(u"tab_indicators")
         self.tab_indicators.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tab_indicators.setAlternatingRowColors(True)
@@ -88,10 +64,6 @@ class Ui_IndicatorsWidget(object):
         ___qtablewidgetitem = self.tab_indicators.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(
             QCoreApplication.translate("IndicatorsWidget", u"Name", None)
-        )
-        ___qtablewidgetitem1 = self.tab_indicators.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(
-            QCoreApplication.translate("IndicatorsWidget", u"Active", None)
         )
 
     # retranslateUi
