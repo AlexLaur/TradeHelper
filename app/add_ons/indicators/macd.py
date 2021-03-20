@@ -17,12 +17,20 @@ class MACD(Indicator):
 
         # Define and register all customisable settings
         field_volumes = InputField("Volumes", color=(239, 83, 80), width=1)
-        field_ema9 = InputField("EMA 9", color=(255, 106, 0), width=2)
+        field_emaslow = InputField("EMA Low", value=12)
+        field_emafast = InputField("EMA Fast", value=26)
+        field_ema = InputField("EMA", value=9, color=(255, 106, 0), width=2)
         field_macd = InputField("MACD", color=(0, 148, 255), width=2)
         field_buy = InputField("Buy indicator", color=(175, 0, 0), width=10)
         field_sell = InputField("Sell indicator", color=(0, 201, 80), width=10)
         self.register_fields(
-            field_volumes, field_ema9, field_macd, field_buy, field_sell
+            field_volumes,
+            field_emaslow,
+            field_emafast,
+            field_ema,
+            field_macd,
+            field_buy,
+            field_sell,
         )
 
     def create_indicator(self, graph_view, *args, **kwargs):
@@ -38,14 +46,20 @@ class MACD(Indicator):
         self.g_macd.setXLink("Quotation")
 
         # Retrive settings
-        field_ema9 = self.get_field("EMA 9")
+        field_ema = self.get_field("EMA")
         field_volumes = self.get_field("Volumes")
         field_macd = self.get_field("MACD")
+        field_emaslow = self.get_field("EMA Low")
+        field_emafast = self.get_field("EMA Fast")
 
         # Calculations
-        macd_line, signal_line, macd = get_macd(values["Close"].values)
-        ema9 = exp_moving_average(macd, w=9)
-        macd_bar = macd - ema9
+        macd_line, signal_line, macd = get_macd(
+            values=values["Close"].values,
+            w_low=field_emaslow.value,
+            w_fast=field_emafast.value,
+        )
+        ema = exp_moving_average(macd, w=field_ema.value)
+        macd_bar = macd - ema
 
         # Draw plots
         bars = pg.BarGraphItem(
@@ -57,8 +71,8 @@ class MACD(Indicator):
         )
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
-            y=ema9,
-            pen=pg.mkPen(field_ema9.color, width=field_ema9.width),
+            y=ema,
+            pen=pg.mkPen(field_ema.color, width=field_ema.width),
         )
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
@@ -86,9 +100,17 @@ class MACD(Indicator):
         # Retrive settings
         field_buy = self.get_field("Buy indicator")
         field_sell = self.get_field("Sell indicator")
+        field_emaslow = self.get_field("EMA Low")
+        field_emafast = self.get_field("EMA Fast")
+        field_ema = self.get_field("EMA")
 
         # Calculations
-        buy_sell = MACD_strategy(values)
+        buy_sell = MACD_strategy(
+            values=values,
+            w_ema=field_ema.value,
+            w_low=field_emaslow.value,
+            w_fast=field_emafast.value,
+        )
 
         # Draw plots
         buy_plot = self.quotation_plot.plot(
@@ -130,17 +152,17 @@ def exp_moving_average(values, w):
     return a
 
 
-def get_macd(values):
-    emaslow = exp_moving_average(values, w=12)
-    emafast = exp_moving_average(values, w=26)
+def get_macd(values, w_low=12, w_fast=26):
+    emaslow = exp_moving_average(values, w=w_low)
+    emafast = exp_moving_average(values, w=w_fast)
     return emaslow, emafast, emafast - emaslow
 
 
-def MACD_strategy(values):
-    short_EMA = exp_moving_average(values["Close"], w=12)
-    long_EMA = exp_moving_average(values["Close"], w=26)
+def MACD_strategy(values, w_ema=9, w_low=12, w_fast=26):
+    short_EMA = exp_moving_average(values["Close"], w=w_low)
+    long_EMA = exp_moving_average(values["Close"], w=w_fast)
     macd = short_EMA - long_EMA
-    signal = exp_moving_average(macd, w=9)
+    signal = exp_moving_average(macd, w=w_ema)
     values["MACD"] = macd
     values["Signal"] = signal
     retournement = buy_sell_macd(values)

@@ -18,7 +18,9 @@ class RSI(Indicator):
         # Define and register all customisable settings
         field_up = InputField("Up", color=(200, 200, 200), width=1.5)
         field_down = InputField("Down", color=(200, 200, 200), width=1.5)
-        field_rsi = InputField("RSI", color=(142, 21, 153), width=1.5)
+        field_rsi = InputField(
+            "RSI", value=14, color=(142, 21, 153), width=1.5
+        )
         self.register_fields(field_up, field_down, field_rsi)
 
     def create_indicator(self, graph_view, *args, **kwargs):
@@ -34,7 +36,7 @@ class RSI(Indicator):
         field_rsi = self.get_field("RSI")
 
         # Calculation
-        rsi = get_rsi(values=values["Close"].values, length=14)
+        rsi = get_rsi(values=values["Close"].values, length=field_rsi.value)
 
         # Draw plots
         self.g_rsi = graph_view.addPlot(row=1, col=0, width=1)

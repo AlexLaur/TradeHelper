@@ -14,14 +14,14 @@ from ui import indicators_widget
 
 
 class InputField(object):
-    def __init__(self, attribute_name: str, color: tuple, value=None, width=1):
+    def __init__(self, attribute_name: str, color=None, value=None, width=1):
 
         self._attribute_name = attribute_name
-        self._default_color = QtGui.QColor(*color)
+        self._default_color = QtGui.QColor(*color) if color else None
         self._default_value = value
 
-        self.color = QtGui.QColor(*color)
-        self.value = value
+        self.color = self._default_color
+        self.value = self._default_value
         self.width = width
 
     @property

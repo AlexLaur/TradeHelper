@@ -13,12 +13,13 @@ class BollingerBands(Indicator):
         self.g_filler = None
 
         # Define and register all customisable settings
+        field_length = InputField("Length", value=20)
         field_middle = InputField("Middle", color=(0, 140, 170), width=1.2)
         field_upper = InputField("Upper", color=(0, 140, 170), width=1.2)
         field_lower = InputField("Lower", color=(0, 140, 170), width=1.2)
         field_filler = InputField("Fill Between", color=(0, 140, 170, 50))
         self.register_fields(
-            field_middle, field_upper, field_lower, field_filler
+            field_length, field_middle, field_upper, field_lower, field_filler
         )
 
     def create_indicator(self, graph_view, *args, **kwargs):
@@ -29,13 +30,16 @@ class BollingerBands(Indicator):
         quotation_plot = graph_view.g_quotation
 
         # Retrive settings
+        field_length = self.get_field("Length")
         field_middle = self.get_field("Middle")
         field_upper = self.get_field("Middle")
         field_lower = self.get_field("Lower")
         field_filler = self.get_field("Fill Between")
 
         # Calculate
-        middler, upper, lower = bollinger_bands(values)
+        middler, upper, lower = bollinger_bands(
+            values, window=field_length.value
+        )
 
         # Create plots
         middler_plot = quotation_plot.plot(

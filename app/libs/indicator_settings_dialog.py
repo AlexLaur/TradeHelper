@@ -58,9 +58,9 @@ class IndicatorSettingsDialogWindow(
             if _field.value is not None:
                 wgt_input = IndicatorInputSettingWidget(field=_field)
                 self.lyt_inputs.addWidget(wgt_input)
-
-            wgt_style = IndicatorStyleSettingWidget(field=_field)
-            self.lyt_styles.addWidget(wgt_style)
+            if _field.color is not None:
+                wgt_style = IndicatorStyleSettingWidget(field=_field)
+                self.lyt_styles.addWidget(wgt_style)
 
     @QtCore.Slot()
     def _on_canceled(self):
