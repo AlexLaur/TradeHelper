@@ -3,7 +3,7 @@ import numpy as np
 from pprint import pprint
 from scipy import signal
 
-from libs.indicators_widget import Indicator
+from libs.indicators_widget import Indicator, InputField
 
 
 class NonScientific(pg.AxisItem):
