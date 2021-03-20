@@ -14,7 +14,7 @@ from ui import indicators_widget
 
 
 class InputField(object):
-    def __init__(self, attribute_name, color, value=None, width=1):
+    def __init__(self, attribute_name: str, color: tuple, value=None, width=1):
 
         self._attribute_name = attribute_name
         self._default_color = QtGui.QColor(*color)
@@ -25,14 +25,37 @@ class InputField(object):
         self.width = width
 
     @property
-    def attribute_name(self):
+    def attribute_name(self) -> str:
+        """Return the attribute name of the InputField
+
+        :return: The attribute name
+        :rtype: str
+        """
         return self._attribute_name
 
-    def set_color(self, color):
-        self.color = color
+    def set_color(self, color: QtGui.QColor):
+        """Set the color of the InputField
+
+        :param color: The new color to set
+        :type color: tuple
+        """
+        self.color = QtGui.QColor
 
     def set_value(self, value):
+        """Set the value of the InputField
+
+        :param value: The new value to set
+        :type value: int, float
+        """
         self.value = value
+
+    def set_width(self, width):
+        """Set the width of the InputField
+
+        :param width: The new width to set
+        :type width: int, float
+        """
+        self.width = width
 
     def __getitem__(self, key):
         return getattr(self, key, None)
@@ -45,7 +68,7 @@ class InputField(object):
 
 
 class Indicator(object):
-    """Base class that each indicator must inherit from. within this class
+    """Base class that each indicator must inherit from. Within this class
     you must define the methods that all of your plugins must implement
     """
 
@@ -183,6 +206,7 @@ class IndicatorsWidget(
             self.tab_indicators.setCellWidget(index, 2, active_button)
 
     def reload_indicators(self):
+        """Reload all indicators"""
         self._indicators_collection.reload_plugins()
         self.build_indicators()
 
@@ -197,6 +221,11 @@ class IndicatorsWidget(
 
     @QtCore.Slot(object)
     def _on_settings_validated(self, indicator: Indicator):
+        """Called when the settings have been validated (click on OK button)
+
+        :param indicator: The indicator which has been edited
+        :type indicator: Indicator
+        """
         if indicator.enabled:
             # First: disable it
             self.signals.sig_indicator_switched.emit(indicator, False)
