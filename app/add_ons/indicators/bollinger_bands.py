@@ -64,9 +64,7 @@ class BollingerBands(Indicator):
         self.register_plots(lower_plot, middler_plot, upper_plot)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
-        super(BollingerBands, self).remove_indicator(
-            graph_view=graph_view, *args, **kwargs
-        )
+        super(BollingerBands, self).remove_indicator(graph_view)
         self.g_filler.setBrush(None)
         self.g_filler = None
 
