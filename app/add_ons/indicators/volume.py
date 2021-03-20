@@ -40,7 +40,9 @@ class Volume(Indicator):
         field_volume = self.get_field("Volume")
 
         # Draw plots
-        self.g_volume = graph_view.addPlot(row=2, col=0, width=1)
+        self.g_volume = graph_view.addPlot(
+            row=3, col=0, width=1, title="<b>Volumes</b>"
+        )
         self.g_volume.setAxisItems({"left": NonScientific(orientation="left")})
         self.g_volume.setMaximumHeight(150)
         self.g_volume.setXLink("Quotation")

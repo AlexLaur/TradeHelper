@@ -39,7 +39,9 @@ class RSI(Indicator):
         rsi = get_rsi(values=values["Close"].values, length=field_rsi.value)
 
         # Draw plots
-        self.g_rsi = graph_view.addPlot(row=1, col=0, width=1)
+        self.g_rsi = graph_view.addPlot(
+            row=1, col=0, width=1, title="<b>RSI</b>"
+        )
         self.g_rsi.showGrid(x=True, y=True, alpha=1)
         self.g_rsi.setMaximumHeight(150)
         self.g_rsi.setXLink("Quotation")

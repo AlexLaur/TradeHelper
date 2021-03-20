@@ -41,7 +41,9 @@ class MACD(Indicator):
         self.quotation_plot = graph_view.g_quotation
 
         # Init plot
-        self.g_macd = graph_view.addPlot(row=2, col=0, width=1)
+        self.g_macd = graph_view.addPlot(
+            row=2, col=0, width=1, title="<b>MACD</b>"
+        )
         self.g_macd.setMaximumHeight(150)
         self.g_macd.setXLink("Quotation")
 
@@ -65,7 +67,7 @@ class MACD(Indicator):
         bars = pg.BarGraphItem(
             x=[x.timestamp() for x in values.index],
             height=macd_bar,
-            width=field_volumes.width,
+            width=field_volumes.width * 5,
             fillOutline=True,
             brush=field_volumes.color,
         )
