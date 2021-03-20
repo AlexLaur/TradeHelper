@@ -52,11 +52,17 @@ class RSI(Indicator):
         # Draw overbought and oversold
         line_up = self.g_rsi.addLine(
             y=70,
-            pen=pg.mkPen(field_up.color, width=field_up.width, style=QtCore.Qt.DashLine),
+            pen=pg.mkPen(
+                field_up.color, width=field_up.width, style=QtCore.Qt.DashLine
+            ),
         )
         line_down = self.g_rsi.addLine(
             y=30,
-            pen=pg.mkPen(field_down.color, width=field_down.width, style=QtCore.Qt.DashLine),
+            pen=pg.mkPen(
+                field_down.color,
+                width=field_down.width,
+                style=QtCore.Qt.DashLine,
+            ),
         )
         self.set_time_x_axis(self.g_rsi)
 

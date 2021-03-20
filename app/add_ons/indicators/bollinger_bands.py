@@ -17,7 +17,9 @@ class BollingerBands(Indicator):
         field_upper = InputField("Upper", color=(0, 140, 170), width=1.2)
         field_lower = InputField("Lower", color=(0, 140, 170), width=1.2)
         field_filler = InputField("Fill Between", color=(0, 140, 170, 50))
-        self.register_fields(field_middle, field_upper, field_lower, field_filler)
+        self.register_fields(
+            field_middle, field_upper, field_lower, field_filler
+        )
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(BollingerBands, self).create_indicator(graph_view)
@@ -55,7 +57,9 @@ class BollingerBands(Indicator):
         )
 
         self.g_filler = pg.FillBetweenItem(
-            curve1=upper_plot, curve2=lower_plot, brush=pg.mkBrush(field_filler.color)
+            curve1=upper_plot,
+            curve2=lower_plot,
+            brush=pg.mkBrush(field_filler.color),
         )
 
         quotation_plot.addItem(self.g_filler)

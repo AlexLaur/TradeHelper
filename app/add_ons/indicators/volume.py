@@ -53,7 +53,6 @@ class Volume(Indicator):
         self.set_time_x_axis(self.g_volume)
         self.g_volume.addItem(bars)
 
-
     def set_time_x_axis(self, widget):
         """Set the time on the X axis
 

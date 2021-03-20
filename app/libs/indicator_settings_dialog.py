@@ -122,7 +122,9 @@ class IndicatorStyleSettingWidget(
         # Constans
         self._field = field
         self.color_picker = QtWidgets.QColorDialog(parent=self)
-        self.color_picker.setOption(QtWidgets.QColorDialog.ShowAlphaChannel, on=True)
+        self.color_picker.setOption(
+            QtWidgets.QColorDialog.ShowAlphaChannel, on=True
+        )
 
         # Init Ui from field values
         self.lab_field_name.setText(self._field.attribute_name)

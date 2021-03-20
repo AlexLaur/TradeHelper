@@ -21,7 +21,9 @@ class MACD(Indicator):
         field_macd = InputField("MACD", color=(0, 148, 255), width=2)
         field_buy = InputField("Buy indicator", color=(175, 0, 0), width=10)
         field_sell = InputField("Sell indicator", color=(0, 201, 80), width=10)
-        self.register_fields(field_volumes, field_ema9, field_macd, field_buy, field_sell)
+        self.register_fields(
+            field_volumes, field_ema9, field_macd, field_buy, field_sell
+        )
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(MACD, self).create_indicator(self, graph_view)
