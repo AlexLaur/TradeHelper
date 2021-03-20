@@ -39,7 +39,7 @@ class InputField(object):
         :param color: The new color to set
         :type color: tuple
         """
-        self.color = QtGui.QColor
+        self.color = color
 
     def set_value(self, value):
         """Set the value of the InputField
