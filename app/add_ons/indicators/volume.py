@@ -23,24 +23,41 @@ class Volume(Indicator):
         self.name = "Volume"
         self.description = ""
 
+        # Define and register all customisable settings
+        field_volume = InputField("Volume", color=(255, 0, 0), width=1)
+        self.register_field(field_volume)
+
     def create_indicator(self, graph_view, *args, **kwargs):
+        super(Volume, self).create_indicator(graph_view)
+
         # Get values
         values = graph_view.values
         quotation_plot = graph_view.g_quotation
 
+        # Retrive settings
+        field_volume = self.get_field("Volume")
+
+        # Draw plots
         self.g_volume = graph_view.addPlot(row=2, col=0, width=1)
+        self.g_volume.setAxisItems({"left": NonScientific(orientation="left")})
         self.g_volume.setMaximumHeight(150)
         self.g_volume.setXLink("Quotation")
 
         bars = pg.BarGraphItem(
             x=[x.timestamp() for x in values.index],
             height=values["Volume"].values,
-            width=1,
-            brush="r",
+            width=field_volume.width,
+            brush=pg.mkBrush(field_volume.color),
         )
-        self.g_volume.addItem(bars)
+
         self.set_time_x_axis(self.g_volume)
-        self.g_volume.setAxisItems({"left": NonScientific(orientation="left")})
+        self.g_volume.addItem(bars)
+
 
     def set_time_x_axis(self, widget):
+        """Set the time on the X axis
+
+        :param widget: The widget on which to add time
+        :type widget: Plot
+        """
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
