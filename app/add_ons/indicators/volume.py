@@ -23,6 +23,8 @@ class Volume(Indicator):
         self.name = "Volume"
         self.description = ""
 
+        self.g_volume = None
+
         # Define and register all customisable settings
         field_volume = InputField("Volume", color=(255, 0, 0), width=1)
         self.register_field(field_volume)
@@ -52,6 +54,10 @@ class Volume(Indicator):
 
         self.set_time_x_axis(self.g_volume)
         self.g_volume.addItem(bars)
+
+    def remove_indicator(self, graph_view, *args, **kwargs):
+        graph_view.removeItem(self.g_volume)
+        self.g_volume = None
 
     def set_time_x_axis(self, widget):
         """Set the time on the X axis
