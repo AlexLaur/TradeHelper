@@ -14,7 +14,7 @@ from ui import indicators_widget
 
 
 class InputField(object):
-    def __init__(self, attribute_name: str, color=None, value=None, width=1):
+    def __init__(self, attribute_name: str, color=None, value=None, width=None):
 
         self._attribute_name = attribute_name
         self._default_color = QtGui.QColor(*color) if color else None
