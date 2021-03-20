@@ -3,7 +3,7 @@ import pandas as pd
 
 from PySide2 import QtCore
 
-from libs.indicators_widget import Indicator
+from libs.indicators_widget import Indicator, InputField
 
 
 class RSI(Indicator):
@@ -15,13 +15,28 @@ class RSI(Indicator):
 
         self.g_rsi = None
 
+        # Define and register all customisable settings
+        field_up = InputField("Up", color=(200, 200, 200), width=1.5)
+        field_down = InputField("Down", color=(200, 200, 200), width=1.5)
+        field_rsi = InputField("RSI", color=(142, 21, 153), width=1.5)
+        self.register_fields(field_up, field_down, field_rsi)
+
     def create_indicator(self, graph_view, *args, **kwargs):
+        super(RSI, self).create_indicator(graph_view)
+
         # Get values
         values = graph_view.values
         quotation_plot = graph_view.g_quotation
 
+        # Retrive settings
+        field_up = self.get_field("Up")
+        field_down = self.get_field("Down")
+        field_rsi = self.get_field("RSI")
+
+        # Calculation
         rsi = get_rsi(values=values["Close"].values, length=14)
 
+        # Draw plots
         self.g_rsi = graph_view.addPlot(row=1, col=0, width=1)
         self.g_rsi.showGrid(x=True, y=True, alpha=1)
         self.g_rsi.setMaximumHeight(150)
@@ -31,17 +46,17 @@ class RSI(Indicator):
             x=[x.timestamp() for x in values.index],
             y=rsi,
             connect="finite",
-            pen=pg.mkPen((142, 21, 153), width=1.5),
+            pen=pg.mkPen(field_rsi.color, width=field_rsi.width),
         )
 
         # Draw overbought and oversold
         line_up = self.g_rsi.addLine(
             y=70,
-            pen=pg.mkPen((200, 200, 200), width=1.5, style=QtCore.Qt.DashLine),
+            pen=pg.mkPen(field_up.color, width=field_up.width, style=QtCore.Qt.DashLine),
         )
         line_down = self.g_rsi.addLine(
             y=30,
-            pen=pg.mkPen((200, 200, 200), width=1.5, style=QtCore.Qt.DashLine),
+            pen=pg.mkPen(field_down.color, width=field_down.width, style=QtCore.Qt.DashLine),
         )
         self.set_time_x_axis(self.g_rsi)
 
@@ -50,6 +65,11 @@ class RSI(Indicator):
         self.g_rsi = None
 
     def set_time_x_axis(self, widget):
+        """Set the time on the X axis
+
+        :param widget: The widget on which to add time
+        :type widget: Plot
+        """
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
 
 
