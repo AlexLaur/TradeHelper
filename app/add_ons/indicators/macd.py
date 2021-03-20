@@ -1,7 +1,7 @@
 import numpy as np
 import pyqtgraph as pg
 
-from libs.indicators_widget import Indicator
+from libs.indicators_widget import Indicator, InputField
 
 from PySide2 import QtCore, QtGui
 
@@ -15,70 +15,108 @@ class MACD(Indicator):
 
         self.g_macd = None
 
+        # Define and register all customisable settings
+        field_volumes = InputField("Volumes", color=(239, 83, 80), width=1)
+        field_ema9 = InputField("EMA 9", color=(255, 106, 0), width=2)
+        field_macd = InputField("MACD", color=(0, 148, 255), width=2)
+        field_buy = InputField("Buy indicator", color=(175, 0, 0), width=10)
+        field_sell = InputField("Sell indicator", color=(0, 201, 80), width=10)
+        self.register_fields(field_volumes, field_ema9, field_macd, field_buy, field_sell)
+
     def create_indicator(self, graph_view, *args, **kwargs):
+        super(MACD, self).create_indicator(self, graph_view)
+
         # Get values
         values = graph_view.values
         self.quotation_plot = graph_view.g_quotation
 
+        # Init plot
         self.g_macd = graph_view.addPlot(row=2, col=0, width=1)
         self.g_macd.setMaximumHeight(150)
         self.g_macd.setXLink("Quotation")
 
+        # Retrive settings
+        field_ema9 = self.get_field("EMA 9")
+        field_volumes = self.get_field("Volumes")
+        field_macd = self.get_field("MACD")
+
+        # Calculations
         macd_line, signal_line, macd = get_macd(values["Close"].values)
-
         ema9 = exp_moving_average(macd, w=9)
-
         macd_bar = macd - ema9
 
-        # Histogram
+        # Draw plots
         bars = pg.BarGraphItem(
             x=[x.timestamp() for x in values.index],
             height=macd_bar,
-            width=1,
+            width=field_volumes.width,
             fillOutline=True,
-            brush=(239, 83, 80),
+            brush=field_volumes.color,
         )
-
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
             y=ema9,
-            pen=pg.mkPen((255, 106, 0), width=2),
+            pen=pg.mkPen(field_ema9.color, width=field_ema9.width),
         )
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
             y=macd,
-            pen=pg.mkPen((0, 148, 255), width=2),
+            pen=pg.mkPen(field_macd.color, width=field_macd.width),
         )
+
         self.g_macd.addItem(bars)
-        self.strat_macd(values)
         self.set_time_x_axis(self.g_macd)
 
-    def strat_macd(self, values):
-        buy_sell = MACD_strategy(values)
-        self.quotation_plot.plot(
-            x=[x.timestamp() for x in values.index],
-            y=buy_sell["Buy"],
-            pen=None,
-            symbolBrush=(175, 0, 0),
-            symbol="t",
-            symbolSize=10,
-            name="sell",
-        )
-        self.quotation_plot.plot(
-            x=[x.timestamp() for x in values.index],
-            y=buy_sell["Sell"],
-            pen=None,
-            symbolBrush=(0, 201, 80),
-            symbol="t1",
-            symbolSize=10,
-            name="achat",
-        )
+        # Draw MACD stategy
+        self.strat_macd(values)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
+        super(MACD, self).remove_indicator(graph_view)
         graph_view.removeItem(self.g_macd)
         self.g_macd = None
 
+    def strat_macd(self, values):
+        """Draw the strategy on the quotation plot
+
+        :param values: values from the graph
+        :type values: pd.Dataframe
+        """
+        # Retrive settings
+        field_buy = self.get_field("Buy indicator")
+        field_sell = self.get_field("Sell indicator")
+
+        # Calculations
+        buy_sell = MACD_strategy(values)
+
+        # Draw plots
+        buy_plot = self.quotation_plot.plot(
+            x=[x.timestamp() for x in values.index],
+            y=buy_sell["Buy"],
+            pen=None,
+            symbolBrush=field_buy.color,
+            symbol="t",
+            symbolSize=field_buy.width,
+            name="sell",
+        )
+        sell_plot = self.quotation_plot.plot(
+            x=[x.timestamp() for x in values.index],
+            y=buy_sell["Sell"],
+            pen=None,
+            symbolBrush=field_sell.color,
+            symbol="t1",
+            symbolSize=field_sell.width,
+            name="buy",
+        )
+
+        # Registers plots in order to delete them later
+        self.register_plots(buy_plot, sell_plot)
+
     def set_time_x_axis(self, widget):
+        """Set the time on the X axis
+
+        :param widget: The widget on which to add time
+        :type widget: Plot
+        """
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
 
 
