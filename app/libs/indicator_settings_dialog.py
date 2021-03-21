@@ -77,7 +77,6 @@ class IndicatorSettingsDialogWindow(
     def _on_canceled(self):
         """Called on clicked on CANCEL button"""
         self._current_indicator = None
-        # TODO Clear all widget, restore to default
         self.signals.sig_indicator_settings_canceled.emit(self.indicator)
         self.close()
 
