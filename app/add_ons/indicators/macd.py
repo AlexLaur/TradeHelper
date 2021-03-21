@@ -177,7 +177,7 @@ def exp_moving_average(values, w):
 def get_macd(values, w_low=12, w_fast=26):
     emaslow = exp_moving_average(values, w=w_low)
     emafast = exp_moving_average(values, w=w_fast)
-    return emaslow, emafast, emafast - emaslow
+    return emaslow, emafast, emaslow - emafast
 
 
 def MACD_strategy(values, w_ema=9, w_low=12, w_fast=26):
