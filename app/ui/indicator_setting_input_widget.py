@@ -12,6 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from libs.widgets.combobox import InputComboBox
+
 
 class Ui_IndicatorInputSettingWidget(object):
     def setupUi(self, IndicatorInputSettingWidget):
@@ -39,10 +41,21 @@ class Ui_IndicatorInputSettingWidget(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.spi_value = QSpinBox(IndicatorInputSettingWidget)
-        self.spi_value.setObjectName(u"spi_value")
+        self.cob_value_list = InputComboBox(IndicatorInputSettingWidget)
+        self.cob_value_list.setObjectName(u"cob_value_list")
 
-        self.horizontalLayout.addWidget(self.spi_value)
+        self.horizontalLayout.addWidget(self.cob_value_list)
+
+        self.spi_value_double = QDoubleSpinBox(IndicatorInputSettingWidget)
+        self.spi_value_double.setObjectName(u"spi_value_double")
+
+        self.horizontalLayout.addWidget(self.spi_value_double)
+
+        self.spi_value_int = QSpinBox(IndicatorInputSettingWidget)
+        self.spi_value_int.setObjectName(u"spi_value_int")
+        self.spi_value_int.setMaximum(9999)
+
+        self.horizontalLayout.addWidget(self.spi_value_int)
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 

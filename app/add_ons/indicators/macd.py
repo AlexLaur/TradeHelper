@@ -1,7 +1,7 @@
 import numpy as np
 import pyqtgraph as pg
 
-from libs.indicators_widget import Indicator, InputField
+from libs.indicators_widget import Indicator, InputField, ChoiceField
 
 from PySide2 import QtCore, QtGui
 
@@ -16,6 +16,9 @@ class MACD(Indicator):
         self.g_macd = None
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
         field_volumes = InputField(
             "Volumes", color=(239, 83, 80), width=1, disable_line_style=True
         )
@@ -36,6 +39,7 @@ class MACD(Indicator):
             disable_line_style=True,
         )
         self.register_fields(
+            field_input,
             field_volumes,
             field_emaslow,
             field_emafast,
@@ -60,6 +64,7 @@ class MACD(Indicator):
         self.g_macd.setXLink("Quotation")
 
         # Retrive settings
+        field_input = self.get_field("Input")
         field_ema = self.get_field("EMA")
         field_volumes = self.get_field("Volumes")
         field_macd = self.get_field("MACD")
@@ -68,7 +73,7 @@ class MACD(Indicator):
 
         # Calculations
         macd_line, signal_line, macd = get_macd(
-            values=values["Close"].values,
+            values=values[field_input.current].values,
             w_low=field_emaslow.value,
             w_fast=field_emafast.value,
         )

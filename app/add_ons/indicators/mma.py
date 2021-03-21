@@ -1,7 +1,7 @@
 import numpy as np
 import pyqtgraph as pg
 
-from libs.indicators_widget import Indicator, InputField
+from libs.indicators_widget import Indicator, InputField, ChoiceField
 
 
 class MMA(Indicator):
@@ -12,6 +12,10 @@ class MMA(Indicator):
         self.description = "Multiple Moving Average (MMA)"
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
+        self.register_field(field_input)
         line1 = InputField(
             "Trader MMA 1", color=(51, 153, 255), value=3, width=2
         )
@@ -34,12 +38,19 @@ class MMA(Indicator):
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(MMA, self).create_indicator(self, graph_view)
+
         # Get values
         values = graph_view.values
         quotation_plot = graph_view.g_quotation
 
+        # Get field
+        field_input = self.get_field("Input")
+
         for field in self.fields:
-            mva = values["Close"].ewm(com=field["value"]).mean()
+            if not isinstance(field, InputField):
+                # Escape ChoiceFields
+                continue
+            mva = values[field_input.current].ewm(com=field.value).mean()
             plot = quotation_plot.plot(
                 x=[x.timestamp() for x in values.index],
                 y=mva,
@@ -59,6 +70,10 @@ class GuppyMMA(Indicator):
         self.description = "Guppy Multiple Moving Average (GMMA)"
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
+        self.register_field(field_input)
         line1 = InputField(
             "Trader EMA 1", color=(51, 153, 255), value=3, width=2
         )
@@ -101,13 +116,20 @@ class GuppyMMA(Indicator):
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(GuppyMMA, self).create_indicator(self, graph_view)
+
         # Get values
         values = graph_view.values
         quotation_plot = graph_view.g_quotation
 
+        # Get field
+        field_input = self.get_field("Input")
+
         for field in self.fields:
+            if not isinstance(field, InputField):
+                # Escape ChoiceFields
+                continue
             # TODO need pass this to EMA instead of MMA
-            mva = values["Close"].ewm(com=field["value"]).mean()
+            mva = values[field_input.current].ewm(com=field.value).mean()
             plot = quotation_plot.plot(
                 x=[x.timestamp() for x in values.index],
                 y=mva,

@@ -55,23 +55,31 @@ class IndicatorSettingsDialogWindow(
         self.lst_styles.clear()
         self._current_indicator = indicator
         for _field in indicator.fields:
-            if _field.value is not None:
+            # TODO Refacto this
+            if _field._type == "InputField":
+                if _field.value is not None:
+                    item = QtWidgets.QListWidgetItem()
+                    self.lst_inputs.addItem(item)
+                    wgt_input = IndicatorInputSettingWidget(field=_field)
+                    item.setSizeHint(wgt_input.sizeHint())
+                    self.lst_inputs.setItemWidget(item, wgt_input)
 
+                if _field.color is not None:
+                    item = QtWidgets.QListWidgetItem()
+                    self.lst_styles.addItem(item)
+                    wgt_style = IndicatorStyleSettingWidget(field=_field)
+                    item.setSizeHint(wgt_style.sizeHint())
+                    self.lst_styles.setItemWidget(item, wgt_style)
+
+            elif _field._type == "ChoiceField":
                 item = QtWidgets.QListWidgetItem()
                 self.lst_inputs.addItem(item)
-
                 wgt_input = IndicatorInputSettingWidget(field=_field)
                 item.setSizeHint(wgt_input.sizeHint())
                 self.lst_inputs.setItemWidget(item, wgt_input)
 
-            if _field.color is not None:
-
-                item = QtWidgets.QListWidgetItem()
-                self.lst_styles.addItem(item)
-
-                wgt_style = IndicatorStyleSettingWidget(field=_field)
-                item.setSizeHint(wgt_style.sizeHint())
-                self.lst_styles.setItemWidget(item, wgt_style)
+            else:
+                ...
 
     def reset_settings_default(self):
         """Reset all fields to default values"""
@@ -114,19 +122,45 @@ class IndicatorInputSettingWidget(
 
         # Init Ui from field values
         self.lab_field_name.setText(self._field.attribute_name)
-        self.spi_value.setValue(self._field.value)
+
+        if self._field.value_type is int:
+            self.spi_value_int.setValue(self._field.value)
+            self.spi_value_double.hide()
+            self.cob_value_list.hide()
+        elif self._field.value_type is float:
+            self.spi_value_int.hide()
+            self.spi_value_double.setValue(self._field.value)
+            self.cob_value_list.hide()
+        elif self._field.value_type in [list, tuple]:
+            self.spi_value_int.hide()
+            self.spi_value_double.hide()
+            self.cob_value_list.build(choices=self._field.choices)
+            self.cob_value_list.setCurrentText(self._field.current)
 
         # Signals
-        self.spi_value.valueChanged.connect(self._on_value_changed)
+        self.spi_value_int.valueChanged.connect(self._on_value_changed)
+        self.spi_value_double.valueChanged.connect(self._on_value_changed)
+        self.cob_value_list.currentTextChanged.connect(
+            self._on_value_choice_changed
+        )
 
     @QtCore.Slot(int)
-    def _on_value_changed(self, value: int):
+    def _on_value_changed(self, value):
         """Called on value changed in the spinbox
 
         :param value: The new value
-        :type value: int
+        :type value: int or float
         """
         self._field.value = value
+
+    @QtCore.Slot(str)
+    def _on_value_choice_changed(self, choice):
+        """Called on text changed inside the combobox
+
+        :param choice: The new text
+        :type choice: str
+        """
+        self._field.current = choice
 
 
 class IndicatorStyleSettingWidget(

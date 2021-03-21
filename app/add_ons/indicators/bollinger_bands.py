@@ -1,6 +1,6 @@
 import pyqtgraph as pg
 
-from libs.indicators_widget import Indicator, InputField
+from libs.indicators_widget import Indicator, InputField, ChoiceField
 
 
 class BollingerBands(Indicator):
@@ -13,6 +13,9 @@ class BollingerBands(Indicator):
         self.g_filler = None
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
         field_length = InputField("Length", value=20)
         field_middle = InputField("Middle", color=(0, 140, 170), width=1.2)
         field_upper = InputField("Upper", color=(0, 140, 170), width=1.2)
@@ -21,7 +24,12 @@ class BollingerBands(Indicator):
             "Fill Between", color=(0, 140, 170, 50), disable_line_style=True
         )
         self.register_fields(
-            field_length, field_middle, field_upper, field_lower, field_filler
+            field_input,
+            field_length,
+            field_middle,
+            field_upper,
+            field_lower,
+            field_filler,
         )
 
     def create_indicator(self, graph_view, *args, **kwargs):
@@ -32,6 +40,7 @@ class BollingerBands(Indicator):
         quotation_plot = graph_view.g_quotation
 
         # Retrive settings
+        field_input = self.get_field("Input")
         field_length = self.get_field("Length")
         field_middle = self.get_field("Middle")
         field_upper = self.get_field("Upper")
@@ -40,7 +49,7 @@ class BollingerBands(Indicator):
 
         # Calculate
         middler, upper, lower = bollinger_bands(
-            values, window=field_length.value
+            values, window=field_length.value, source=field_input.current
         )
 
         # Create plots
@@ -91,9 +100,9 @@ class BollingerBands(Indicator):
         self.g_filler = None
 
 
-def bollinger_bands(values, window=20):
-    middle_band = values["Close"].rolling(window=window).mean()
-    standard_deviation = values["Close"].rolling(window=window).std()
+def bollinger_bands(values, window=20, source="Close"):
+    middle_band = values[source].rolling(window=window).mean()
+    standard_deviation = values[source].rolling(window=window).std()
 
     upper_band = middle_band + standard_deviation * 2
     lower_band = middle_band - standard_deviation * 2

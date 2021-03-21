@@ -3,7 +3,7 @@ import pandas as pd
 
 from PySide2 import QtCore
 
-from libs.indicators_widget import Indicator, InputField
+from libs.indicators_widget import Indicator, InputField, ChoiceField
 
 
 class RSI(Indicator):
@@ -16,6 +16,9 @@ class RSI(Indicator):
         self.g_rsi = None
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
         field_up = InputField(
             "Up", color=(200, 200, 200), width=1.5, line_style="dash-line"
         )
@@ -25,7 +28,7 @@ class RSI(Indicator):
         field_rsi = InputField(
             "RSI", value=14, color=(142, 21, 153), width=1.5
         )
-        self.register_fields(field_up, field_down, field_rsi)
+        self.register_fields(field_input, field_up, field_down, field_rsi)
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(RSI, self).create_indicator(graph_view)
@@ -35,12 +38,15 @@ class RSI(Indicator):
         quotation_plot = graph_view.g_quotation
 
         # Retrive settings
+        field_input = self.get_field("Input")
         field_up = self.get_field("Up")
         field_down = self.get_field("Down")
         field_rsi = self.get_field("RSI")
 
         # Calculation
-        rsi = get_rsi(values=values["Close"].values, length=field_rsi.value)
+        rsi = get_rsi(
+            values=values[field_input.current].values, length=field_rsi.value
+        )
 
         # Draw plots
         self.g_rsi = graph_view.addPlot(

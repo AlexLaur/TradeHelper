@@ -13,12 +13,110 @@ from libs.widgets.pushbutton import (
 from ui import indicators_widget
 
 
-class InputField(object):
+class Field(object):
+    """Base class for all fields used to create settings for indicators"""
+
+    def __init__(self, attribute_name):
+
+        self._type = __class__.__name__
+
+        # Constants
+        self._attribute_name = attribute_name
+
+    @property
+    def attribute_name(self) -> str:
+        """Return the attribute name of the InputField
+
+        :return: The attribute name
+        :rtype: str
+        """
+        return self._attribute_name
+
+    def reset(self):
+        """Reset all settings to default values"""
+        raise NotImplemented
+
+    def __getitem__(self, key):
+        return getattr(self, key, None)
+
+    def __repr__(self):
+        return "<%s %s @0x%08x>" % (
+            __class__.__name__,
+            self._attribute_name,
+            id(self),
+        )
+
+    def __str__(self):
+        return "%s %s" % (__class__.__name__, self._attribute_name)
+
+
+class ChoiceField(Field):
+    """Object for choice management for indicators"""
+
+    def __init__(
+        self, attribute_name: str, choices: tuple, default=None, **kwargs
+    ):
+        super(ChoiceField, self).__init__(attribute_name)
+
+        self._type = __class__.__name__
+
+        # Constants
+        self._choices = choices
+        self._default = default
+        self.current = default
+        self.value_type = list
+
+        # kwargs settings
+        if kwargs.get("value_type", list):
+            value_type = kwargs.get("value_type")
+            if value_type in [list, tuple]:
+                self.value_type = value_type
+
+    @property
+    def choices(self):
+        """Return available choices
+
+        :return: All choices
+        :rtype: list
+        """
+        return self._choices
+
+    @property
+    def default(self):
+        """Return default choice
+
+        :return: The default choice
+        :rtype: string or number
+        """
+        return self._default
+
+    def set_choice(self, choice):
+        """Set the current choice
+
+        :param choice: The new choice
+        :type choice: string or number
+        """
+        if choice in self._choices:
+            self.current = choice
+
+    def reset(self):
+        """Reset che ChoiceField to default value"""
+        self.current = self._default
+
+    def __repr__(self):
+        return "<InputField %s @0x%08x>" % (self._attribute_name, id(self))
+
+    def __str__(self):
+        return "InputField %s" % (self._attribute_name)
+
+
+class InputField(Field):
     """Object for value and style management for indicators"""
 
     def __init__(
         self, attribute_name: str, color=None, value=None, width=None, **kwargs
     ):
+        super(InputField, self).__init__(attribute_name)
         """Create a customisable field in order to customise graph.
         - If no value is providen but a color is, this field will be present
         in the "style" setting page.
@@ -45,6 +143,8 @@ class InputField(object):
         :type line_style: str
         """
 
+        self._type = __class__.__name__
+
         # Constans
         self._line_styles = {
             "line": {"icon": ":/svg/line.svg", "style": QtCore.Qt.SolidLine},
@@ -58,7 +158,6 @@ class InputField(object):
             },
         }
 
-        self._attribute_name = attribute_name
         self._default_color = QtGui.QColor(*color) if color else None
         self._default_value = value
         self._default_width = width
@@ -68,6 +167,7 @@ class InputField(object):
         self.value = self._default_value
         self.width = self._default_width
         self.disable_line_style = False
+        self.value_type = int
         self.line_style = self._default_line_style
 
         # Kwargs settings
@@ -75,15 +175,10 @@ class InputField(object):
             self.disable_line_style = True
         if kwargs.get("line_style", None):
             self.set_line_style(kwargs.get("line_style"))
-
-    @property
-    def attribute_name(self) -> str:
-        """Return the attribute name of the InputField
-
-        :return: The attribute name
-        :rtype: str
-        """
-        return self._attribute_name
+        if kwargs.get("value_type", int):
+            value_type = kwargs.get("value_type")
+            if value_type in [int, float]:
+                self.value_type = value_type
 
     def set_color(self, color: QtGui.QColor):
         """Set the color of the InputField
@@ -140,14 +235,15 @@ class InputField(object):
         self.width = self._default_width
         self.line_style = self._default_line_style
 
-    def __getitem__(self, key):
-        return getattr(self, key, None)
-
     def __repr__(self):
-        return "<InputField %s @0x%08x>" % (self._attribute_name, id(self))
+        return "<%s %s @0x%08x>" % (
+            __class__.__name__,
+            self._attribute_name,
+            id(self),
+        )
 
     def __str__(self):
-        return "InputField %s" % (self._attribute_name)
+        return "%s %s" % (__class__.__name__, self._attribute_name)
 
 
 class Indicator(object):
@@ -183,7 +279,7 @@ class Indicator(object):
     def register_fields(self, *args: list):
         """Register all given fields settings"""
         for arg in args:
-            if not isinstance(arg, InputField):
+            if not isinstance(arg, (InputField, ChoiceField)):
                 continue
             self.register_field(field=arg)
 

@@ -3,7 +3,7 @@ import numpy as np
 
 from scipy import signal
 
-from libs.indicators_widget import Indicator, InputField
+from libs.indicators_widget import Indicator, InputField, ChoiceField
 
 
 class ZigZag(Indicator):
@@ -14,8 +14,11 @@ class ZigZag(Indicator):
         self.description = ""
 
         # Define and register all customisable settings
+        field_input = ChoiceField(
+            "Input", choices=["Open", "Close", "High", "Low"], default="Close"
+        )
         field_zigzag = InputField("ZigZag", color=(33, 150, 243), width=2.5)
-        self.register_field(field_zigzag)
+        self.register_fields(field_input, field_zigzag)
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(ZigZag, self).create_indicator(graph_view)
@@ -25,15 +28,16 @@ class ZigZag(Indicator):
         quotation_plot = graph_view.g_quotation
 
         # Retrive settings
+        field_input = self.get_field("Input")
         field_zigzag = self.get_field("ZigZag")
 
         # Calculation
-        zigzag = zig_zag(values=values["Close"].values)
+        zigzag = zig_zag(values=values[field_input.current].values)
 
         # Draw plot
         plot = quotation_plot.plot(
             x=[x.timestamp() for x in values.index[zigzag]],
-            y=values["Close"].values[zigzag],
+            y=values[field_input.current].values[zigzag],
             pen=pg.mkPen(
                 field_zigzag.color,
                 width=field_zigzag.width,
