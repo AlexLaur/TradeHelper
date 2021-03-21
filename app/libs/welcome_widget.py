@@ -1,21 +1,13 @@
-import os
-import json
+#
+# This class set the default Welcome Page.
+#
+
 import random
-from PySide2 import QtWidgets, QtCore
-from libs.thread_pool import ThreadPool
-from libs.articles.get_articles import Articles
+from utils import utils
+from PySide2 import QtWidgets
+from libs.articles.yahoo_articles import ArticlesYahoo
 from libs.widgets.article_itemwidget import ArticlesWidgetItem
 
-
-SCRIPT_PATH = os.path.dirname(os.path.dirname(__file__))
-
-
-def read_data():
-    """Temp function to load all tickers. Should be loaded by a request in the future"""
-    data = {}
-    with open(os.path.join(SCRIPT_PATH, "data", "dataset.json"), "r") as f:
-        data = json.load(f)
-    return data
 
 class WelcomeWidget(QtWidgets.QListWidget):
     def __init__(self, parent=None):
@@ -24,29 +16,28 @@ class WelcomeWidget(QtWidgets.QListWidget):
         articles = []
         for tick in self.rdm_tickers():
             artic = self._get_articles_dict(ticker=tick).articles
-            if artic:
-                articles.append(artic[0])
+            articles.extend(artic)
 
         for index, i in enumerate(articles):
-            title = i["title"]
-            date = i["date"]
-            description = i["descritpion"]
-            link = i["link"]
-            article = ArticlesWidgetItem(
-                parent=self
-            )
-            article.set_title(title)
-            article.set_date(date)
-            article.set_description(description)
+            article = ArticlesWidgetItem(parent=self)
+            article.set_title(i["title"], i["link"])
+            article.set_compagny(i["compagny"])
+            article.set_date(i["published"])
+            article.set_description(i["summary"])
+            article.set_thumbnail(i["img"])
             item = QtWidgets.QListWidgetItem()
             item.setSizeHint(article.sizeHint())
             self.addItem(item)
             self.setItemWidget(item, article)
 
+
     def _get_articles_dict(self, ticker):
-        return Articles(ticker=ticker)
+        return ArticlesYahoo(ticker=ticker, translate=False, single=True)
 
     def rdm_tickers(self):
-        all_tickers = read_data().keys()
+        """
+        This method select 5 randoms tickers.
+        """
+        all_tickers = utils.get_all_tickers().keys()
         tickers = random.sample(all_tickers, 5)
         return tickers

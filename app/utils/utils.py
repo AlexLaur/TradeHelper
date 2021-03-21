@@ -1,6 +1,6 @@
 import datetime
 import urllib.request
-from statistics import mean
+from libs.yahoo_fin import stock_info as sf
 
 from sklearn import preprocessing
 import numpy as np
@@ -8,6 +8,8 @@ import pandas as pd
 from scipy import signal
 
 from PySide2.QtGui import QPixmap
+
+from statistics import mean
 
 
 def normalize_data(data):
@@ -240,7 +242,7 @@ def refacto_dette(dette_toref, leverage_toref):
 
 def remove_nan(data):
     """
-    Cette fonction renplace les valeurs NaN par 0.
+    This method replace Nan value by 0.
     Sinon return float.
     :param data:
     :return: List
@@ -256,7 +258,7 @@ def remove_nan(data):
 
 def format_data(data):
     """
-    Cette fonction format les nombres avec des ','.
+    This method format number with ','.
     exemple:  2,120,350
     :param data:
     :return: List of string
@@ -289,3 +291,31 @@ def croissance(data):
     decroi = ls_croi.count(False)
     croi = ls_croi.count(True)
     return croi, decroi
+
+
+def get_all_tickers():
+    """
+    This method return a dict of all the compagny for each markets.
+    """
+    dow = sf.tickers_dow()
+    cac = sf.tickers_cac()
+    sp500 = sf.tickers_sp500()
+    nasdaq = sf.tickers_nasdaq()
+
+    data = {}
+    for i in [cac, dow, nasdaq, sp500]:
+        data.update(i)
+
+    return dow
+
+
+def get_compagny_name_from_tick(ticker):
+    """
+    This method return the Compagny name for his ticker.
+    """
+
+    data = get_all_tickers()
+
+    for tick, company in data.items():
+        if tick == ticker:
+            return company

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>944</width>
+    <width>997</width>
     <height>754</height>
    </rect>
   </property>
@@ -117,6 +117,22 @@
          </widget>
         </item>
         <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="WelcomeWidget" name="listWidget"/>
         </item>
        </layout>
@@ -188,7 +204,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>944</width>
+     <width>997</width>
      <height>21</height>
     </rect>
    </property>
@@ -271,6 +287,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>LabelTitle</class>
+   <extends>QLabel</extends>
+   <header>libs.widgets.label.h</header>
+  </customwidget>
+  <customwidget>
    <class>GraphWidget</class>
    <extends>QWidget</extends>
    <header>libs.graph.graphwidget</header>
@@ -312,14 +333,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>LabelTitle</class>
-   <extends>QLabel</extends>
-   <header>libs.widgets.label.h</header>
-  </customwidget>
-  <customwidget>
    <class>TableFinance</class>
    <extends>QTableWidget</extends>
-   <header>libs.financial_widgets.h</header>
+   <header>libs.financial_widget.h</header>
   </customwidget>
   <customwidget>
    <class>WelcomeWidget</class>

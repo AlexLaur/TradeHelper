@@ -1,39 +1,36 @@
+#
+# This class set all the articles from a selected compagny.
+#
+
 from PySide2 import QtWidgets, QtCore
-from libs.thread_pool import ThreadPool
-from libs.articles.get_articles import Articles
+from libs.articles.yahoo_articles import ArticlesYahoo
 from libs.widgets.article_itemwidget import ArticlesWidgetItem
 
 
 class ArticlesWidget(QtWidgets.QListWidget):
     def __init__(self, parent=None, ticker=None):
         super(ArticlesWidget, self).__init__(parent)
-
-        self.thread_pool = ThreadPool()
-        self.get_articles(ticker)
+        self._on_get_articles(ticker)
 
     @QtCore.Slot(str)
-    def get_articles(self, ticker):
-
+    def _on_get_articles(self, ticker):
         articles = self._get_articles_dict(ticker=ticker).articles
         self.clear()
 
         for index, i in enumerate(articles):
-            title = i["title"]
-            date = i["date"]
-            description = i["descritpion"]
-            link = i["link"]
-            article = ArticlesWidgetItem(
-                parent=self
-            )
-            article.set_title(title)
-            article.set_date(date)
-            article.set_description(description)
+            article = ArticlesWidgetItem(parent=self)
+            article.set_title(i["title"], i["link"])
+            article.set_compagny(i["compagny"])
+            article.set_date(i["published"])
+            article.set_description(i["summary"])
+            article.set_thumbnail(i["img"])
             item = QtWidgets.QListWidgetItem()
             item.setSizeHint(article.sizeHint())
             self.addItem(item)
             self.setItemWidget(item, article)
 
+
     def _get_articles_dict(self, ticker):
-        return Articles(ticker=ticker)
+        return ArticlesYahoo(ticker=ticker, translate=False)
 
 

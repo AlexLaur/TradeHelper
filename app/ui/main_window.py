@@ -12,6 +12,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from libs.widgets.label import LabelTitle
 from libs.graph.graphwidget import GraphWidget
 from libs.indicators_widget import IndicatorsWidget
 from libs.widgets.toolbar import ToolBar
@@ -19,8 +20,7 @@ from libs.widgets.stackedwidget import StackedWidget
 from libs.company_widget import CompanyWidget
 from libs.favorites_widget import FavoritesWidget
 from libs.articles_widget import ArticlesWidget
-from libs.widgets.label import LabelTitle
-from libs.financial_widgets import TableFinance
+from libs.financial_widget import TableFinance
 from libs.welcome_widget import WelcomeWidget
 
 import resources_rc
@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(944, 754)
+        MainWindow.resize(997, 754)
         self.action_reload_indicators = QAction(MainWindow)
         self.action_reload_indicators.setObjectName(u"action_reload_indicators")
         self.centralwidget = QWidget(MainWindow)
@@ -86,6 +86,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.label)
 
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
         self.listWidget = WelcomeWidget(self.wgt_welcome)
         self.listWidget.setObjectName(u"listWidget")
 
@@ -125,7 +129,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 944, 21))
+        self.menubar.setGeometry(QRect(0, 0, 997, 21))
         self.menuOptions = QMenu(self.menubar)
         self.menuOptions.setObjectName(u"menuOptions")
         MainWindow.setMenuBar(self.menubar)

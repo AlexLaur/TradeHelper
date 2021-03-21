@@ -1,37 +1,25 @@
-from pprint import pprint
-from libs.thread_pool import ThreadPool
 from PySide2 import QtWidgets, QtCore, QtGui
 from libs.analysies.analyse_financials import AnalyseFondamental
 
 class QTableWidgetFinance(QtWidgets.QTableWidget):
     def __init__(self, parent=None):
         super(QTableWidgetFinance, self).__init__(parent=parent)
-        # cellExited = QtCore.pyqtSignal(int, int)
-        # itemExited = QtCore.pyqtSignal(QtWidgets.QTableWidgetItem)
-
-    # def eventFilter(self, widget, event):
-    #     item = self.table.item(row, column)
-    #     old_item = self.table.item(self.current_hover[0], self.current_hover[1])
-    #     if self.current_hover != [row, column]:
-    #         old_item.setBackground(QBrush(QColor('white')))
-    #         item.setBackground(QBrush(QColor('yellow')))
-    #     self.current_hover = [row, column]
 
 class TableFinance(QTableWidgetFinance):
     def __init__(self, parent=None):
         super(TableFinance, self).__init__(parent=parent)
-        self.thread_pool = ThreadPool()
 
     @QtCore.Slot(str)
-    def get_financials_table(self, ticker):
+    def on_set_financials_table(self, ticker):
+        """
+        This method get the fondamental from the compagny
+        and fill the table.
+        """
         analyses = AnalyseFondamental(ticker)
         self.data = analyses.datas
 
-        # pprint(self.data)
-
         self.clear()
         header = self.data['YEAR']
-        # hearder_len = len(header)
         header.insert(0, 'Valorisation')
         header.insert(len(header), 'Bilan')
         score = self.data["Score"]
@@ -81,6 +69,9 @@ class TableFinance(QTableWidgetFinance):
         # self.cellEntered.connect(self.cellHover)
 
     def cellHover(self, row, column):
+        """
+        This method get position (row,column) of cursor.
+        """
         self.current_hover = [0, 0]
         item = self.item(row, column)
         # print(self.itemFromIndex(row))

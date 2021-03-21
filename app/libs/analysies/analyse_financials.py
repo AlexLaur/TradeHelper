@@ -18,14 +18,11 @@ import datetime
 from pprint import pprint
 from utils import utils as utl
 from libs.yahoo_fin import stock_info as sf
-from libs.thread_pool import ThreadPool
 from libs.analysies.analyse import AnalyseData
 
 
 class AnalyseFondamental(object):
     def __init__(self, ticker):
-
-        self.thread_pool = ThreadPool()
 
         self.per_datas = sf.get_quote_table(ticker)
         self.resultat_datas = sf.get_income_statement(ticker)

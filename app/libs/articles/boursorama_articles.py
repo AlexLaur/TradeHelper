@@ -62,8 +62,8 @@ class Articles(object):
             self.articles.append(
                 {
                     "title": title,
-                    "date": time,
-                    "descritpion": descritpion,
+                    "published": time,
+                    "summary": descritpion,
                     "link": "https://www.boursorama.com{}".format(link),
                 }
             )

@@ -5,6 +5,7 @@ import io
 import re
 import json
 import datetime
+from bs4 import BeautifulSoup
 
 try:
     from requests_html import HTMLSession
@@ -227,14 +228,14 @@ def tickers_other(include_company_data=False):
     return tickers
 
 
-def tickers_dow(include_company_data=False):
+def _tickers_dow_(include_company_data=False):
 
     """Downloads list of currently traded tickers on the Dow"""
 
     site = "https://finance.yahoo.com/quote/%5EDJI/components?p=%5EDJI"
 
     table = pd.read_html(site)[0]
-
+    print(table)
     if include_company_data:
         return table
 
@@ -245,6 +246,23 @@ def tickers_dow(include_company_data=False):
 
     return dow_tickers
 
+def tickers_dow():
+
+    site = "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"
+    head = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+
+    request = requests.get(site, headers={"user-agent": head})
+    soup = BeautifulSoup(request.text, 'html.parser')
+
+    ul = soup.find("table", {"class": "wikitable sortable"})
+    title = ul.findAll("th", {"scope": "row"})
+    tickers = ul.findAll("a", {"class": "external text"})
+
+    dow_tickers = {
+        key: value
+        for key, value in zip([i.text for i in tickers], [i.text.strip() for i in title])
+    }
+    return dow_tickers
 
 def tickers_ibovespa(include_company_data=False):
 
