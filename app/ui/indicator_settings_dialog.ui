@@ -25,21 +25,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QScrollArea" name="scrollArea">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="wgt_inputs">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>358</width>
-            <height>189</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
+        <widget class="QListWidget" name="lst_inputs"/>
        </item>
       </layout>
      </widget>
@@ -49,21 +35,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QScrollArea" name="scrollArea_2">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="wgt_styles">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>358</width>
-            <height>189</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
+        <widget class="QListWidget" name="lst_styles"/>
        </item>
       </layout>
      </widget>

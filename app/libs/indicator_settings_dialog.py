@@ -18,11 +18,6 @@ class IndicatorSettingsDialogWindow(
         self._current_indicator = None
         self.signals = EventHandler()
 
-        self.lyt_inputs = QtWidgets.QVBoxLayout()
-        self.lyt_styles = QtWidgets.QVBoxLayout()
-        self.wgt_inputs.setLayout(self.lyt_inputs)
-        self.wgt_styles.setLayout(self.lyt_styles)
-
         # Signals
         self.pub_cancel.clicked.connect(self._on_canceled)
         self.pub_ok.clicked.connect(self._on_ok)
@@ -53,14 +48,27 @@ class IndicatorSettingsDialogWindow(
         :param indicator: The indicator
         :type indicator: Indicator
         """
+        self.lst_inputs.clear()
+        self.lst_styles.clear()
         self._current_indicator = indicator
         for _field in indicator.fields:
             if _field.value is not None:
+
+                item = QtWidgets.QListWidgetItem()
+                self.lst_inputs.addItem(item)
+
                 wgt_input = IndicatorInputSettingWidget(field=_field)
-                self.lyt_inputs.addWidget(wgt_input)
+                item.setSizeHint(wgt_input.sizeHint())
+                self.lst_inputs.setItemWidget(item, wgt_input)
+
             if _field.color is not None:
+
+                item = QtWidgets.QListWidgetItem()
+                self.lst_styles.addItem(item)
+
                 wgt_style = IndicatorStyleSettingWidget(field=_field)
-                self.lyt_styles.addWidget(wgt_style)
+                item.setSizeHint(wgt_style.sizeHint())
+                self.lst_styles.setItemWidget(item, wgt_style)
 
     @QtCore.Slot()
     def _on_canceled(self):
