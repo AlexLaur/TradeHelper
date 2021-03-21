@@ -48,6 +48,7 @@ class Ui_IndicatorInputSettingWidget(object):
 
         self.spi_value_double = QDoubleSpinBox(IndicatorInputSettingWidget)
         self.spi_value_double.setObjectName(u"spi_value_double")
+        self.spi_value_double.setMaximum(9999.989999999999782)
 
         self.horizontalLayout.addWidget(self.spi_value_double)
 

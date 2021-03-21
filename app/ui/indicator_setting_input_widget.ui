@@ -49,7 +49,11 @@
       <widget class="InputComboBox" name="cob_value_list"/>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spi_value_double"/>
+      <widget class="QDoubleSpinBox" name="spi_value_double">
+       <property name="maximum">
+        <double>9999.989999999999782</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QSpinBox" name="spi_value_int">
