@@ -57,6 +57,22 @@ class ChoiceField(Field):
         self, attribute_name: str, choices: tuple, default=None, **kwargs
     ):
         super(ChoiceField, self).__init__(attribute_name)
+        """Create a customisable field in order to customise graph.
+        This class represent a choice setting. (creates automatically
+        a combobox in the input settings page)
+
+        :param attribute_name: The name of the field
+        :type attribute_name: str
+        :param choices: All available choices
+        :type choices: tuple, list, optional
+        :param default: The default value
+        :type default: int or float
+
+        kwargs parameters:
+
+        :param value_type: The type of value (list or tuple). defaults to list
+        :type value_type: list, tuple
+        """
 
         self._type = __class__.__name__
 
@@ -363,6 +379,7 @@ class IndicatorsWidget(
         )
 
     def build_indicators(self):
+        """Build the table which contains all indicators"""
         indicators = self._indicators_collection.plugins
 
         self.tab_indicators.clearContents()
