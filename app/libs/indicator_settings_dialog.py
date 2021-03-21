@@ -73,6 +73,11 @@ class IndicatorSettingsDialogWindow(
                 item.setSizeHint(wgt_style.sizeHint())
                 self.lst_styles.setItemWidget(item, wgt_style)
 
+    def reset_settings_default(self):
+        """Reset all fields to default values"""
+        for field in self.indicator.fields:
+            field.reset()
+
     @QtCore.Slot()
     def _on_canceled(self):
         """Called on clicked on CANCEL button"""
@@ -89,7 +94,10 @@ class IndicatorSettingsDialogWindow(
     @QtCore.Slot()
     def _on_reset(self):
         """Called on clicked on Reset settings button"""
-        # TODO Reset all settings to default
+        # Reset values
+        self.reset_settings_default()
+        # Rebuild UI
+        self.build_settings(indicator=self.indicator)
         self.signals.sig_indicator_settings_reseted.emit(self.indicator)
 
 

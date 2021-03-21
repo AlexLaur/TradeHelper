@@ -61,11 +61,12 @@ class InputField(object):
         self._attribute_name = attribute_name
         self._default_color = QtGui.QColor(*color) if color else None
         self._default_value = value
+        self._default_width = width
         self._default_line_style = QtCore.Qt.SolidLine
 
         self.color = self._default_color
         self.value = self._default_value
-        self.width = width
+        self.width = self._default_width
         self.disable_line_style = False
         self.line_style = self._default_line_style
 
@@ -131,6 +132,13 @@ class InputField(object):
                 if style_data.get("style") != line_style:
                     continue
                 self.line_style = line_style
+
+    def reset(self):
+        """Reset the InputField to default values"""
+        self.color = self._default_color
+        self.value = self._default_value
+        self.width = self._default_width
+        self.line_style = self._default_line_style
 
     def __getitem__(self, key):
         return getattr(self, key, None)
