@@ -4,6 +4,7 @@ from ui.indicator_settings_dialog import Ui_IndicatorSettingsDialogWindow
 from ui.indicator_setting_style_widget import Ui_IndicatorStyleSettingWidget
 from ui.indicator_setting_input_widget import Ui_IndicatorInputSettingWidget
 from libs.events_handler import EventHandler
+from utils import utils
 
 
 class IndicatorSettingsDialogWindow(
@@ -35,10 +36,12 @@ class IndicatorSettingsDialogWindow(
     def show(self, indicator, *args, **kwargs):
         """Show this widget
 
-        :param indicator: The indicator assicated
+        :param indicator: The indicator associated
         :type indicator: Indicator
         """
-        self.move(self.parent().rect().center() - self.rect().center())
+        main_window = utils.get_main_window_instance()
+        if main_window:
+            self.move(main_window.rect().center() - self.rect().center())
         self.build_settings(indicator=indicator)
         super(IndicatorSettingsDialogWindow, self).show()
 
