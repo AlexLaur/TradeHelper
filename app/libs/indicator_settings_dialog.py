@@ -141,9 +141,20 @@ class IndicatorStyleSettingWidget(
         self.lab_field_name.setText(self._field.attribute_name)
         self.set_button_background_color(color=self._field.color)
 
+        if not self._field.disable_line_style:
+            self.cob_line_style.build(line_styles=self._field._line_styles)
+            self.cob_line_style.set_current_style(
+                line_style=self._field.line_style
+            )
+        else:
+            self.cob_line_style.hide()
+
         # Signal
         self.pub_color.clicked.connect(self._on_color_button_clicked)
         self.color_picker.colorSelected.connect(self._on_color_selected)
+        self.cob_line_style.currentIndexChanged.connect(
+            self._on_line_style_selected
+        )
 
     def set_button_background_color(self, color: QtGui.QColor):
         """Set the background color of the button color
@@ -170,3 +181,13 @@ class IndicatorStyleSettingWidget(
         """
         self.set_button_background_color(color=color)
         self._field.set_color(color=color)
+
+    @QtCore.Slot(int)
+    def _on_line_style_selected(self, index: int):
+        """Called when the line style is changed from the combobox
+
+        :param index: The index of the current selected item
+        :type index: int
+        """
+        line_style_name = self.cob_line_style.currentText()
+        self._field.set_line_style(line_style_name=line_style_name)

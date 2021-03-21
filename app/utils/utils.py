@@ -191,7 +191,6 @@ def find_method(module, obj):
 def convert_date_to_timestamp(data):
     final = []
     for date in data.index:
-        print(date, type(date))
         _date = datetime.datetime.strptime(date, "%Y-%m-%d")
         timestamp = datetime.datetime.timestamp(_date)
         final.append(timestamp)

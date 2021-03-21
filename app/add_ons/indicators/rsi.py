@@ -16,8 +16,12 @@ class RSI(Indicator):
         self.g_rsi = None
 
         # Define and register all customisable settings
-        field_up = InputField("Up", color=(200, 200, 200), width=1.5)
-        field_down = InputField("Down", color=(200, 200, 200), width=1.5)
+        field_up = InputField(
+            "Up", color=(200, 200, 200), width=1.5, line_style="dash-line"
+        )
+        field_down = InputField(
+            "Down", color=(200, 200, 200), width=1.5, line_style="dash-line"
+        )
         field_rsi = InputField(
             "RSI", value=14, color=(142, 21, 153), width=1.5
         )
@@ -50,14 +54,18 @@ class RSI(Indicator):
             x=[x.timestamp() for x in values.index],
             y=rsi,
             connect="finite",
-            pen=pg.mkPen(field_rsi.color, width=field_rsi.width),
+            pen=pg.mkPen(
+                field_rsi.color,
+                width=field_rsi.width,
+                style=field_rsi.line_style,
+            ),
         )
 
         # Draw overbought and oversold
         line_up = self.g_rsi.addLine(
             y=70,
             pen=pg.mkPen(
-                field_up.color, width=field_up.width, style=QtCore.Qt.DashLine
+                field_up.color, width=field_up.width, style=field_up.line_style
             ),
         )
         line_down = self.g_rsi.addLine(
@@ -65,7 +73,7 @@ class RSI(Indicator):
             pen=pg.mkPen(
                 field_down.color,
                 width=field_down.width,
-                style=QtCore.Qt.DashLine,
+                style=field_down.line_style,
             ),
         )
         self.set_time_x_axis(self.g_rsi)

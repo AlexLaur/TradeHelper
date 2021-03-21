@@ -26,7 +26,9 @@ class Volume(Indicator):
         self.g_volume = None
 
         # Define and register all customisable settings
-        field_volume = InputField("Volume", color=(255, 0, 0), width=1)
+        field_volume = InputField(
+            "Volume", color=(255, 0, 0), width=1, disable_line_style=True
+        )
         self.register_field(field_volume)
 
     def create_indicator(self, graph_view, *args, **kwargs):

@@ -34,7 +34,11 @@ class ZigZag(Indicator):
         plot = quotation_plot.plot(
             x=[x.timestamp() for x in values.index[zigzag]],
             y=values["Close"].values[zigzag],
-            pen=pg.mkPen(field_zigzag.color, width=field_zigzag.width),
+            pen=pg.mkPen(
+                field_zigzag.color,
+                width=field_zigzag.width,
+                style=field_zigzag.line_style,
+            ),
         )
         self.register_plot(plot)
 

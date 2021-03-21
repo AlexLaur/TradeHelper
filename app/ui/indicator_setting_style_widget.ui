@@ -71,11 +71,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cob_width">
+      <widget class="StyleComboBox" name="cob_line_style">
        <property name="maximumSize">
         <size>
          <width>50</width>
          <height>16777215</height>
+        </size>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
         </size>
        </property>
       </widget>
@@ -91,6 +97,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StyleComboBox</class>
+   <extends>QComboBox</extends>
+   <header>libs.widgets.combobox</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

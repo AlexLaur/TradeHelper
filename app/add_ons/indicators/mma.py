@@ -44,7 +44,9 @@ class MMA(Indicator):
                 x=[x.timestamp() for x in values.index],
                 y=mva,
                 connect="finite",
-                pen=pg.mkPen(field.color, width=field.width),
+                pen=pg.mkPen(
+                    field.color, width=field.width, style=field.line_style
+                ),
             )
             self.register_plot(plot=plot)
 
@@ -110,7 +112,9 @@ class GuppyMMA(Indicator):
                 x=[x.timestamp() for x in values.index],
                 y=mva,
                 connect="finite",
-                pen=pg.mkPen(field.color, width=field.width),
+                pen=pg.mkPen(
+                    field.color, width=field.width, style=field.line_style
+                ),
             )
             self.register_plot(plot=plot)
 

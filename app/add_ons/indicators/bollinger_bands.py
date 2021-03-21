@@ -17,7 +17,9 @@ class BollingerBands(Indicator):
         field_middle = InputField("Middle", color=(0, 140, 170), width=1.2)
         field_upper = InputField("Upper", color=(0, 140, 170), width=1.2)
         field_lower = InputField("Lower", color=(0, 140, 170), width=1.2)
-        field_filler = InputField("Fill Between", color=(0, 140, 170, 50))
+        field_filler = InputField(
+            "Fill Between", color=(0, 140, 170, 50), disable_line_style=True
+        )
         self.register_fields(
             field_length, field_middle, field_upper, field_lower, field_filler
         )
@@ -32,7 +34,7 @@ class BollingerBands(Indicator):
         # Retrive settings
         field_length = self.get_field("Length")
         field_middle = self.get_field("Middle")
-        field_upper = self.get_field("Middle")
+        field_upper = self.get_field("Upper")
         field_lower = self.get_field("Lower")
         field_filler = self.get_field("Fill Between")
 
@@ -45,19 +47,31 @@ class BollingerBands(Indicator):
         middler_plot = quotation_plot.plot(
             x=[x.timestamp() for x in values.index],
             y=middler,
-            pen=pg.mkPen(color=field_middle.color, width=field_middle.width),
+            pen=pg.mkPen(
+                color=field_middle.color,
+                width=field_middle.width,
+                style=field_middle.line_style,
+            ),
         )
 
         upper_plot = quotation_plot.plot(
             x=[x.timestamp() for x in values.index],
             y=upper,
-            pen=pg.mkPen(color=field_upper.color, width=field_upper.width),
+            pen=pg.mkPen(
+                color=field_upper.color,
+                width=field_upper.width,
+                style=field_upper.line_style,
+            ),
         )
 
         lower_plot = quotation_plot.plot(
             x=[x.timestamp() for x in values.index],
             y=lower,
-            pen=pg.mkPen(color=field_lower.color, width=field_lower.width),
+            pen=pg.mkPen(
+                color=field_lower.color,
+                width=field_lower.width,
+                style=field_lower.line_style,
+            ),
         )
 
         self.g_filler = pg.FillBetweenItem(

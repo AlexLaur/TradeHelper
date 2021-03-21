@@ -16,13 +16,25 @@ class MACD(Indicator):
         self.g_macd = None
 
         # Define and register all customisable settings
-        field_volumes = InputField("Volumes", color=(239, 83, 80), width=1)
+        field_volumes = InputField(
+            "Volumes", color=(239, 83, 80), width=1, disable_line_style=True
+        )
         field_emaslow = InputField("EMA Low", value=12)
         field_emafast = InputField("EMA Fast", value=26)
         field_ema = InputField("EMA", value=9, color=(255, 106, 0), width=2)
         field_macd = InputField("MACD", color=(0, 148, 255), width=2)
-        field_buy = InputField("Buy indicator", color=(175, 0, 0), width=10)
-        field_sell = InputField("Sell indicator", color=(0, 201, 80), width=10)
+        field_buy = InputField(
+            "Buy indicator",
+            color=(175, 0, 0),
+            width=10,
+            disable_line_style=True,
+        )
+        field_sell = InputField(
+            "Sell indicator",
+            color=(0, 201, 80),
+            width=10,
+            disable_line_style=True,
+        )
         self.register_fields(
             field_volumes,
             field_emaslow,
@@ -74,12 +86,20 @@ class MACD(Indicator):
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
             y=ema,
-            pen=pg.mkPen(field_ema.color, width=field_ema.width),
+            pen=pg.mkPen(
+                field_ema.color,
+                width=field_ema.width,
+                style=field_ema.line_style,
+            ),
         )
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
             y=macd,
-            pen=pg.mkPen(field_macd.color, width=field_macd.width),
+            pen=pg.mkPen(
+                field_macd.color,
+                width=field_macd.width,
+                style=field_macd.line_style,
+            ),
         )
 
         self.g_macd.addItem(bars)

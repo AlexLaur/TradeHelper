@@ -24,6 +24,9 @@
     <file>svg/settings.svg</file>
     <file>svg/toggle-on.svg</file>
     <file>svg/toggle-off.svg</file>
+    <file>svg/line.svg</file>
+    <file>svg/dot-line.svg</file>
+    <file>svg/dash-line.svg</file>
 
     <file>style/style.qss</file>
     <file>toolbar/toolbar.json</file>

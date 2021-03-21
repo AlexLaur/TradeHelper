@@ -14,17 +14,66 @@ from ui import indicators_widget
 
 
 class InputField(object):
+    """Object for value and style management for indicators"""
+
     def __init__(
-        self, attribute_name: str, color=None, value=None, width=None
+        self, attribute_name: str, color=None, value=None, width=None, **kwargs
     ):
+        """Create a customisable field in order to customise graph.
+        - If no value is providen but a color is, this field will be present
+        in the "style" setting page.
+        - If no color is provided but a value is, this field will be present
+        in the "Input" setting page.
+        - If both are provided, this will be present in both settings.
+
+        :param attribute_name: The name of the field
+        :type attribute_name: str
+        :param color: The color to apply by default, defaults to None
+        :type color: tuple, optional
+        :param value: The value to apply by default, defaults to None
+        :type value: int or float, optional
+        :param width: The width to apply by default, defaults to None
+        :type width: int or float, optional
+
+        kwargs parameters:
+
+        :param disable_line_style: Disable the posibility to choose a
+        line stype from the style page. defaults to False
+        :type disable_line_style: bool
+        :param line_style: Choose a style to apply for lines.
+        3 Choices are available (line, dash-line and dot-line). defaults to line
+        :type line_style: str
+        """
+
+        # Constans
+        self._line_styles = {
+            "line": {"icon": ":/svg/line.svg", "style": QtCore.Qt.SolidLine},
+            "dash-line": {
+                "icon": ":/svg/dash-line.svg",
+                "style": QtCore.Qt.DashLine,
+            },
+            "dot-line": {
+                "icon": ":/svg/dot-line.svg",
+                "style": QtCore.Qt.DotLine,
+            },
+        }
 
         self._attribute_name = attribute_name
         self._default_color = QtGui.QColor(*color) if color else None
         self._default_value = value
+        self._default_line_style = QtCore.Qt.SolidLine
 
         self.color = self._default_color
         self.value = self._default_value
         self.width = width
+        self.disable_line_style = False
+        self.line_style = self._default_line_style
+
+        # Kwargs settings
+        if kwargs.get("disable_line_style", False):
+            self.disable_line_style = True
+        if kwargs.get("line_style", None):
+            self.set_line_style(kwargs.get("line_style"))
 
     @property
     def attribute_name(self) -> str:
@@ -58,6 +107,30 @@ class InputField(object):
         :type width: int, float
         """
         self.width = width
+
+    def set_line_style(self, line_style_name: str = None, line_style=None):
+        """Set the line style of the InputField
+
+        :param line_style_name: The style of the line (line, dash-line, dot-line)
+        :type line_style_name: str, optional
+        :param line_style: The style of the line (1, 2, 3)
+        :type line_style: int, optional
+        :raises KeyError: If the style doesn't exists
+        """
+        if not line_style_name and not line_style:
+            return
+        if line_style_name:
+            if line_style_name not in self._line_styles:
+                raise KeyError("%s not in available styles" % line_style_name)
+            self.line_style = self._line_styles.get(line_style_name).get(
+                "style"
+            )
+            return
+        if line_style:
+            for style_data in self._line_styles.values():
+                if style_data.get("style") != line_style:
+                    continue
+                self.line_style = line_style
 
     def __getitem__(self, key):
         return getattr(self, key, None)

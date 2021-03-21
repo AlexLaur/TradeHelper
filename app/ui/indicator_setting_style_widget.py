@@ -12,6 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from libs.widgets.combobox import StyleComboBox
+
 
 class Ui_IndicatorStyleSettingWidget(object):
     def setupUi(self, IndicatorStyleSettingWidget):
@@ -47,11 +49,12 @@ class Ui_IndicatorStyleSettingWidget(object):
 
         self.horizontalLayout.addWidget(self.pub_color)
 
-        self.cob_width = QComboBox(IndicatorStyleSettingWidget)
-        self.cob_width.setObjectName(u"cob_width")
-        self.cob_width.setMaximumSize(QSize(50, 16777215))
+        self.cob_line_style = StyleComboBox(IndicatorStyleSettingWidget)
+        self.cob_line_style.setObjectName(u"cob_line_style")
+        self.cob_line_style.setMaximumSize(QSize(50, 16777215))
+        self.cob_line_style.setIconSize(QSize(22, 22))
 
-        self.horizontalLayout.addWidget(self.cob_width)
+        self.horizontalLayout.addWidget(self.cob_line_style)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
