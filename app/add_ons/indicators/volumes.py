@@ -3,6 +3,7 @@ import numpy as np
 from pprint import pprint
 from scipy import signal
 
+from libs.graph.bargraph import BarGraphItem
 from utils.indicators_utils import Indicator, InputField
 
 
@@ -16,11 +17,11 @@ class NonScientific(pg.AxisItem):
         ]  # This line return the NonScientific notation value
 
 
-class Volume(Indicator):
+class Volumes(Indicator):
     def __init__(self):
-        super(Volume, self).__init__()
+        super(Volumes, self).__init__()
 
-        self.name = "Volume"
+        self.name = "Volumes"
         self.description = ""
 
         self.g_volume = None
@@ -29,10 +30,16 @@ class Volume(Indicator):
         field_volume = InputField(
             "Volume", color=(255, 0, 0), width=1, disable_line_style=True
         )
-        self.register_field(field_volume)
+        field_up = InputField(
+            "Upper", color=(38, 166, 154), disable_line_style=True
+        )
+        field_low = InputField(
+            "Lower", color=(239, 83, 80), disable_line_style=True
+        )
+        self.register_fields(field_volume, field_up, field_low)
 
     def create_indicator(self, graph_view, *args, **kwargs):
-        super(Volume, self).create_indicator(graph_view)
+        super(Volumes, self).create_indicator(graph_view)
 
         # Get values
         values = graph_view.values
@@ -40,6 +47,8 @@ class Volume(Indicator):
 
         # Retrive settings
         field_volume = self.get_field("Volume")
+        field_up = self.get_field("Upper")
+        field_low = self.get_field("Lower")
 
         # Draw plots
         self.g_volume = graph_view.addPlot(
@@ -49,15 +58,16 @@ class Volume(Indicator):
         self.g_volume.setMaximumHeight(150)
         self.g_volume.setXLink("Quotation")
 
-        bars = pg.BarGraphItem(
+        bars = BarGraphItem(
             x=[x.timestamp() for x in values.index],
             height=values["Volume"].values,
-            width=field_volume.width,
-            brush=pg.mkBrush(field_volume.color),
+            up_color=field_up.color,
+            down_color=field_low.color,
+            previous_offset=True,
         )
+        self.g_volume.addItem(bars)
 
         self.set_time_x_axis(self.g_volume)
-        self.g_volume.addItem(bars)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
         graph_view.removeItem(self.g_volume)

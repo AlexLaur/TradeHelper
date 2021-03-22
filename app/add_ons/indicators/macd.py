@@ -1,6 +1,7 @@
 import numpy as np
 import pyqtgraph as pg
 
+from libs.graph.bargraph import BarGraphItem
 from utils.indicators_utils import Indicator, InputField, ChoiceField
 
 from PySide2 import QtCore, QtGui
@@ -19,8 +20,11 @@ class MACD(Indicator):
         field_input = ChoiceField(
             "Input", choices=["Open", "Close", "High", "Low"], default="Close"
         )
-        field_volumes = InputField(
-            "Volumes", color=(239, 83, 80), width=1, disable_line_style=True
+        field_up = InputField(
+            "Upper", color=(38, 166, 154), disable_line_style=True
+        )
+        field_low = InputField(
+            "Lower", color=(239, 83, 80), disable_line_style=True
         )
         field_emaslow = InputField("EMA Low", value=12)
         field_emafast = InputField("EMA Fast", value=26)
@@ -40,7 +44,8 @@ class MACD(Indicator):
         )
         self.register_fields(
             field_input,
-            field_volumes,
+            field_up,
+            field_low,
             field_emaslow,
             field_emafast,
             field_ema,
@@ -61,12 +66,14 @@ class MACD(Indicator):
             row=2, col=0, width=1, title="<b>MACD</b>"
         )
         self.g_macd.setMaximumHeight(150)
+        self.g_macd.showGrid(x=True, y=True, alpha=0.3)
         self.g_macd.setXLink("Quotation")
 
         # Retrive settings
         field_input = self.get_field("Input")
+        field_up = self.get_field("Upper")
+        field_low = self.get_field("Lower")
         field_ema = self.get_field("EMA")
-        field_volumes = self.get_field("Volumes")
         field_macd = self.get_field("MACD")
         field_emaslow = self.get_field("EMA Low")
         field_emafast = self.get_field("EMA Fast")
@@ -80,14 +87,14 @@ class MACD(Indicator):
         ema = exp_moving_average(macd, w=field_ema.value)
         macd_bar = macd - ema
 
-        # Draw plots
-        bars = pg.BarGraphItem(
+        bars = BarGraphItem(
             x=[x.timestamp() for x in values.index],
             height=macd_bar,
-            width=field_volumes.width * 5,
-            fillOutline=True,
-            brush=field_volumes.color,
+            up_color=field_up.color,
+            down_color=field_low.color,
         )
+        self.g_macd.addItem(bars)
+
         self.g_macd.plot(
             x=[x.timestamp() for x in values.index],
             y=ema,
@@ -106,8 +113,6 @@ class MACD(Indicator):
                 style=field_macd.line_style,
             ),
         )
-
-        self.g_macd.addItem(bars)
         self.set_time_x_axis(self.g_macd)
 
         # Draw MACD stategy
