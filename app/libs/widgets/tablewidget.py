@@ -36,6 +36,6 @@ class IndicatorsTableWidget(TableWidget):
         header = QtWidgets.QHeaderView(QtCore.Qt.Horizontal, self)
         self.setHorizontalHeader(header)
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.resizeSection(1, 25)
-        header.resizeSection(2, 25)
+        header.resizeSection(1, 30)
+        header.resizeSection(2, 40)
         header.setSectionsClickable(True)

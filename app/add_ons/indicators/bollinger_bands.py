@@ -1,6 +1,6 @@
 import pyqtgraph as pg
 
-from libs.indicators_widget import Indicator, InputField, ChoiceField
+from utils.indicators_utils import Indicator, InputField, ChoiceField
 
 
 class BollingerBands(Indicator):

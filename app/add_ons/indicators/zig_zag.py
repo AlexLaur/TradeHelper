@@ -3,7 +3,7 @@ import numpy as np
 
 from scipy import signal
 
-from libs.indicators_widget import Indicator, InputField, ChoiceField
+from utils.indicators_utils import Indicator, InputField, ChoiceField
 
 
 class ZigZag(Indicator):

@@ -4,6 +4,7 @@ from ui.indicator_settings_dialog import Ui_IndicatorSettingsDialogWindow
 from ui.indicator_setting_style_widget import Ui_IndicatorStyleSettingWidget
 from ui.indicator_setting_input_widget import Ui_IndicatorInputSettingWidget
 from libs.events_handler import EventHandler
+from utils.indicators_utils import ChoiceField, InputField
 from utils import utils
 
 
@@ -56,7 +57,7 @@ class IndicatorSettingsDialogWindow(
         self._current_indicator = indicator
         for _field in indicator.fields:
             # TODO Refacto this
-            if _field._type == "InputField":
+            if isinstance(_field, InputField):
                 if _field.value is not None:
                     item = QtWidgets.QListWidgetItem()
                     self.lst_inputs.addItem(item)
@@ -71,7 +72,7 @@ class IndicatorSettingsDialogWindow(
                     item.setSizeHint(wgt_style.sizeHint())
                     self.lst_styles.setItemWidget(item, wgt_style)
 
-            elif _field._type == "ChoiceField":
+            elif isinstance(_field, ChoiceField):
                 item = QtWidgets.QListWidgetItem()
                 self.lst_inputs.addItem(item)
                 wgt_input = IndicatorInputSettingWidget(field=_field)

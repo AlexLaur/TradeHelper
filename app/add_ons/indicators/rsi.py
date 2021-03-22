@@ -3,7 +3,7 @@ import pandas as pd
 
 from PySide2 import QtCore
 
-from libs.indicators_widget import Indicator, InputField, ChoiceField
+from utils.indicators_utils import Indicator, InputField, ChoiceField
 
 
 class RSI(Indicator):
