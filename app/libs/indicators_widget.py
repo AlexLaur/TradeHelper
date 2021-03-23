@@ -77,6 +77,15 @@ class IndicatorsWidget(
         self._indicators_collection.reload_plugins()
         self.build_indicators()
 
+    @property
+    def indicators(self) -> list:
+        """Return all indicators
+
+        :return: All indicators
+        :rtype: list
+        """
+        return self._indicators_collection.plugins
+
     @QtCore.Slot(object)
     def _on_settings_clicked(self, indicator: Indicator):
         """Called when the setting button of an indicator is clicked
