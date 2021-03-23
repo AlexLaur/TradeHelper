@@ -9,7 +9,7 @@ class ArticlesWidget(QtWidgets.QWidget):
         super(ArticlesWidget, self).__init__(parent)
 
         self.thread_pool = ThreadPool()
-        # self.get_articles(ticker)
+        self.get_articles(ticker)
 
     def get_articles(self, ticker):
         if ticker:
