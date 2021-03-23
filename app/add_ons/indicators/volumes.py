@@ -67,6 +67,7 @@ class Volumes(Indicator):
         self.set_time_x_axis(self.g_volume)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
+        super(Volumes, self).remove_indicator(graph_view)
         graph_view.removeItem(self.g_volume)
         self.g_volume = None
 

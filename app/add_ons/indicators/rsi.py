@@ -85,6 +85,7 @@ class RSI(Indicator):
         self.set_time_x_axis(self.g_rsi)
 
     def remove_indicator(self, graph_view, *args, **kwargs):
+        super(RSI, self).remove_indicator(graph_view)
         graph_view.removeItem(self.g_rsi)
         self.g_rsi = None
 
