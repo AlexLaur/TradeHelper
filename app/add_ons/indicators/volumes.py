@@ -53,6 +53,7 @@ class Volumes(Indicator):
         self.g_volume.setAxisItems({"left": NonScientific(orientation="left")})
         self.g_volume.setMaximumHeight(150)
         self.g_volume.setXLink("Quotation")
+        self.g_volume.setLimits(yMin=0)
 
         bars = BarGraphItem(
             x=[x.timestamp() for x in values.index],
