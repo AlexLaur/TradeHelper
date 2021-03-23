@@ -137,6 +137,8 @@ class InputField(Field):
 
         :param disable_line_style: Disable the posibility to choose a
         line stype from the style page. defaults to False
+        :param disable_line_width: Disable the posibility to choose a
+        line width from the width page. defaults to False
         :type disable_line_style: bool
         :param line_style: Choose a style to apply for lines.
         3 Choices are available (line, dash-line and dot-line). defaults to line
@@ -165,12 +167,15 @@ class InputField(Field):
         self.value = self._default_value
         self.width = self._default_width
         self.disable_line_style = False
+        self.disable_line_width = False
         self.value_type = int
         self.line_style = self._default_line_style
 
         # Kwargs settings
         if kwargs.get("disable_line_style", False):
             self.disable_line_style = True
+        if kwargs.get("disable_line_width", False):
+            self.disable_line_width = True
         if kwargs.get("line_style", None):
             self.set_line_style(kwargs.get("line_style"))
         if kwargs.get("value_type", int):

@@ -27,16 +27,13 @@ class Volumes(Indicator):
         self.g_volume = None
 
         # Define and register all customisable settings
-        field_volume = InputField(
-            "Volume", color=(255, 0, 0), width=1, disable_line_style=True
-        )
         field_up = InputField(
             "Upper", color=(38, 166, 154), disable_line_style=True
         )
         field_low = InputField(
             "Lower", color=(239, 83, 80), disable_line_style=True
         )
-        self.register_fields(field_volume, field_up, field_low)
+        self.register_fields(field_up, field_low)
 
     def create_indicator(self, graph_view, *args, **kwargs):
         super(Volumes, self).create_indicator(graph_view)
@@ -46,13 +43,12 @@ class Volumes(Indicator):
         quotation_plot = graph_view.g_quotation
 
         # Retrive settings
-        field_volume = self.get_field("Volume")
         field_up = self.get_field("Upper")
         field_low = self.get_field("Lower")
 
         # Draw plots
         self.g_volume = graph_view.addPlot(
-            row=3, col=0, width=1, title="<b>Volumes</b>"
+            row=3, col=0, width=1, title="<b>{name}</b>".format(name=self.name)
         )
         self.g_volume.setAxisItems({"left": NonScientific(orientation="left")})
         self.g_volume.setMaximumHeight(150)

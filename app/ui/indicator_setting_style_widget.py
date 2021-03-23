@@ -21,7 +21,7 @@ class Ui_IndicatorStyleSettingWidget(object):
             IndicatorStyleSettingWidget.setObjectName(
                 u"IndicatorStyleSettingWidget"
             )
-        IndicatorStyleSettingWidget.resize(412, 87)
+        IndicatorStyleSettingWidget.resize(412, 55)
         self.verticalLayout_2 = QVBoxLayout(IndicatorStyleSettingWidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
@@ -55,6 +55,12 @@ class Ui_IndicatorStyleSettingWidget(object):
         self.cob_line_style.setIconSize(QSize(22, 22))
 
         self.horizontalLayout.addWidget(self.cob_line_style)
+
+        self.spi_line_width = QDoubleSpinBox(IndicatorStyleSettingWidget)
+        self.spi_line_width.setObjectName(u"spi_line_width")
+        self.spi_line_width.setMaximum(999.000000000000000)
+
+        self.horizontalLayout.addWidget(self.spi_line_width)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 

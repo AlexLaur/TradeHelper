@@ -63,7 +63,7 @@ class MACD(Indicator):
 
         # Init plot
         self.g_macd = graph_view.addPlot(
-            row=2, col=0, width=1, title="<b>MACD</b>"
+            row=2, col=0, width=1, title="<b>{name}</b>".format(name=self.name)
         )
         self.g_macd.setMaximumHeight(150)
         self.g_macd.showGrid(x=True, y=True, alpha=0.3)

@@ -10,8 +10,8 @@ class RSI(Indicator):
     def __init__(self):
         super(RSI, self).__init__()
 
-        self.name = "RSI 14d (Relative Strength Index 14 days)"
-        self.description = ""
+        self.name = "RSI"
+        self.description = "RSI 14d (Relative Strength Index 14 days)"
 
         self.g_rsi = None
 
@@ -50,7 +50,7 @@ class RSI(Indicator):
 
         # Draw plots
         self.g_rsi = graph_view.addPlot(
-            row=1, col=0, width=1, title="<b>RSI</b>"
+            row=1, col=0, width=1, title="<b>{name}</b>".format(name=self.name)
         )
         self.g_rsi.showGrid(x=True, y=True, alpha=1)
         self.g_rsi.setMaximumHeight(150)

@@ -183,6 +183,11 @@ class IndicatorStyleSettingWidget(
         self.lab_field_name.setText(self._field.attribute_name)
         self.set_button_background_color(color=self._field.color)
 
+        if not self._field.disable_line_width and self._field.width:
+            self.spi_line_width.setValue(self._field.width)
+        else:
+            self.spi_line_width.hide()
+
         if not self._field.disable_line_style:
             self.cob_line_style.build(line_styles=self._field._line_styles)
             self.cob_line_style.set_current_style(
@@ -197,6 +202,7 @@ class IndicatorStyleSettingWidget(
         self.cob_line_style.currentIndexChanged.connect(
             self._on_line_style_selected
         )
+        self.spi_line_width.valueChanged.connect(self._on_line_width_changed)
 
     def set_button_background_color(self, color: QtGui.QColor):
         """Set the background color of the button color
@@ -207,6 +213,15 @@ class IndicatorStyleSettingWidget(
         self.pub_color.setStyleSheet(
             "background-color: {color};".format(color=color.name())
         )
+
+    @QtCore.Slot(float)
+    def _on_line_width_changed(self, value):
+        """Called when a new width is set.
+
+        :param value: The new value
+        :type value: float
+        """
+        self._field.width = value
 
     @QtCore.Slot()
     def _on_color_button_clicked(self):
