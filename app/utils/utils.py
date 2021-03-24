@@ -1,6 +1,7 @@
 import datetime
 import urllib.request
 from statistics import mean
+from libs.yahoo_fin import stock_info as sf
 
 from sklearn import preprocessing
 import numpy as np
@@ -236,3 +237,45 @@ def get_main_window_instance(name: str = "MainWindow"):
             continue
         return widget
     return None
+
+
+
+def get_all_tickers():
+    """
+    This method return a dict of all the compagny for each markets.
+    """
+    dow = sf.tickers_dow()
+    cac = sf.tickers_cac()
+    sp500 = sf.tickers_sp500()
+    nasdaq = sf.tickers_nasdaq()
+
+    data = {}
+    for i in [cac, dow, nasdaq, sp500]:
+        data.update(i)
+
+    return dow
+
+
+def get_compagny_name_from_tick(ticker):
+    """
+    This method return the Compagny name for his ticker.
+    """
+
+    data = get_all_tickers()
+
+    for tick, company in data.items():
+        if tick == ticker:
+            return company
+
+def format_data(data):
+    """
+    This method format number with ','.
+    exemple:  2,120,350
+    :param data:
+    :return: List of string
+    """
+    data_format = []
+    for i in remove_nan(data):
+        i = f"{int(i):,}"
+        data_format.append(i)
+    return data_format
