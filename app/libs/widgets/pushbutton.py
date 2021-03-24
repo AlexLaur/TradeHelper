@@ -18,11 +18,15 @@ class IndicatorPushButton(PushButton):
             parent=parent, *args, **kwargs
         )
 
+        # Constans
         self.signals = EventHandler()
-
-        # self.setFlat(True)
+        self.setFlat(True)
         self.setCheckable(True)
+        self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.setIcon(QtGui.QIcon(":/svg/toggle-off.svg"))
+        self.setIconSize(QtCore.QSize(30, 30))
 
+        # Init button state
         self.blockSignals(True)
         self.toggle_button()
         self.blockSignals(False)
@@ -31,12 +35,35 @@ class IndicatorPushButton(PushButton):
         self.clicked.connect(self.toggle_button)
 
     def toggle_button(self):
+        """Toggle the state of the button"""
         self.toggle()
         if self.isChecked():
             self.setChecked(False)
-            self.setText("Activate")
-            self.signals.sig_indicator_disable.emit(self.indicator, False)
+            self.setIcon(QtGui.QIcon(":/svg/toggle-off.svg"))
+            self.signals.sig_indicator_disabled.emit(self.indicator, False)
         else:
             self.setChecked(True)
-            self.setText("Activated")
-            self.signals.sig_indicator_enable.emit(self.indicator, True)
+            self.setIcon(QtGui.QIcon(":/svg/toggle-on.svg"))
+            self.signals.sig_indicator_enabled.emit(self.indicator, True)
+
+
+class IndicatorSettingsPushButton(PushButton):
+    def __init__(self, parent=None, *args, **kwargs):
+        super(IndicatorSettingsPushButton, self).__init__(
+            parent=parent, *args, **kwargs
+        )
+
+        # Constans
+        self.signals = EventHandler()
+        self.setFlat(True)
+        self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.setIcon(QtGui.QIcon(":/svg/settings.svg"))
+        self.setIconSize(QtCore.QSize(20, 20))
+
+        # Signals
+        self.clicked.connect(self._on_clicked)
+
+    @QtCore.Slot()
+    def _on_clicked(self):
+        """Called when the button is clicked"""
+        self.signals.sig_indicator_settings_clicked.emit(self.indicator)

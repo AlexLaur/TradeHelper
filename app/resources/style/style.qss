@@ -157,9 +157,9 @@ QTreeWidget::item {
 /* Ticker Dialog */
 
 QTreeWidget#trw_all_tickers::indicator {
-     width: 20px;
-     height: 20px;
- }
+  width: 20px;
+  height: 20px;
+}
 
 QTreeWidget#trw_all_tickers::indicator:unchecked{
   image: url(:/svg/star-outline.svg);
@@ -172,6 +172,6 @@ QTreeWidget#trw_all_tickers::indicator:checked{
 /* Dockwidgets */
 
 QDockWidget {
-     titlebar-close-icon: url(:/svg/times.svg);
-     titlebar-normal-icon: url(:/svg/window.svg);
- }
+  titlebar-close-icon: url(:/svg/times.svg);
+  titlebar-normal-icon: url(:/svg/window.svg);
+}

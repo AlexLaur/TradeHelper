@@ -8,6 +8,7 @@ import pandas as pd
 from scipy import signal
 
 from PySide2.QtGui import QPixmap
+from PySide2.QtWidgets import QApplication
 
 
 def normalize_data(data):
@@ -190,7 +191,6 @@ def find_method(module, obj):
 def convert_date_to_timestamp(data):
     final = []
     for date in data.index:
-        print(date, type(date))
         _date = datetime.datetime.strptime(date, "%Y-%m-%d")
         timestamp = datetime.datetime.timestamp(_date)
         final.append(timestamp)
@@ -220,3 +220,19 @@ def get_image_from_url(url: str) -> QPixmap:
     image = QPixmap()
     image.loadFromData(data)
     return image
+
+
+def get_main_window_instance(name: str = "MainWindow"):
+    """Get the main window object
+
+    :param name: The name of the main window, defaults to "MainWindow"
+    :type name: str, optional
+    :return: The main window object
+    :rtype: object
+    """
+    top_widgets = QApplication.topLevelWidgets()
+    for widget in top_widgets:
+        if widget.objectName() != name:
+            continue
+        return widget
+    return None
