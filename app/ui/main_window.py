@@ -22,6 +22,7 @@ from libs.favorites_widget import FavoritesWidget
 from libs.articles_widget import ArticlesWidget
 from libs.financial_widget import TableFinance
 from libs.welcome_widget import WelcomeWidget
+from libs.markets_widget import MarketsWidget
 
 import resources_rc
 
@@ -89,6 +90,47 @@ class Ui_MainWindow(object):
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
+
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setSizeConstraint(QLayout.SetMinimumSize)
+        self.pub_go_market_prev = QPushButton(self.wgt_welcome)
+        self.pub_go_market_prev.setObjectName(u"pub_go_market_prev")
+        self.pub_go_market_prev.setMinimumSize(QSize(25, 25))
+        self.pub_go_market_prev.setMaximumSize(QSize(25, 25))
+        self.pub_go_market_prev.setCursor(QCursor(Qt.PointingHandCursor))
+        self.pub_go_market_prev.setIcon(icon)
+        self.pub_go_market_prev.setIconSize(QSize(28, 28))
+        self.pub_go_market_prev.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.pub_go_market_prev)
+
+        self.wgt_markets_2 = MarketsWidget(self.wgt_welcome)
+        self.wgt_markets_2.setObjectName(u"wgt_markets_2")
+        self.wgt_markets_2.setMaximumSize(QSize(16777215, 80))
+        self.page_3 = QWidget()
+        self.page_3.setObjectName(u"page_3")
+        self.wgt_markets_2.addWidget(self.page_3)
+        self.page_4 = QWidget()
+        self.page_4.setObjectName(u"page_4")
+        self.wgt_markets_2.addWidget(self.page_4)
+
+        self.horizontalLayout_3.addWidget(self.wgt_markets_2)
+
+        self.pub_go_market_next = QPushButton(self.wgt_welcome)
+        self.pub_go_market_next.setObjectName(u"pub_go_market_next")
+        self.pub_go_market_next.setMinimumSize(QSize(25, 25))
+        self.pub_go_market_next.setMaximumSize(QSize(25, 25))
+        self.pub_go_market_next.setCursor(QCursor(Qt.PointingHandCursor))
+        self.pub_go_market_next.setIcon(icon1)
+        self.pub_go_market_next.setIconSize(QSize(28, 28))
+        self.pub_go_market_next.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.pub_go_market_next)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
         self.listWidget = WelcomeWidget(self.wgt_welcome)
         self.listWidget.setObjectName(u"listWidget")
@@ -186,6 +228,8 @@ class Ui_MainWindow(object):
         self.pub_go_welcome.setText("")
         self.pub_go_graph.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Trading Visualisation", None))
+        self.pub_go_market_prev.setText("")
+        self.pub_go_market_next.setText("")
         self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.dock_wgt_company.setWindowTitle(QCoreApplication.translate("MainWindow", u"Company", None))
         self.dock_wgt_indicators.setWindowTitle(QCoreApplication.translate("MainWindow", u"Indicators", None))

@@ -39,7 +39,7 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
         Set description of the article.
         """
         self.desc.setText(text)
-        self.desc.setFont(QtGui.QFont("Times", 12))
+        self.desc.setFont(QtGui.QFont("Times", 10))
 
     def set_thumbnail(self, link):
         if link:
@@ -57,5 +57,8 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
         :type image: QPixmap
         """
         self.thumbnail.setPixmap(image.scaled(self.size(),
-                                              QtCore.Qt.KeepAspectRatioByExpanding))
+                                              QtCore.Qt.KeepAspectRatio,
+                                              QtCore.Qt.SmoothTransformation
+                                              )
+                                 )
         self.thumbnail.setScaledContents(True)
