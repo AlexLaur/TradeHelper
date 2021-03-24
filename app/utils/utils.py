@@ -1,6 +1,6 @@
 import datetime
 import urllib.request
-from libs.yahoo_fin import stock_info as sf
+from statistics import mean
 
 from sklearn import preprocessing
 import numpy as np
@@ -8,8 +8,7 @@ import pandas as pd
 from scipy import signal
 
 from PySide2.QtGui import QPixmap
-
-from statistics import mean
+from PySide2.QtWidgets import QApplication
 
 
 def normalize_data(data):
@@ -192,7 +191,6 @@ def find_method(module, obj):
 def convert_date_to_timestamp(data):
     final = []
     for date in data.index:
-        print(date, type(date))
         _date = datetime.datetime.strptime(date, "%Y-%m-%d")
         timestamp = datetime.datetime.timestamp(_date)
         final.append(timestamp)
@@ -224,98 +222,17 @@ def get_image_from_url(url: str) -> QPixmap:
     return image
 
 
-def refacto_dette(dette_toref, leverage_toref):
-    dette = []
-    leverage = []
-    for dett in dette_toref:
-        if dett == "-":
-            dette.append(0)
-        else:
-            dette.append(dett)
-    for lev in leverage_toref:
-        try:
-            leverage.append(float(lev[:-1].replace(',', '.')))
-        except:
-            leverage.append(lev)
-    return dette, leverage
+def get_main_window_instance(name: str = "MainWindow"):
+    """Get the main window object
 
-
-def remove_nan(data):
+    :param name: The name of the main window, defaults to "MainWindow"
+    :type name: str, optional
+    :return: The main window object
+    :rtype: object
     """
-    This method replace Nan value by 0.
-    Sinon return float.
-    :param data:
-    :return: List
-    """
-    data_format = []
-    for i in data:
-        if str(i) == "nan":
-            i = 0
-        data_format.append(float(i))
-    return data_format
-
-
-
-def format_data(data):
-    """
-    This method format number with ','.
-    exemple:  2,120,350
-    :param data:
-    :return: List of string
-    """
-    data_format = []
-    for i in remove_nan(data):
-        i = f"{int(i):,}"
-        data_format.append(i)
-    return data_format
-
-def get_last_value(data):
-    if data[0] != 0:
-        index = 0
-        value = data[index]
-    else:
-        index = 1
-        value = data[index]
-    return value, index
-
-
-def croissance(data):
-    ls_croi = []
-    el_prec = data[0]
-    for element in data:
-        if el_prec < element:
-            ls_croi.append(True)
-        else:
-            ls_croi.append(False)
-        el_prec = element
-    decroi = ls_croi.count(False)
-    croi = ls_croi.count(True)
-    return croi, decroi
-
-
-def get_all_tickers():
-    """
-    This method return a dict of all the compagny for each markets.
-    """
-    dow = sf.tickers_dow()
-    cac = sf.tickers_cac()
-    sp500 = sf.tickers_sp500()
-    nasdaq = sf.tickers_nasdaq()
-
-    data = {}
-    for i in [cac, dow, nasdaq, sp500]:
-        data.update(i)
-
-    return dow
-
-
-def get_compagny_name_from_tick(ticker):
-    """
-    This method return the Compagny name for his ticker.
-    """
-
-    data = get_all_tickers()
-
-    for tick, company in data.items():
-        if tick == ticker:
-            return company
+    top_widgets = QApplication.topLevelWidgets()
+    for widget in top_widgets:
+        if widget.objectName() != name:
+            continue
+        return widget
+    return None

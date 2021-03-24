@@ -127,6 +127,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         :type data: panda dataframe
         """
         self.wgt_graph.graph.plot_quotation(data)
+        for indicator in self.wgt_indicators.indicators:
+            if not indicator.enabled:
+                continue
+            # Remove indicator
+            indicator.remove_indicator(graph_view=self.wgt_graph.graph)
+            # Re create indicator
+            indicator.create_indicator(graph_view=self.wgt_graph.graph)
         if self.stw_main.currentIndex() == 0:
             self.stw_main.slide_in_next()
 

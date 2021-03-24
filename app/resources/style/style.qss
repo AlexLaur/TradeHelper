@@ -157,9 +157,9 @@ QTreeWidget::item {
 /* Ticker Dialog */
 
 QTreeWidget#trw_all_tickers::indicator {
-     width: 20px;
-     height: 20px;
- }
+  width: 20px;
+  height: 20px;
+}
 
 QTreeWidget#trw_all_tickers::indicator:unchecked{
   image: url(:/svg/star-outline.svg);
@@ -172,53 +172,6 @@ QTreeWidget#trw_all_tickers::indicator:checked{
 /* Dockwidgets */
 
 QDockWidget {
-     titlebar-close-icon: url(:/svg/times.svg);
-     titlebar-normal-icon: url(:/svg/window.svg);
- }
-
-/*
- * QTableWidget
- */
-
-QTableWidget#wid_table_financ {
-    background-color: transparent;
+  titlebar-close-icon: url(:/svg/times.svg);
+  titlebar-normal-icon: url(:/svg/window.svg);
 }
-
-QTableWidget#wid_table_financ::item {
-    border-right: 1px solid #d6d9dc;
-}
-
-QTableWidget#wid_table_financ::item:hover {
-    background-color: transparent;
-}
-
-/*
- * QListWidget
- */
-
-QListWidget#listWidget, #wgt_articles{
-    background-color:transparent;
-    border: none;
-}
-
-/*
- * QHeaderView
- */
-
-QHeaderView::section {
-    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #616161, stop: 0.5 #505050,
-                                      stop: 0.6 #434343, stop:1 #656565);
-    color: white;
-    padding-left: 4px;
-    border: 1px solid #6c6c6c;
-}
-
-/*
- * QTextEdit
- */
-
-QTextEdit {
-     border: none;
-}
-
