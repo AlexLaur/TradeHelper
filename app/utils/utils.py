@@ -37,16 +37,20 @@ def savgol_filter(values, window_length, polyorder=3):
         mode="interp",
     )
 
-
-def remove_nan(values):
-    """Remove NaN from array
-
-    :param values: array of data
-    :type values: np.array
-    :return: The array without NaN
-    :rtype: np.array
+def remove_nan(data):
     """
-    return values[~np.isnan(values)]
+    This method replace Nan value by 0.
+    Sinon return float.
+    :param data:
+    :return: List
+    """
+    data_format = []
+    for i in data:
+        if str(i) == "nan":
+            i = 0
+        data_format.append(float(i))
+    return data_format
+
 
 
 def _peaks_detection(values, rounded=3, direction="up"):
@@ -266,6 +270,15 @@ def get_compagny_name_from_tick(ticker):
     for tick, company in data.items():
         if tick == ticker:
             return company
+
+def get_last_value(data):
+    if data[0] != 0:
+        index = 0
+        value = data[index]
+    else:
+        index = 1
+        value = data[index]
+    return value, index
 
 def format_data(data):
     """

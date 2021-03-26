@@ -1,9 +1,11 @@
 from PySide2 import QtWidgets, QtCore, QtGui
 from libs.analysies.analyse_financials import AnalyseFondamental
 
+
 class QTableWidgetFinance(QtWidgets.QTableWidget):
     def __init__(self, parent=None):
         super(QTableWidgetFinance, self).__init__(parent=parent)
+
 
 class TableFinance(QTableWidgetFinance):
     def __init__(self, parent=None):
@@ -19,18 +21,18 @@ class TableFinance(QTableWidgetFinance):
         self.data = analyses.datas
 
         self.clear()
-        header = self.data['YEAR']
-        header.insert(0, 'Valorisation')
-        header.insert(len(header), 'Bilan')
+        self.header = self.data['YEAR']
+        self.header.insert(0, 'Valorisation')
+        self.header.insert(len(self.header), 'Bilan')
         score = self.data["Score"]
 
         del self.data["YEAR"]
         del self.data["Score"]
 
-        self.setColumnCount(len(header))
-        self.setHorizontalHeaderLabels(header)
+        self.setColumnCount(len(self.header))
+        self.setHorizontalHeaderLabels(self.header)
         self.horizontalHeader().resizeSection(0, 150)
-        self.setColumnWidth(len(header) - 1, 250)
+        self.setColumnWidth(len(self.header) - 1, 250)
         self.setWordWrap(True)
 
         # Rows
@@ -42,7 +44,7 @@ class TableFinance(QTableWidgetFinance):
             for column, data in enumerate(donnee):
                 cell = QtWidgets.QTableWidgetItem()
                 cell.setData(QtCore.Qt.DisplayRole, str(data))
-                cell.setTextAlignment(QtCore.Qt.AlignHCenter)
+                cell.setTextAlignment(QtCore.Qt.AlignCenter)
                 self.setItem(row, column + 1, cell)
 
             analyse_cell = QtWidgets.QTableWidgetItem()
@@ -57,8 +59,8 @@ class TableFinance(QTableWidgetFinance):
         self.setItem(last_row, 0, cell_score_title)
         cell_score = QtWidgets.QTableWidgetItem()
         cell_score.setData(QtCore.Qt.DisplayRole, str(score[0]))
-        cell_score.setTextAlignment(QtCore.Qt.AlignHCenter)
-        self.setItem(last_row, len(header)-1, cell_score)
+        cell_score.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.setItem(last_row, len(self.header) - 1, cell_score)
 
         for i in range(self.rowCount()):
             self.setRowHeight(i, 50)
@@ -66,15 +68,14 @@ class TableFinance(QTableWidgetFinance):
         self.verticalHeader().setVisible(False)
         self.setShowGrid(False)
         self.setMouseTracking(True)
-        # self.cellEntered.connect(self.cellHover)
+        self.cellEntered.connect(self.cellHover)
 
     def cellHover(self, row, column):
         """
         This method get position (row,column) of cursor.
         """
+        self.clearSelection()
         self.current_hover = [0, 0]
-        item = self.item(row, column)
-        # print(self.itemFromIndex(row))
-        print(row)
-
-
+        for i in range(len(self.header)-1):
+            item = self.item(row, i)
+            item.setSelected(True)

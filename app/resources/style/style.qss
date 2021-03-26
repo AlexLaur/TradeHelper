@@ -175,3 +175,10 @@ QDockWidget {
   titlebar-close-icon: url(:/svg/times.svg);
   titlebar-normal-icon: url(:/svg/window.svg);
 }
+
+/* TableWidget */
+QTableWidget#wid_table_financ {
+    background:transparent;
+    border-style: none;
+}
+

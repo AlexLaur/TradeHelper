@@ -44,6 +44,7 @@ class AnalyseFondamental(object):
 
         self.analyse = AnalyseData(self.data_analyse)
         self.extend_dict_data()
+        self.tes()
 
     def set_var(self):
         self.actions = None
@@ -196,7 +197,7 @@ class AnalyseFondamental(object):
         self.datas["Capitaux Propre"] = utl.format_data(
             self.total_capitaux_propre.values.tolist()
         )
-        self.datas["Score"] = [self.total_score()]
+        self.datas["Score"] = ["", "", "", "", self.total_score()]
 
         self.bna_years()
         self.per_years()
@@ -206,6 +207,12 @@ class AnalyseFondamental(object):
         self.dividendes_ratio()
         self.roe_roa_ratio(roa=False)
         self.roe_roa_ratio(roa=True)
+
+
+    def tes(self):
+        for key, value in self.datas.items():
+            if len(value) <= 4:
+                self.datas[key].append("")
 
     def data_for_analyse(self):
         self.data_analyse["Actifs Total"] = self.datas["Actifs Total"]

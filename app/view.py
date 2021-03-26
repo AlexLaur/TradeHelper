@@ -70,9 +70,15 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tickers_dialog.signal.sig_ticker_choosen.connect(
             self.wgt_articles._on_get_articles
         )
-        # self.tickers_dialog.signal.sig_ticker_choosen.connect(
-        #     self.wid_table_financ.on_set_financials_table
-        # )
+        self.wgt_favorites.signals.sig_favorite_clicked.connect(
+            self.wgt_articles._on_get_articles
+        )
+        self.tickers_dialog.signal.sig_ticker_choosen.connect(
+            self.wid_table_financ.on_set_financials_table
+        )
+        self.wgt_favorites.signals.sig_favorite_clicked.connect(
+            self.wid_table_financ.on_set_financials_table
+        )
         self.thread_pool.signals.sig_thread_pre.connect(
             self.busy_indicator.show
         )
