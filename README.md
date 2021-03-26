@@ -45,3 +45,4 @@ It is largely inspired by `TradingView` which is a wonderfull tool for finance a
 - [ ] Embeded Python Console ?
 - [ ] Draw over the graph
 - [ ] Use Machine learning to determine patterns
+- [ ] Draw Fibonnaci on Chart
