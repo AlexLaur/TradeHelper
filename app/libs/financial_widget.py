@@ -19,11 +19,11 @@ class TableFinance(QTableWidgetFinance):
         """
         analyses = AnalyseFondamental(ticker)
         self.data = analyses.datas
-
+        print('test')
         self.clear()
         self.header = self.data['YEAR']
+        self.header[-1] = "Bilan"
         self.header.insert(0, 'Valorisation')
-        self.header.insert(len(self.header), 'Bilan')
         score = self.data["Score"]
 
         del self.data["YEAR"]
@@ -46,10 +46,6 @@ class TableFinance(QTableWidgetFinance):
                 cell.setData(QtCore.Qt.DisplayRole, str(data))
                 cell.setTextAlignment(QtCore.Qt.AlignCenter)
                 self.setItem(row, column + 1, cell)
-
-            analyse_cell = QtWidgets.QTableWidgetItem()
-            analyse_cell.setData(QtCore.Qt.DisplayRole, self.data[title])
-            self.setItem(row, 7, analyse_cell)
 
         # Add Score to the last Row
         last_row = len(self.data)
@@ -76,6 +72,6 @@ class TableFinance(QTableWidgetFinance):
         """
         self.clearSelection()
         self.current_hover = [0, 0]
-        for i in range(len(self.header)-1):
+        for i in range(len(self.header)):
             item = self.item(row, i)
             item.setSelected(True)

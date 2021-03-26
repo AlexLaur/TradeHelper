@@ -103,9 +103,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.pub_go_welcome.clicked.connect(self.stw_main.slide_in_prev)
         self.pub_go_graph.clicked.connect(self.stw_main.slide_in_next)
+        self.pub_go_market_prev.clicked.connect(self.wgt_markets_2.slide_in_prev)
+        self.pub_go_market_next.clicked.connect(self.wgt_markets_2.slide_in_next)
 
         # Action which needs to be loaded after all signals
         self.favorites_manager.load_favorite()
+
 
     def _init_app_home(self):
         """Init the APP_HOME of the application"""

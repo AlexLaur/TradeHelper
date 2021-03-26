@@ -109,12 +109,6 @@ class Ui_MainWindow(object):
         self.wgt_markets_2 = MarketsWidget(self.wgt_welcome)
         self.wgt_markets_2.setObjectName(u"wgt_markets_2")
         self.wgt_markets_2.setMaximumSize(QSize(16777215, 80))
-        self.page_3 = QWidget()
-        self.page_3.setObjectName(u"page_3")
-        self.wgt_markets_2.addWidget(self.page_3)
-        self.page_4 = QWidget()
-        self.page_4.setObjectName(u"page_4")
-        self.wgt_markets_2.addWidget(self.page_4)
 
         self.horizontalLayout_3.addWidget(self.wgt_markets_2)
 
@@ -132,22 +126,57 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
-        self.listWidget = WelcomeWidget(self.wgt_welcome)
-        self.listWidget.setObjectName(u"listWidget")
+        self.line = QFrame(self.wgt_welcome)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
 
-        self.verticalLayout_3.addWidget(self.listWidget)
+        self.verticalLayout_3.addWidget(self.line)
+
+        self.wdg_article_welcome = WelcomeWidget(self.wgt_welcome)
+        self.wdg_article_welcome.setObjectName(u"wdg_article_welcome")
+
+        self.verticalLayout_3.addWidget(self.wdg_article_welcome)
 
         self.stw_main.addWidget(self.wgt_welcome)
-        self.wgt_articles = ArticlesWidget()
+        self.wgt_article = QWidget()
+        self.wgt_article.setObjectName(u"wgt_article")
+        self.verticalLayout_2 = QVBoxLayout(self.wgt_article)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label_2 = LabelTitle(self.wgt_article)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_2.addWidget(self.label_2)
+
+        self.line_2 = QFrame(self.wgt_article)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.HLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
+
+        self.verticalLayout_2.addWidget(self.line_2)
+
+        self.wgt_articles = ArticlesWidget(self.wgt_article)
         self.wgt_articles.setObjectName(u"wgt_articles")
-        self.stw_main.addWidget(self.wgt_articles)
+
+        self.verticalLayout_2.addWidget(self.wgt_articles)
+
+        self.stw_main.addWidget(self.wgt_article)
         self.wgt_graph = GraphWidget()
         self.wgt_graph.setObjectName(u"wgt_graph")
         self.wgt_graph.setCursor(QCursor(Qt.CrossCursor))
         self.stw_main.addWidget(self.wgt_graph)
         self.wgt_financ = QWidget()
         self.wgt_financ.setObjectName(u"wgt_financ")
-        self.horizontalLayout_2 = QHBoxLayout(self.wgt_financ)
+        self.verticalLayout_4 = QVBoxLayout(self.wgt_financ)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.financial_label = LabelTitle(self.wgt_financ)
+        self.financial_label.setObjectName(u"financial_label")
+        self.financial_label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_4.addWidget(self.financial_label)
+
+        self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalSpacer = QSpacerItem(240, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -163,6 +192,9 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_2 = QSpacerItem(240, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
         self.stw_main.addWidget(self.wgt_financ)
 
@@ -230,6 +262,8 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Trading Visualisation", None))
         self.pub_go_market_prev.setText("")
         self.pub_go_market_next.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Related News", None))
+        self.financial_label.setText(QCoreApplication.translate("MainWindow", u"Financials", None))
         self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.dock_wgt_company.setWindowTitle(QCoreApplication.translate("MainWindow", u"Company", None))
         self.dock_wgt_indicators.setWindowTitle(QCoreApplication.translate("MainWindow", u"Indicators", None))

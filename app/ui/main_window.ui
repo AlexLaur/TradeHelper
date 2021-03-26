@@ -183,8 +183,6 @@
               <height>80</height>
              </size>
             </property>
-            <widget class="QWidget" name="page_3"/>
-            <widget class="QWidget" name="page_4"/>
            </widget>
           </item>
           <item>
@@ -225,65 +223,109 @@
          </layout>
         </item>
         <item>
-         <widget class="WelcomeWidget" name="listWidget"/>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="WelcomeWidget" name="wdg_article_welcome"/>
         </item>
        </layout>
       </widget>
-      <widget class="ArticlesWidget" name="wgt_articles"/>
+      <widget class="QWidget" name="wgt_article">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="LabelTitle" name="label_2">
+          <property name="text">
+           <string>Related News</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="ArticlesWidget" name="wgt_articles" native="true"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="GraphWidget" name="wgt_graph">
        <property name="cursor">
         <cursorShape>CrossCursor</cursorShape>
        </property>
       </widget>
       <widget class="QWidget" name="wgt_financ">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+         <widget class="LabelTitle" name="financial_label">
+          <property name="text">
+           <string>Financials</string>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>240</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="TableFinance" name="wid_table_financ">
-          <property name="minimumSize">
-           <size>
-            <width>850</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>850</width>
-            <height>16777215</height>
-           </size>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>240</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>240</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="TableFinance" name="wid_table_financ">
+            <property name="minimumSize">
+             <size>
+              <width>850</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>850</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>240</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
