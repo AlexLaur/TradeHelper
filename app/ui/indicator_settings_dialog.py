@@ -16,10 +16,8 @@ from PySide2.QtWidgets import *
 class Ui_IndicatorSettingsDialogWindow(object):
     def setupUi(self, IndicatorSettingsDialogWindow):
         if not IndicatorSettingsDialogWindow.objectName():
-            IndicatorSettingsDialogWindow.setObjectName(
-                u"IndicatorSettingsDialogWindow"
-            )
-        IndicatorSettingsDialogWindow.resize(400, 300)
+            IndicatorSettingsDialogWindow.setObjectName(u"IndicatorSettingsDialogWindow")
+        IndicatorSettingsDialogWindow.resize(400, 301)
         self.verticalLayout = QVBoxLayout(IndicatorSettingsDialogWindow)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.tab_settings = QTabWidget(IndicatorSettingsDialogWindow)
@@ -71,51 +69,25 @@ class Ui_IndicatorSettingsDialogWindow(object):
 
         self.horizontalLayout.addWidget(self.pub_ok)
 
+
         self.verticalLayout.addLayout(self.horizontalLayout)
+
 
         self.retranslateUi(IndicatorSettingsDialogWindow)
 
         self.tab_settings.setCurrentIndex(0)
         self.pub_ok.setDefault(True)
 
-        QMetaObject.connectSlotsByName(IndicatorSettingsDialogWindow)
 
+        QMetaObject.connectSlotsByName(IndicatorSettingsDialogWindow)
     # setupUi
 
     def retranslateUi(self, IndicatorSettingsDialogWindow):
-        IndicatorSettingsDialogWindow.setWindowTitle(
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow",
-                u"IndicatorSettingsDialogWindow",
-                None,
-            )
-        )
-        self.tab_settings.setTabText(
-            self.tab_settings.indexOf(self.wgt_settings_input),
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow", u"Input", None
-            ),
-        )
-        self.tab_settings.setTabText(
-            self.tab_settings.indexOf(self.wgt_settings_styles),
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow", u"Style", None
-            ),
-        )
-        self.pub_reset.setText(
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow", u"Reset values", None
-            )
-        )
-        self.pub_cancel.setText(
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow", u"Cancel", None
-            )
-        )
-        self.pub_ok.setText(
-            QCoreApplication.translate(
-                "IndicatorSettingsDialogWindow", u"Ok", None
-            )
-        )
-
+        IndicatorSettingsDialogWindow.setWindowTitle(QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Settings Indicators", None))
+        self.tab_settings.setTabText(self.tab_settings.indexOf(self.wgt_settings_input), QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Input", None))
+        self.tab_settings.setTabText(self.tab_settings.indexOf(self.wgt_settings_styles), QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Style", None))
+        self.pub_reset.setText(QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Reset values", None))
+        self.pub_cancel.setText(QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Cancel", None))
+        self.pub_ok.setText(QCoreApplication.translate("IndicatorSettingsDialogWindow", u"Ok", None))
     # retranslateUi
+

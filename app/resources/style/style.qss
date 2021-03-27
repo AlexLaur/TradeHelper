@@ -44,6 +44,20 @@ QTabBar::tab:selected:disabled {
   border-bottom: 2px solid palette(light);
 }
 
+
+/*
+ * QTabWidget
+ */
+
+QTabWidget#tab_settings {
+    background: transparent;
+    border: none;
+}
+
+QWidget#wgt_settings_input,#wgt_settings_styles {
+   background: palette(base);
+}
+
 /*
  * QScrollBar
  */
@@ -177,14 +191,49 @@ QDockWidget {
 }
 
 /* TableWidget */
-QTableWidget#wid_table_financ {
+QTableWidget#wid_table_financ,#tab_settings {
     background:transparent;
     border-style: none;
 }
 
-/* TableWidget */
+/* QListWidget */
 
-QListWidget#wdg_article_welcome {
+QListWidget#wdg_article_welcome,#wgt_articles,#lst_inputs {
     background:transparent;
     border-style: none;
+}
+
+/* QPushButton */
+QPushButton#pub_cancel,#pub_ok,#pub_reset{
+    background: palette(midlight);
+    height:20px;
+    border-radius:3px;
+}
+
+/* QComboBox */
+QComboBox#cob_value_list,#cob_line_style{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 50px;
+    height:20px;
+}
+
+/* QDoubleSpinBox */
+QDoubleSpinBox{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 40px;
+    height:20px;
+}
+
+/* QSpinBox */
+QSpinBox{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 40px;
+    height:20px;
+}
+
+SetSysColors{
+    border: 1px solid black;
 }

@@ -26,7 +26,7 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
         """
         self.lb_title.setText(text)
         self.lb_title.set_link(link)
-        self.lb_title.set_font_size(size=15)
+        self.lb_title.set_font_size(size=14)
 
     def set_date(self, text):
         """

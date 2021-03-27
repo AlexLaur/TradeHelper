@@ -19,7 +19,7 @@ class TableFinance(QTableWidgetFinance):
         """
         analyses = AnalyseFondamental(ticker)
         self.data = analyses.datas
-        print('test')
+
         self.clear()
         self.header = self.data['YEAR']
         self.header[-1] = "Bilan"
