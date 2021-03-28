@@ -22,7 +22,7 @@ class EventHandler(QtCore.QObject):
     sig_indicator_settings_canceled = QtCore.Signal(object)
     sig_indicator_settings_reseted = QtCore.Signal(object)
 
-    sig_action_triggered = QtCore.Signal(str)
+    sig_action_triggered = QtCore.Signal(str, dict)
 
     sig_favorite_created = QtCore.Signal(str)
     sig_favorite_loaded = QtCore.Signal(list)
