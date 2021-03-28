@@ -13,6 +13,7 @@ from libs.widgets.busywidget import BusyIndicator
 from libs.thread_pool import ThreadPool
 from libs.graph.candlestick import CandlestickItem
 from libs.io.favorite_settings import FavoritesManager
+from libs.roi_manager import ROIManager
 
 from ui import main_window
 
@@ -67,7 +68,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.signals.sig_ticker_infos_fetched.connect(
             self.wgt_company._on_ticker_infos
         )
-        ##
         self.signals.sig_ticker_articles_fetched.connect(
             self.wgt_articles.get_articles
         )
@@ -157,16 +157,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         else:
             indicator.remove_indicator(graph_view=self.wgt_graph.graph)
 
-    @QtCore.Slot(str)
-    def _on_action_triggered(self, action: str):
+    @QtCore.Slot(str, dict)
+    def _on_action_triggered(self, action: str, args:dict):
         """Callback on action triggered from the toolbar
 
         :param action: The action to find and call
         :type action: str
+        :param args: Args for the action
+        :type args: dict
         """
         action_obj = utils.find_method(module=action, obj=self)
         if action_obj:
-            action_obj()
+            action_obj(**args)
 
     def resizeEvent(self, event):
         if self.tickers_dialog:
