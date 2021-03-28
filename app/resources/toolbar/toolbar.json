@@ -18,7 +18,7 @@
                 },
                 "action": "roi_manager.set_tool",
                 "args": {
-                    "tool": "line_drawer"
+                    "tool": "bounded_line_drawer"
                 },
                 "tooltip": "Trend Line",
                 "text": "Trend Line",

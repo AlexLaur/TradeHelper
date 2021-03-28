@@ -28,7 +28,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super(MainWindow, self).__init__(parent=parent)
 
         self.setupUi(self)
-        self.setWindowState(QtCore.Qt.WindowMaximized)
+        # self.setWindowState(QtCore.Qt.WindowMaximized)
 
         # Constants
         self.tickers_dialog = None
@@ -41,6 +41,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.thread_pool = ThreadPool()
         self.signals = EventHandler()
         self.favorites_manager = FavoritesManager(parent=self)
+        self.roi_manager = ROIManager(parent=self)
 
         # Signals
         self.lie_ticker.mousePressEvent = self.tickers_dialog.show
@@ -158,7 +159,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             indicator.remove_indicator(graph_view=self.wgt_graph.graph)
 
     @QtCore.Slot(str, dict)
-    def _on_action_triggered(self, action: str, args:dict):
+    def _on_action_triggered(self, action: str, args: dict):
         """Callback on action triggered from the toolbar
 
         :param action: The action to find and call

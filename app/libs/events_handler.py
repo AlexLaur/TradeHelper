@@ -31,4 +31,6 @@ class EventHandler(QtCore.QObject):
     sig_favorite_removed = QtCore.Signal(dict)
     sig_favorite_clicked = QtCore.Signal(str)
 
+    sig_graph_clicked = QtCore.Signal(list, object)
+
     sig_articles = QtCore.Signal(dict)
