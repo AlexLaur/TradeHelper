@@ -28,7 +28,7 @@ class ToolBar(QtWidgets.QToolBar):
     def _trigger_action(self):
         """Called on action triggered"""
         sender = self.sender()
-        self.signals.sig_action_triggered.emit(sender.action)
+        self.signals.sig_action_triggered.emit(sender.action, sender.args)
 
     def init_toolbar(self):
         """This method inits the toolbar of the app"""
@@ -136,6 +136,7 @@ class Action(QtWidgets.QAction):
 
         # Properties
         self.action = action
+        self.args = kwargs.get("args", {})
 
         icon = kwargs.get("icon", None)
         if icon:
