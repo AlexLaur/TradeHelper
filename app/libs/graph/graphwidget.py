@@ -109,6 +109,18 @@ class GraphView(pg.GraphicsLayoutWidget):
         plot_items = [x for x in items if isinstance(x, pg.PlotItem)]
         self.signals.sig_graph_clicked.emit(plot_items, event)
 
+    def mousePressEvent(self, event):
+        self.signals.sig_graph_mouse_pressed.emit(event)
+        super(GraphView, self).mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        self.signals.sig_graph_mouse_released.emit(event)
+        super(GraphView, self).mouseReleaseEvent(event)
+
+    def mouseMoveEvent(self, event):
+        self.signals.sig_graph_mouse_moved.emit(event)
+        super(GraphView, self).mouseMoveEvent(event)
+
 
 class GraphWidget(QtWidgets.QWidget):
     """Widget wrapper for the graph"""
@@ -123,10 +135,19 @@ class GraphWidget(QtWidgets.QWidget):
 
         self.signals = EventHandler()
 
-        # Signals
+        # Relay Signals
         self._graph.signals.sig_graph_clicked.connect(
             self.signals.sig_graph_clicked.emit
-        )  # Relay signal
+        )
+        self._graph.signals.sig_graph_mouse_pressed.connect(
+            self.signals.sig_graph_mouse_pressed.emit
+        )
+        self._graph.signals.sig_graph_mouse_released.connect(
+            self.signals.sig_graph_mouse_released.emit
+        )
+        self._graph.signals.sig_graph_mouse_moved.connect(
+            self.signals.sig_graph_mouse_moved.emit
+        )
 
     @property
     def graph(self):
