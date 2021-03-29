@@ -22,7 +22,7 @@ class EventHandler(QtCore.QObject):
     sig_indicator_settings_canceled = QtCore.Signal(object)
     sig_indicator_settings_reseted = QtCore.Signal(object)
 
-    sig_action_triggered = QtCore.Signal(str)
+    sig_action_triggered = QtCore.Signal(str, dict)
 
     sig_favorite_created = QtCore.Signal(str)
     sig_favorite_loaded = QtCore.Signal(list)
@@ -32,3 +32,8 @@ class EventHandler(QtCore.QObject):
     sig_favorite_clicked = QtCore.Signal(str)
 
     sig_articles = QtCore.Signal(dict)
+
+    sig_graph_clicked = QtCore.Signal(list, object)
+    sig_graph_mouse_moved = QtCore.Signal(object)
+    sig_graph_mouse_pressed = QtCore.Signal(object)
+    sig_graph_mouse_released = QtCore.Signal(object)
