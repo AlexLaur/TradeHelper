@@ -110,9 +110,21 @@ class GraphView(pg.GraphicsLayoutWidget):
             self.h_line.setPos(mousePoint.y())
 
     def _set_y_axis_(self, widget, data_close):
+        """Set Y Axis in Left and add Price.
+
+        :param widget: GraphWidget
+        :type widget: PQQt.GraphWidget
+        :param data_close: Data Price 'Close'
+        :type data_close: DataFrame
+        """
         widget.showAxis('right')
         axis = widget.getAxis('right')
         axis.setTicks([[(data_close[-1], str(round(data_close[-1], 2)))]])
+
+    # def mouseMoveEvent(self, event):
+    #     print(event.pos())
+
+
 
 class GraphWidget(QtWidgets.QWidget):
     """Widget wrapper for the graph"""
