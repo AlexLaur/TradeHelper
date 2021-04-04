@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>997</width>
+    <width>998</width>
     <height>754</height>
    </rect>
   </property>
@@ -102,7 +102,7 @@
     <item>
      <widget class="StackedWidget" name="stw_main">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="wgt_welcome">
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -230,7 +230,28 @@
          </widget>
         </item>
         <item>
-         <widget class="WelcomeWidget" name="wdg_article_welcome"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="WelcomeWidget" name="wdg_article_welcome"/>
+          </item>
+          <item>
+           <widget class="Sentimental_Widget" name="verticalWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6"/>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -274,6 +295,9 @@
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="financials_layout"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -338,7 +362,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>997</width>
+     <width>998</width>
      <height>21</height>
     </rect>
    </property>
@@ -480,6 +504,12 @@
    <class>MarketsWidget</class>
    <extends>QStackedWidget</extends>
    <header>libs.markets_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Sentimental_Widget</class>
+   <extends>QWidget</extends>
+   <header>libs.widgets.sentimentals_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

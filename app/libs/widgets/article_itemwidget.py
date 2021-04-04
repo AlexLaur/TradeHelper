@@ -62,3 +62,8 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
                                               )
                                  )
         self.thumbnail.setScaledContents(True)
+
+        # blur = QtWidgets.QGraphicsDropShadowEffect(self)
+        # blur.setBlurRadius(5)
+        # blur.setColor(QtGui.QColor(42, 42, 42))
+        # self.thumbnail.setGraphicsEffect(blur)

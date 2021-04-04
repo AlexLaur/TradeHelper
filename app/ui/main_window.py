@@ -23,6 +23,7 @@ from libs.articles_widget import ArticlesWidget
 from libs.financial_widget import TableFinance
 from libs.welcome_widget import WelcomeWidget
 from libs.markets_widget import MarketsWidget
+from libs.widgets.sentimentals_widget import Sentimental_Widget
 
 import resources_rc
 
@@ -30,7 +31,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(997, 754)
+        MainWindow.resize(998, 754)
         self.action_reload_indicators = QAction(MainWindow)
         self.action_reload_indicators.setObjectName(u"action_reload_indicators")
         self.centralwidget = QWidget(MainWindow)
@@ -133,10 +134,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.line)
 
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.wdg_article_welcome = WelcomeWidget(self.wgt_welcome)
         self.wdg_article_welcome.setObjectName(u"wdg_article_welcome")
 
-        self.verticalLayout_3.addWidget(self.wdg_article_welcome)
+        self.horizontalLayout_5.addWidget(self.wdg_article_welcome)
+
+        self.verticalWidget = Sentimental_Widget(self.wgt_welcome)
+        self.verticalWidget.setObjectName(u"verticalWidget")
+        self.verticalWidget.setMinimumSize(QSize(0, 0))
+        self.verticalWidget.setMaximumSize(QSize(300, 16777215))
+        self.verticalLayout_6 = QVBoxLayout(self.verticalWidget)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+
+        self.horizontalLayout_5.addWidget(self.verticalWidget)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_5)
 
         self.stw_main.addWidget(self.wgt_welcome)
         self.wgt_article = QWidget()
@@ -176,6 +191,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.financial_label)
 
+        self.financials_layout = QHBoxLayout()
+        self.financials_layout.setObjectName(u"financials_layout")
+
+        self.verticalLayout_4.addLayout(self.financials_layout)
+
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalSpacer = QSpacerItem(240, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -203,7 +223,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 997, 21))
+        self.menubar.setGeometry(QRect(0, 0, 998, 21))
         self.menuOptions = QMenu(self.menubar)
         self.menuOptions.setObjectName(u"menuOptions")
         MainWindow.setMenuBar(self.menubar)
@@ -248,7 +268,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stw_main.setCurrentIndex(0)
+        self.stw_main.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

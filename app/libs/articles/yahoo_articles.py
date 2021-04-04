@@ -6,31 +6,45 @@ import requests
 from bs4 import BeautifulSoup
 from utils import utils
 from pprint import pprint
-from libs.yahoo_fin import stock_info
 from libs.yahoo_fin import news
-from deep_translator import GoogleTranslator
 
 
 class ArticlesYahoo(object):
-    def __init__(self, ticker=None, translate=None, single=False):
+    def __init__(self):
         super(ArticlesYahoo, self).__init__()
 
-        self.translator = GoogleTranslator(source='auto', target='fr')
+        self.articles = None
+
+    def get_articles_from_compagny(self, ticker):
         self.articles = news.get_yf_rss(ticker)
         compagny = utils.get_compagny_name_from_tick(ticker=ticker)
 
         if not self.articles:
             return
 
-        if single:
-            self.articles = [self.articles[0]]
-
         for article in self.articles:
             article['compagny'] = compagny
             self.get_thumbnail_link(article)
             article['summary'] = self.cup_long_text(article['summary'])
 
+        return self.articles
 
+    def get_home_articles(self):
+        self.articles = news.get_yf_home_rss()
+
+        if not self.articles:
+            return
+
+        for article in self.articles:
+            article['published'] = article['published'].replace('T', ' ')
+            article['summary'] = ""
+            try:
+                article['img'] = article['media_content'][0]['url']
+            except:
+                article['img'] = ""
+
+
+        return self.articles
 
     def get_thumbnail_link(self, article):
         """
@@ -63,7 +77,10 @@ class ArticlesYahoo(object):
             value = "{}...".format(value[0:len_chart])
         return value
 
+
 if __name__ == '__main__':
     tick = "MSFT"
-    x = ArticlesYahoo(ticker=tick, translate=False, single=True)
-
+    x = ArticlesYahoo()
+    # articles = x.get_articles_from_compagny(tick)
+    articles = x.get_home_articles()
+    pprint(articles)

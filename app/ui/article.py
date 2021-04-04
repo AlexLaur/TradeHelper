@@ -31,27 +31,34 @@ class Ui_Article(object):
 
         self.horizontalLayout.addWidget(self.thumbnail)
 
+        self.horizontalSpacer = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer)
+
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(-1, -1, 0, -1)
         self.lb_title = LabelTitle(Article)
         self.lb_title.setObjectName(u"lb_title")
 
         self.verticalLayout.addWidget(self.lb_title)
 
         self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.lb_date = QLabel(Article)
+        self.lb_date.setObjectName(u"lb_date")
+        self.lb_date.setMinimumSize(QSize(100, 25))
+        self.lb_date.setMaximumSize(QSize(100, 16777215))
+
+        self.horizontalLayout_2.addWidget(self.lb_date)
+
         self.lb_compagny = QLabel(Article)
         self.lb_compagny.setObjectName(u"lb_compagny")
         self.lb_compagny.setMinimumSize(QSize(0, 25))
-        self.lb_compagny.setMaximumSize(QSize(100, 16777215))
+        self.lb_compagny.setMaximumSize(QSize(16777215, 16777215))
 
         self.horizontalLayout_2.addWidget(self.lb_compagny)
-
-        self.lb_date = QLabel(Article)
-        self.lb_date.setObjectName(u"lb_date")
-        self.lb_date.setMinimumSize(QSize(0, 25))
-
-        self.horizontalLayout_2.addWidget(self.lb_date)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -85,8 +92,8 @@ class Ui_Article(object):
         Article.setWindowTitle(QCoreApplication.translate("Article", u"Form", None))
         self.thumbnail.setText("")
         self.lb_title.setText(QCoreApplication.translate("Article", u"Title", None))
-        self.lb_compagny.setText("")
         self.lb_date.setText(QCoreApplication.translate("Article", u"date", None))
-        self.desc.setText(QCoreApplication.translate("Article", u"desc", None))
+        self.lb_compagny.setText("")
+        self.desc.setText("")
     # retranslateUi
 
