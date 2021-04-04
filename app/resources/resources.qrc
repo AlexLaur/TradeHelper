@@ -1,5 +1,7 @@
 <RCC>
   <qresource>
+    <file>img/sentimentals.png</file>
+    <file>svg/aig.svg</file>
     <file>svg/candle-sticks.svg</file>
     <file>svg/info-line.svg</file>
     <file>svg/trend-angle.svg</file>
@@ -27,8 +29,10 @@
     <file>svg/line.svg</file>
     <file>svg/dot-line.svg</file>
     <file>svg/dash-line.svg</file>
-
+    <file>svg/sentimentals.svg</file>
+    <file>svg/sentimental.svg</file>
     <file>style/style.qss</file>
     <file>toolbar/toolbar.json</file>
+    <file>img/no_file.png</file>
   </qresource>
 </RCC>

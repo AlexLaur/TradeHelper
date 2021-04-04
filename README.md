@@ -3,6 +3,8 @@
 This aplication is a exercice working with Qt, PyQt arround the finance.
 It is largely inspired by `TradingView` which is a wonderfull tool for finance analysis.
 
+![Preview](./preview_home.png)
+
 ![Preview](./preview.jpg)
 
 ## Installation
@@ -45,4 +47,7 @@ It is largely inspired by `TradingView` which is a wonderfull tool for finance a
 - [ ] Embeded Python Console ?
 - [ ] Draw over the graph
 - [ ] Use Machine learning to determine patterns
-- [ ] Draw Fibonnaci on Chart
+- [ ] Draw Fibonnaci on Chart => 50% done
+- [ ] Make Virtual Portefolio
+- [ ] Avaible Trading
+- [ ] SplashScreen Loading

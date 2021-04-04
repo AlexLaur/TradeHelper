@@ -10,9 +10,11 @@ from resources.style import style
 from libs.events_handler import EventHandler
 from libs.tickers_dialog import TickersDialogWindow
 from libs.widgets.busywidget import BusyIndicator
+from libs.widgets.sentimentals_widget import Sentimental_Widget
 from libs.thread_pool import ThreadPool
 from libs.graph.candlestick import CandlestickItem
 from libs.io.favorite_settings import FavoritesManager
+from libs.widgets.sentimentals_widget import Sentimental_Widget_Item
 
 from ui import main_window
 
@@ -20,7 +22,6 @@ from utils import utils
 from utils import decorators
 
 SCRIPT_PATH = os.path.dirname(__file__)
-
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, parent=None, data=None):
@@ -32,6 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         # Constants
         self.tickers_dialog = None
         self.tool_bar.init_toolbar()
+        self._set_style()
 
         # Load all components
         self._init_app_home()
@@ -76,8 +78,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tickers_dialog.signal.sig_ticker_choosen.connect(
             self.wid_table_financ.on_set_financials_table
         )
+        self.tickers_dialog.signal.sig_ticker_choosen.connect(
+            self.set_sentiment_compagny
+        )
         self.wgt_favorites.signals.sig_favorite_clicked.connect(
             self.wid_table_financ.on_set_financials_table
+        )
+        self.wgt_favorites.signals.sig_favorite_clicked.connect(
+            self.set_sentiment_compagny
         )
         self.thread_pool.signals.sig_thread_pre.connect(
             self.busy_indicator.show
@@ -108,7 +116,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         # Action which needs to be loaded after all signals
         self.favorites_manager.load_favorite()
-
 
     def _init_app_home(self):
         """Init the APP_HOME of the application"""
@@ -178,6 +185,16 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         action_obj = utils.find_method(module=action, obj=self)
         if action_obj:
             action_obj()
+
+    @QtCore.Slot(str)
+    def set_sentiment_compagny(self, ticker):
+        """This method set the sentimental widget for
+        the select tick.
+        """
+        utils.clear_layout(self.financials_layout)
+        widget = Sentimental_Widget_Item()
+        widget.set_sentimental_ui(ticker=ticker)
+        self.financials_layout.addWidget(widget)
 
     def resizeEvent(self, event):
         if self.tickers_dialog:

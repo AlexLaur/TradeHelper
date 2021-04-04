@@ -1,7 +1,6 @@
 from PySide2 import QtWidgets, QtCore, QtGui
 from libs.analysies.analyse_financials import AnalyseFondamental
 
-
 class QTableWidgetFinance(QtWidgets.QTableWidget):
     def __init__(self, parent=None):
         super(QTableWidgetFinance, self).__init__(parent=parent)

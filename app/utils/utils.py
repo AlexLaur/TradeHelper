@@ -1,3 +1,6 @@
+import os
+import json
+import random
 import datetime
 import urllib.request
 from statistics import mean
@@ -248,16 +251,22 @@ def get_all_tickers():
     """
     This method return a dict of all the compagny for each markets.
     """
-    dow = sf.tickers_dow()
-    cac = sf.tickers_cac()
-    sp500 = sf.tickers_sp500()
-    nasdaq = sf.tickers_nasdaq()
+    try:
+        dow = sf.tickers_dow()
+        cac = sf.tickers_cac()
+        sp500 = sf.tickers_sp500()
+        nasdaq = sf.tickers_nasdaq()
 
-    data = {}
-    for i in [cac, dow, nasdaq, sp500]:
-        data.update(i)
+        data = {}
+        for i in [cac, dow, nasdaq, sp500]:
+            data.update(i)
 
-    return dow
+    except:
+        SCRIPT_PATH = os.path.dirname(os.path.dirname(__file__))
+        with open(os.path.join(SCRIPT_PATH, "data", "dataset.json"), "r") as f:
+            data = json.load(f)
+
+    return data
 
 
 def get_compagny_name_from_tick(ticker):
@@ -268,7 +277,7 @@ def get_compagny_name_from_tick(ticker):
     data = get_all_tickers()
 
     for tick, company in data.items():
-        if tick == ticker:
+        if ticker.startswith(tick):
             return company
 
 def get_last_value(data):
@@ -292,3 +301,32 @@ def format_data(data):
         i = f"{int(i):,}"
         data_format.append(i)
     return data_format
+
+
+def get_rdm_tickers(qty=5):
+    """
+    This method get a quantity of randoms tickers.
+    return: list
+    """
+    all_tickers = get_all_tickers().keys()
+    tickers = random.sample(all_tickers, qty)
+    return tickers
+
+def check_french_ticker(ticker):
+    """This method split the ticker if endswith '.PA'
+    :return: str
+    """
+    try:
+        ticker = ticker.split('.')[0]
+    except:
+        pass
+
+    return ticker
+
+def clear_layout(layout):
+    """
+    This method remove all widgets inside a layout.
+    :param: QtLayout
+    """
+    for i in reversed(range(layout.count())):
+        layout.itemAt(i).widget().setParent(None)

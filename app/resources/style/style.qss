@@ -157,6 +157,11 @@ QSlider::sub-page:horizontal:disabled {
   background-color: palette(light);
 }
 
+QSlider::sub-page#horizontalSlider:horizontal:disabled{
+    border-radius: 5px;
+    background-color: rgb(42, 130, 218);
+}
+
 QTableView {
   background-color: palette(link-visited);
   alternate-background-color: palette(midlight);
