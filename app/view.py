@@ -10,11 +10,11 @@ from resources.style import style
 from libs.events_handler import EventHandler
 from libs.tickers_dialog import TickersDialogWindow
 from libs.widgets.busywidget import BusyIndicator
-from libs.widgets.sentimentals_widget import Sentimental_Widget
 from libs.thread_pool import ThreadPool
 from libs.graph.candlestick import CandlestickItem
 from libs.io.favorite_settings import FavoritesManager
 from libs.widgets.sentimentals_widget import Sentimental_Widget_Item
+from libs.splashcreen import SplashScreen
 
 from ui import main_window
 
@@ -22,10 +22,19 @@ from utils import utils
 from utils import decorators
 
 SCRIPT_PATH = os.path.dirname(__file__)
+TITLE = "TRADING VISUALISATION"
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, parent=None, data=None):
         super(MainWindow, self).__init__(parent=parent)
+
+        img = "resources\img\splashscreen.jpg"
+        path = os.path.join(SCRIPT_PATH, img)
+
+        self.splash = SplashScreen(path, TITLE)
+        self.splash.show()
+        self.splash.show_message("Loading UI...\n\n")
+        QtWidgets.QApplication.processEvents()
 
         self.setupUi(self)
         self.setWindowState(QtCore.Qt.WindowMaximized)
@@ -115,6 +124,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         # Action which needs to be loaded after all signals
         self.favorites_manager.load_favorite()
+
+        self.splash.hide()
 
     def _init_app_home(self):
         """Init the APP_HOME of the application"""
