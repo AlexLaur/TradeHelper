@@ -33,7 +33,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         # Constants
         self.tickers_dialog = None
         self.tool_bar.init_toolbar()
-        self._set_style()
 
         # Load all components
         self._init_app_home()
