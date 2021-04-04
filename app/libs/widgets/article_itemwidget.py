@@ -1,4 +1,5 @@
 
+import os
 from utils import utils
 from ui.article import Ui_Article
 from libs.thread_pool import ThreadPool
@@ -47,7 +48,12 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
                 function=utils.get_image_from_url, url=link
             )
         else:
-            self._on_thumbnail_available(":/img/no_file.png")
+            path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            image = os.path.join(path, 'resources', 'img', "no_file.png")
+            image = QtGui.QPixmap(image)
+            # image = QtGui.QPixmap(":/img/no_file.png")
+            self._on_thumbnail_available(image)
+
 
     @QtCore.Slot(object)
     def _on_thumbnail_available(self, image):
@@ -56,14 +62,10 @@ class ArticlesWidgetItem(QtWidgets.QWidget, Ui_Article):
         :param image: The thumbnail
         :type image: QPixmap
         """
-        self.thumbnail.setPixmap(image.scaled(self.size(),
-                                              QtCore.Qt.KeepAspectRatio,
-                                              QtCore.Qt.SmoothTransformation
-                                              )
-                                 )
-        self.thumbnail.setScaledContents(True)
+        image = image.scaled(self.size(),
+                             QtCore.Qt.KeepAspectRatio,
+                             QtCore.Qt.SmoothTransformation
+                             )
+        self.thumbnail.setPixmap(image)
 
-        # blur = QtWidgets.QGraphicsDropShadowEffect(self)
-        # blur.setBlurRadius(5)
-        # blur.setColor(QtGui.QColor(42, 42, 42))
-        # self.thumbnail.setGraphicsEffect(blur)
+

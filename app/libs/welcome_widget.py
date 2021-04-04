@@ -2,8 +2,6 @@
 # This class set the default Welcome Page.
 #
 from pprint import pprint
-import random
-from utils import utils
 from PySide2 import QtWidgets
 from libs.articles.yahoo_articles import ArticlesYahoo
 from libs.widgets.article_itemwidget import ArticlesWidgetItem
