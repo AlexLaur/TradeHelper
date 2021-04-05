@@ -1,4 +1,5 @@
 
+import numpy as np
 from ui import markets_widget
 from PySide2 import QtWidgets
 from libs.yahoo_fin import stock_info
@@ -17,6 +18,10 @@ TICKERS = {
 }
 
 class MarketsWidget(StackedWidget):
+    """
+    Markets are the informations in the Welcome Page showing price and
+    variation from day before.
+    """
     def __init__(self, parent=None):
         super(MarketsWidget, self).__init__(parent)
 
@@ -46,6 +51,12 @@ class MarketsWidgetItem(QtWidgets.QWidget, markets_widget.Ui_markets):
         day = float(x['adjclose'][-1])
         prev_day = float(x['adjclose'][-2])
 
+        if np.isnan(prev_day):
+            if not np.isnan(x['adjclose'][-3]):
+                prev_day = float(x['adjclose'][-3])
+            else:
+                prev_day = float(x['adjclose'][-4])
+
         variation = ((day - prev_day) / prev_day) * 100
         variation = round(variation, 2)
 
@@ -53,7 +64,7 @@ class MarketsWidgetItem(QtWidgets.QWidget, markets_widget.Ui_markets):
         self.price.setText("{} €".format(str(round(day, 2))))
         self.pourcentage.setText("{}%".format(str(variation)))
 
-        if variation < 0:
+        if variation <= 0:
             self.pourcentage.setStyleSheet("color:rgb(239, 83, 80);")
         else:
             self.pourcentage.setStyleSheet("color:rgb(38, 166, 154);")
