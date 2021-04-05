@@ -123,6 +123,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.pub_go_market_next.clicked.connect(self.wgt_markets_2.slide_in_next)
 
         # Action which needs to be loaded after all signals
+        self.splash.show_message("Loading Favorites...\n\n")
         self.favorites_manager.load_favorite()
 
         self.splash.hide()
@@ -212,7 +213,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def moveEvent(self, event):
         if self.tickers_dialog:
-            ...
+            pass
 
     def closeEvent(self, event):
         self.favorites_manager.save_favorites()

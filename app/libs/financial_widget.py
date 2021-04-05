@@ -1,3 +1,4 @@
+from pprint import pprint
 from PySide2 import QtWidgets, QtCore, QtGui
 from libs.analysies.analyse_financials import AnalyseFondamental
 
@@ -19,7 +20,11 @@ class TableFinance(QTableWidgetFinance):
         analyses = AnalyseFondamental(ticker)
         self.data = analyses.datas
 
+        # Remove all Cells and Items
         self.clear()
+        self.setRowCount(0)
+        self.setColumnCount(0)
+
         self.header = self.data['YEAR']
         self.header[-1] = "Bilan"
         self.header.insert(0, 'Valorisation')
@@ -52,10 +57,11 @@ class TableFinance(QTableWidgetFinance):
         cell_score_title = QtWidgets.QTableWidgetItem()
         cell_score_title.setData(QtCore.Qt.DisplayRole, "Score")
         self.setItem(last_row, 0, cell_score_title)
-        cell_score = QtWidgets.QTableWidgetItem()
-        cell_score.setData(QtCore.Qt.DisplayRole, str(score[0]))
-        cell_score.setTextAlignment(QtCore.Qt.AlignCenter)
-        self.setItem(last_row, len(self.header) - 1, cell_score)
+        for column, data in enumerate(score):
+            cell_score = QtWidgets.QTableWidgetItem()
+            cell_score.setData(QtCore.Qt.DisplayRole, str(data))
+            cell_score.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.setItem(last_row, column + 1, cell_score)
 
         for i in range(self.rowCount()):
             self.setRowHeight(i, 50)

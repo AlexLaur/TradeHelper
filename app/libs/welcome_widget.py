@@ -8,6 +8,10 @@ from libs.widgets.article_itemwidget import ArticlesWidgetItem
 
 
 class WelcomeWidget(QtWidgets.QListWidget):
+    """
+    This is loading all articles from the main Yahoo Page.
+    https://finance.yahoo.com/
+    """
     def __init__(self, parent=None):
         super(WelcomeWidget, self).__init__(parent)
 
