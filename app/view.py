@@ -15,6 +15,7 @@ from libs.graph.candlestick import CandlestickItem
 from libs.io.favorite_settings import FavoritesManager
 from libs.widgets.sentimentals_widget import Sentimental_Widget_Item
 from libs.splashcreen import SplashScreen
+from libs.roi_manager import ROIManager
 
 from ui import main_window
 
@@ -186,16 +187,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         else:
             indicator.remove_indicator(graph_view=self.wgt_graph.graph)
 
-    @QtCore.Slot(str)
-    def _on_action_triggered(self, action: str):
+    @QtCore.Slot(str, dict)
+    def _on_action_triggered(self, action: str, args: dict):
         """Callback on action triggered from the toolbar
 
         :param action: The action to find and call
         :type action: str
+        :param args: Args for the action
+        :type args: dict
         """
         action_obj = utils.find_method(module=action, obj=self)
         if action_obj:
-            action_obj()
+            action_obj(**args)
 
     @QtCore.Slot(str)
     def set_sentiment_compagny(self, ticker):
@@ -213,7 +216,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def moveEvent(self, event):
         if self.tickers_dialog:
-            pass
+            ...
 
     def closeEvent(self, event):
         self.favorites_manager.save_favorites()
