@@ -33,7 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         path = os.path.join(SCRIPT_PATH, img)
 
         self.splash = SplashScreen(path, TITLE)
-        self.splash.show()
+        # self.splash.show()
         self.splash.show_message("Loading UI...\n\n")
         QtWidgets.QApplication.processEvents()
 

@@ -51,3 +51,4 @@ It is largely inspired by `TradingView` which is a wonderfull tool for finance a
 - [ ] Make Virtual Portefolio
 - [ ] Avaible Trading
 - [ ] SplashScreen Loading
+- [ ] Find Compagnies with differents stratgies (Buffet, Peter Lynch, Carl Icahn)

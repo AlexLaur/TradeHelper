@@ -38,6 +38,7 @@ class ROIManager(QtCore.QObject):
     def bounded_line_drawer(self, initial_pos, **kwargs):
         """Draw a bounded line
         """
+        print('la')
         roi = pg.LineSegmentROI((initial_pos, initial_pos), removable=True)
         self.current_handle = roi.getHandles()[-1]
         self.current_graph.addItem(roi)
