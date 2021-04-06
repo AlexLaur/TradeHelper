@@ -16,7 +16,10 @@
                     "type": "resources",
                     "value": ":/svg/trend-line.svg"
                 },
-                "action": "method_to_call",
+                "action": "roi_manager.set_tool",
+                "args": {
+                    "tool": "bounded_line_drawer"
+                },
                 "tooltip": "Trend Line",
                 "text": "Trend Line",
                 "shortcut": "Alt+T",

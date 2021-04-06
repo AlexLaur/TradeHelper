@@ -1,6 +1,10 @@
+import os
+import json
+import random
 import datetime
 import urllib.request
 from statistics import mean
+from libs.yahoo_fin import stock_info as sf
 
 from sklearn import preprocessing
 import numpy as np
@@ -36,16 +40,20 @@ def savgol_filter(values, window_length, polyorder=3):
         mode="interp",
     )
 
-
-def remove_nan(values):
-    """Remove NaN from array
-
-    :param values: array of data
-    :type values: np.array
-    :return: The array without NaN
-    :rtype: np.array
+def remove_nan(data):
     """
-    return values[~np.isnan(values)]
+    This method replace Nan value by 0.
+    Sinon return float.
+    :param data:
+    :return: List
+    """
+    data_format = []
+    for i in data:
+        if str(i) == "nan":
+            i = 0
+        data_format.append(float(i))
+    return data_format
+
 
 
 def _peaks_detection(values, rounded=3, direction="up"):
@@ -236,3 +244,89 @@ def get_main_window_instance(name: str = "MainWindow"):
             continue
         return widget
     return None
+
+
+
+def get_all_tickers():
+    """
+    This method return a dict of all the compagny for each markets.
+    """
+    try:
+        dow = sf.tickers_dow()
+        cac = sf.tickers_cac()
+        sp500 = sf.tickers_sp500()
+        nasdaq = sf.tickers_nasdaq()
+
+        data = {}
+        for i in [cac, dow, nasdaq, sp500]:
+            data.update(i)
+
+    except:
+        SCRIPT_PATH = os.path.dirname(os.path.dirname(__file__))
+        with open(os.path.join(SCRIPT_PATH, "data", "dataset.json"), "r") as f:
+            data = json.load(f)
+
+    return data
+
+
+def get_compagny_name_from_tick(ticker):
+    """
+    This method return the Compagny name for his ticker.
+    """
+
+    data = get_all_tickers()
+
+    for tick, company in data.items():
+        if ticker.startswith(tick):
+            return company
+
+def get_last_value(data):
+    if data[0] != 0:
+        index = 0
+        value = data[index]
+    else:
+        index = 1
+        value = data[index]
+    return value, index
+
+def format_data(data):
+    """
+    This method format number with ','.
+    exemple:  2,120,350
+    :param data:
+    :return: List of string
+    """
+    data_format = []
+    for i in remove_nan(data):
+        i = f"{int(i):,}"
+        data_format.append(i)
+    return data_format
+
+
+def get_rdm_tickers(qty=5):
+    """
+    This method get a quantity of randoms tickers.
+    return: list
+    """
+    all_tickers = get_all_tickers().keys()
+    tickers = random.sample(all_tickers, qty)
+    return tickers
+
+def check_french_ticker(ticker):
+    """This method split the ticker if endswith '.PA'
+    :return: str
+    """
+    try:
+        ticker = ticker.split('.')[0]
+    except:
+        pass
+
+    return ticker
+
+def clear_layout(layout):
+    """
+    This method remove all widgets inside a layout.
+    :param: QtLayout
+    """
+    for i in reversed(range(layout.count())):
+        layout.itemAt(i).widget().setParent(None)

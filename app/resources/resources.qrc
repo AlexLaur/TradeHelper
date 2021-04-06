@@ -27,8 +27,9 @@
     <file>svg/line.svg</file>
     <file>svg/dot-line.svg</file>
     <file>svg/dash-line.svg</file>
-
     <file>style/style.qss</file>
     <file>toolbar/toolbar.json</file>
+    <file>img/no_file.png</file>
+    <file>img/splashscreen.jpg</file>
   </qresource>
 </RCC>

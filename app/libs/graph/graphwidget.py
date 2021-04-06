@@ -2,6 +2,7 @@ import pyqtgraph as pg
 from PySide2 import QtCore, QtGui, QtWidgets
 
 from libs.graph.candlestick import CandlestickItem
+from libs.events_handler import EventHandler
 from utils import utils
 
 # TODO import from palette or Qss
@@ -19,11 +20,16 @@ class GraphView(pg.GraphicsLayoutWidget):
         self.v_line = None
         self.h_line = None
 
+        self.signals = EventHandler()
+
         self.g_quotation = self.addPlot(row=0, col=0, name="Quotation")
         self.g_quotation.showGrid(x=True, y=True, alpha=0.3)
         self.g_vb = self.g_quotation.vb
 
         self.set_cross_hair()
+        self.g_quotation.scene().sigMouseClicked.connect(
+            self._on_mouse_clicked
+        )
 
     def plot_quotation(self, data, clear=True):
         """Plot the quotation
@@ -51,7 +57,25 @@ class GraphView(pg.GraphicsLayoutWidget):
         item = CandlestickItem(ls_data)
         self.g_quotation.addItem(item)
         self.g_quotation.enableAutoRange()
+
+        color_line = (38, 166, 154)
+        if data['Close'].iloc[-1] < data['Open'].iloc[-1]:
+            color_line = (239, 83, 80)
+
+        self.h_price = pg.InfiniteLine(
+            pos=data['Close'].iloc[-1],
+            angle=0,
+            movable=False,
+            pen=pg.mkPen(
+                color=color_line,
+                width=1,
+                style=QtCore.Qt.DotLine,
+            ),
+        )
+        self.g_quotation.addItem(self.h_price, ignoreBounds=True)
+
         self.set_time_x_axis(widget=self.g_quotation)
+        self._set_y_axis_(widget=self.g_quotation, data_close=data['Close'])
         self.set_cross_hair()
 
     def set_cross_hair(self):
@@ -79,6 +103,7 @@ class GraphView(pg.GraphicsLayoutWidget):
     def set_time_x_axis(self, widget):
         widget.setAxisItems({"bottom": pg.DateAxisItem(orientation="bottom")})
 
+    @QtCore.Slot(object)
     def _on_mouse_moved(self, event):
         """Signal on mouse moved
 
@@ -91,6 +116,42 @@ class GraphView(pg.GraphicsLayoutWidget):
             self.v_line.setPos(mousePoint.x())
             self.h_line.setPos(mousePoint.y())
 
+    def _set_y_axis_(self, widget, data_close):
+        """Set Y Axis in Left and add Price.
+
+        :param widget: GraphWidget
+        :type widget: PQQt.GraphWidget
+        :param data_close: Data Price 'Close'
+        :type data_close: DataFrame
+        """
+        widget.showAxis('right')
+        axis = widget.getAxis('right')
+        axis.setTicks([[(data_close[-1], str(round(data_close[-1], 2)))]])
+
+    @QtCore.Slot(object)
+    def _on_mouse_clicked(self, event):
+        """Called on mouse clicked
+
+        :param event: Mouse clicked
+        :type event: event
+        """
+        items = self.g_quotation.scene().items(event.scenePos())
+        plot_items = [x for x in items if isinstance(x, pg.PlotItem)]
+        self.signals.sig_graph_clicked.emit(plot_items, event)
+
+    def mousePressEvent(self, event):
+        self.signals.sig_graph_mouse_pressed.emit(event)
+        super(GraphView, self).mousePressEvent(event)
+        print(event.pos())
+
+    def mouseReleaseEvent(self, event):
+        self.signals.sig_graph_mouse_released.emit(event)
+        super(GraphView, self).mouseReleaseEvent(event)
+
+    def mouseMoveEvent(self, event):
+        self.signals.sig_graph_mouse_moved.emit(event)
+        super(GraphView, self).mouseMoveEvent(event)
+
 
 class GraphWidget(QtWidgets.QWidget):
     """Widget wrapper for the graph"""
@@ -102,6 +163,22 @@ class GraphWidget(QtWidgets.QWidget):
         self._graph = GraphView(parent=self)
         layout.addWidget(self._graph)
         self.setLayout(layout)
+
+        self.signals = EventHandler()
+
+        # Relay Signals
+        self._graph.signals.sig_graph_clicked.connect(
+            self.signals.sig_graph_clicked.emit
+        )
+        self._graph.signals.sig_graph_mouse_pressed.connect(
+            self.signals.sig_graph_mouse_pressed.emit
+        )
+        self._graph.signals.sig_graph_mouse_released.connect(
+            self.signals.sig_graph_mouse_released.emit
+        )
+        self._graph.signals.sig_graph_mouse_moved.connect(
+            self.signals.sig_graph_mouse_moved.emit
+        )
 
     @property
     def graph(self):

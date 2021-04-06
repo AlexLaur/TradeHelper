@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>700</height>
+    <width>998</width>
+    <height>754</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,14 +102,256 @@
     <item>
      <widget class="StackedWidget" name="stw_main">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="wgt_welcome"/>
-      <widget class="ArticlesWidget" name="wgt_articles"/>
+      <widget class="QWidget" name="wgt_welcome">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="LabelTitle" name="label">
+          <property name="text">
+           <string>Trading Visualisation</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pub_go_market_prev">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/svg/keyboard-arrow-left.svg</normaloff>:/svg/keyboard-arrow-left.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="MarketsWidget" name="wgt_markets_2">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>80</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pub_go_market_next">
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/svg/keyboard-arrow-right.svg</normaloff>:/svg/keyboard-arrow-right.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="WelcomeWidget" name="wdg_article_welcome"/>
+          </item>
+          <item>
+           <widget class="Sentimental_Widget" name="verticalWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6"/>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="wgt_article">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="LabelTitle" name="label_2">
+          <property name="text">
+           <string>Related News</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="ArticlesWidget" name="wgt_articles" native="true"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="GraphWidget" name="wgt_graph">
        <property name="cursor">
         <cursorShape>CrossCursor</cursorShape>
        </property>
+      </widget>
+      <widget class="QWidget" name="wgt_financ">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="LabelTitle" name="financial_label">
+          <property name="text">
+           <string>Financials</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="financials_layout"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>240</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="TableFinance" name="wid_table_financ">
+            <property name="minimumSize">
+             <size>
+              <width>850</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>850</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>240</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -120,7 +362,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>998</width>
      <height>21</height>
     </rect>
    </property>
@@ -203,6 +445,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>LabelTitle</class>
+   <extends>QLabel</extends>
+   <header>libs.widgets.label.h</header>
+  </customwidget>
+  <customwidget>
    <class>GraphWidget</class>
    <extends>QWidget</extends>
    <header>libs.graph.graphwidget</header>
@@ -241,6 +488,28 @@
    <class>ArticlesWidget</class>
    <extends>QWidget</extends>
    <header>libs.articles_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TableFinance</class>
+   <extends>QTableWidget</extends>
+   <header>libs.financial_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>WelcomeWidget</class>
+   <extends>QListWidget</extends>
+   <header>libs.welcome_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MarketsWidget</class>
+   <extends>QStackedWidget</extends>
+   <header>libs.markets_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Sentimental_Widget</class>
+   <extends>QWidget</extends>
+   <header>libs.widgets.sentimentals_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

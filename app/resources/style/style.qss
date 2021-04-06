@@ -44,6 +44,20 @@ QTabBar::tab:selected:disabled {
   border-bottom: 2px solid palette(light);
 }
 
+
+/*
+ * QTabWidget
+ */
+
+QTabWidget#tab_settings {
+    background: transparent;
+    border: none;
+}
+
+QWidget#wgt_settings_input,#wgt_settings_styles {
+   background: palette(base);
+}
+
 /*
  * QScrollBar
  */
@@ -132,7 +146,7 @@ QSlider::handle:horizontal {
 }
 
 QSlider::add-page:horizontal {
-  background: palette(base);
+    background: palette(base);
 }
 
 QSlider::sub-page:horizontal {
@@ -142,6 +156,25 @@ QSlider::sub-page:horizontal {
 QSlider::sub-page:horizontal:disabled {
   background-color: palette(light);
 }
+
+QSlider::sub-page#horizontalSlider:horizontal:disabled{
+    border-radius: 5px;
+    background:transparent;
+}
+
+QSlider::sub-page#horizontalSlider:horizontal:disabled{
+    background-color: rgb(42, 218, 130);
+    background-color: qlineargradient(spread:pad,
+                                        x1:0, y1:0, x2:1, y2:0,
+                                        stop:0 rgb(61, 217, 245),
+                                        stop:1 rgb(42, 130, 218));
+}
+
+QSlider::handle#horizontalSlider:horizontal:disabled{
+
+}
+
+/* QTableView */
 
 QTableView {
   background-color: palette(link-visited);
@@ -174,4 +207,53 @@ QTreeWidget#trw_all_tickers::indicator:checked{
 QDockWidget {
   titlebar-close-icon: url(:/svg/times.svg);
   titlebar-normal-icon: url(:/svg/window.svg);
+}
+
+/* TableWidget */
+QTableWidget#wid_table_financ,#tab_settings {
+    background:transparent;
+    border-style: none;
+}
+
+/* QListWidget */
+
+QListWidget#wdg_article_welcome,#wgt_articles,#lst_inputs {
+    background:transparent;
+    border-style: none;
+}
+
+/* QPushButton */
+QPushButton#pub_cancel,#pub_ok,#pub_reset{
+    background: palette(midlight);
+    height:20px;
+    border-radius:3px;
+}
+
+/* QComboBox */
+QComboBox#cob_value_list,#cob_line_style{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 50px;
+    height:20px;
+}
+
+/* QDoubleSpinBox */
+QDoubleSpinBox{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 40px;
+    height:20px;
+}
+
+
+/* QSpinBox */
+QSpinBox{
+    background: palette(midlight);
+    border-radius:3px;
+    width: 40px;
+    height:20px;
+}
+
+SetSysColors{
+    border: 1px solid black;
 }

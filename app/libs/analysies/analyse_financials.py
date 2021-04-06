@@ -18,7 +18,7 @@ import datetime
 from pprint import pprint
 from utils import utils as utl
 from libs.yahoo_fin import stock_info as sf
-from .analyse import AnalyseData
+from libs.analysies.analyse import AnalyseData
 
 
 class AnalyseFondamental(object):
@@ -34,12 +34,6 @@ class AnalyseFondamental(object):
         self.year_atual = self.resultat_datas.keys()[0]
         self.year_before = self.resultat_datas.keys()[1]
 
-        # pprint(self.resultat_datas)
-        # pprint(self.balance_datas)
-        # pprint(self.cash_flow_datas)
-        # pprint(self.per_datas)
-        # pprint(self.statistic_datas)
-
         self.datas = {}
         self.data_analyse = {}
 
@@ -50,6 +44,7 @@ class AnalyseFondamental(object):
 
         self.analyse = AnalyseData(self.data_analyse)
         self.extend_dict_data()
+        self.tes()
 
     def set_var(self):
         self.actions = None
@@ -202,7 +197,7 @@ class AnalyseFondamental(object):
         self.datas["Capitaux Propre"] = utl.format_data(
             self.total_capitaux_propre.values.tolist()
         )
-        self.datas["Score"] = [self.total_score()]
+        self.datas["Score"] = ["", "", "", "", self.total_score()]
 
         self.bna_years()
         self.per_years()
@@ -213,6 +208,12 @@ class AnalyseFondamental(object):
         self.roe_roa_ratio(roa=False)
         self.roe_roa_ratio(roa=True)
 
+
+    def tes(self):
+        for key, value in self.datas.items():
+            if len(value) <= 4:
+                self.datas[key].append("")
+
     def data_for_analyse(self):
         self.data_analyse["Actifs Total"] = self.datas["Actifs Total"]
         self.data_analyse["BNA"] = self.datas["BNA"]
@@ -222,7 +223,6 @@ class AnalyseFondamental(object):
             "Capitaux Propre"
         ] = self.total_capitaux_propre.values.tolist()
         self.data_analyse["Chiffre d'affaires"] = self.chiffre_affaire.tolist()
-        self.data_analyse["Dividendes"] = self.datas["Dividendes"]
         self.data_analyse["EBITDA"] = self.ebitda.values.tolist()
         self.data_analyse["PER"] = self.datas["PER"]
         self.data_analyse["ROA"] = self.datas["ROA"]
@@ -294,7 +294,10 @@ class AnalyseFondamental(object):
             calcul_rend = round(calcul_rend, 2)
             rendement.append("{}€".format(calcul_rend))
 
-        self.datas["Dividendes"] = dividendes
+        self.data_analyse["Dividendes"] = dividendes
+        self.datas["Dividendes"] = []
+        for i in dividendes:
+            self.datas["Dividendes"].append(" ".join(["{}€".format(str(x)) for x in i]))
         self.datas["Dividendes Rendement"] = [
             "{}%".format(i) for i in rendement
         ]
@@ -339,6 +342,6 @@ class AnalyseFondamental(object):
 
 if __name__ == "__main__":
     test = AnalyseFondamental("AAPL")
-    pprint(test.data_analyse)
-    pprint(test.analyse.__dict__)
+    pprint(test.datas)
+    # pprint(test.analyse.__dict__)
     # testq = AnalyseFondamental("BN.PA")

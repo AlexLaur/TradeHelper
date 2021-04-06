@@ -1,10 +1,18 @@
 import feedparser
 
-yf_rss_url = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=%s&region=US&lang=en-US"
+yf_rss_url = "https://feeds.finance.yahoo.com/rss/2.0/headline?s=%s&region=FR&lang=fr-FR"
+home_page = "https://finance.yahoo.com/news/rssr/2.0/"
 
 
 def get_yf_rss(ticker):
 
-    feed = feedparser.parse(yf_rss_url % ticker)
+    feeds = feedparser.parse(yf_rss_url % ticker)
 
-    return feed.entries
+    return feeds.entries
+
+
+def get_yf_home_rss():
+
+    feeds = feedparser.parse(home_page)
+
+    return feeds.entries
